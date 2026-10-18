@@ -1,0 +1,17 @@
+name: Supabase Keep Alive
+
+on:
+  schedule:
+    # 每週一上午 9:00 (台灣時間) 自動喚醒一次
+    - cron: '0 1 * * 1'
+  workflow_dispatch: # 允許我們隨時手動點擊測試執行
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 喚醒 Supabase 資料庫
+        run: |
+          curl -s "${{ secrets.SUPABASE_URL }}/rest/v1/posts?select=id&limit=1" \
+               -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" > /dev/null
+          echo "✅ 成功向 Supabase 發送喚醒請求！"
