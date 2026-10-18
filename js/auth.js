@@ -144,46 +144,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 7. 步驟三：新手個人檔案設定 UX
+    // 7. 步驟三：新手個人檔案設定 UX (智慧情境版)
     // ==========================================
-    const randomNames = ['柴犬小隊長', '奔跑的柯基屁屁', '新手汪爸', '想養狗的小萱', '毛孩守護者', '汪星人好朋友', '熱愛薩摩耶'];
     randomNameBtn.addEventListener('click', () => {
-        const random = randomNames[Math.floor(Math.random() * randomNames.length)];
-        profileNickname.value = random;
-    });
+        let baseName = "毛孩"; // 預設核心詞
 
-    let hasPet = true;
-    statusNoPet.addEventListener('click', () => {
-        statusNoPet.classList.add('active');
-        statusHasPet.classList.remove('active');
-        petSelectorArea.style.display = 'none';
-        hasPet = false;
-    });
-    statusHasPet.addEventListener('click', () => {
-        statusHasPet.classList.add('active');
-        statusNoPet.classList.remove('active');
-        petSelectorArea.style.display = 'block';
-        hasPet = true;
-    });
+        if (hasPet) {
+            // 如果有養寵物，去抓第一隻選擇的品種
+            const firstBreedSelect = document.querySelector('.pet-breed');
+            if (firstBreedSelect && firstBreedSelect.value !== "其他") {
+                baseName = firstBreedSelect.value; // 例如變成 "柴犬" 或 "柯基犬"
+            }
+        } else {
+            // 如果選擇還沒養，給予專屬核心詞
+            baseName = "汪星人"; 
+        }
 
-    addPetBtn.addEventListener('click', () => {
-        const row = document.createElement('div');
-        row.className = 'pet-row';
-        row.innerHTML = `
-            <select class="pet-breed modal-input">
-                <option value="柴犬">柴犬</option>
-                <option value="黃金獵犬">黃金獵犬</option>
-                <option value="柯基犬">柯基犬</option>
-                <option value="台灣土狗">台灣土狗</option>
-                <option value="貴賓犬">貴賓犬</option>
-                <option value="米克斯">米克斯</option>
-                <option value="其他">其他</option>
-            </select>
-            <input type="number" class="pet-count modal-input" value="1" min="1" max="10">
-            <button class="remove-pet-btn" title="移除">🗑️</button>
-        `;
-        petList.appendChild(row);
-        row.querySelector('.remove-pet-btn').addEventListener('click', () => row.remove());
+        // 隨機前綴與後綴詞庫
+        const prefixes = ['奔跑的', '可愛的', '調皮的', '霸氣', '新手', '熱愛', '迷茫的'];
+        const suffixes = ['小隊長', '拔拔', '麻麻', '奴才', '守護者', '探險家', '好朋友'];
+        
+        // 隨機抽取
+        const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+        const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+        
+        // 組合字串，例如：「奔跑的柴犬小隊長」或「新手汪星人拔拔」
+        profileNickname.value = `${prefix}${baseName}${suffix}`;
     });
 
     // ==========================================
