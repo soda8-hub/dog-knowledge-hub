@@ -716,7 +716,7 @@ main {
 }
 
 /* =============================================
-   12. 登入與個人檔案設定彈窗 (Modal)
+   12. 登入與個人檔案設定彈窗 (Modal) - 實體色碼修復版
    ============================================= */
 .modal-overlay {
     position: fixed;
@@ -728,15 +728,16 @@ main {
 }
 
 .modal-content {
-   background: white;
-   padding: 30px 40px;
-   border-radius: 20px;
-   width: 90%; max-width: 450px;
-   position: relative;
-   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-   animation: modalFadeIn 0.3s ease;
-   max-height: 85vh; 
-   overflow-y: auto;
+    background: #ffffff; /* 確保底色為純白 */
+    padding: 30px 40px;
+    border-radius: 20px;
+    width: 90%; 
+    max-width: 450px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    animation: modalFadeIn 0.3s ease;
+    max-height: 85vh; 
+    overflow-y: auto; 
 }
 
 @keyframes modalFadeIn {
@@ -747,50 +748,117 @@ main {
 .close-modal {
     position: absolute;
     top: 15px; right: 20px;
-    font-size: 28px; color: #888;
+    font-size: 28px; color: #888888;
     cursor: pointer; transition: color 0.2s;
 }
-.close-modal:hover { color: var(--danger); }
+.close-modal:hover { color: #d9534f; } /* 鼠標滑過變成紅色 */
 
-.modal-title { font-size: 22px; color: var(--green-dark); margin-bottom: 5px; border: none;}
-.modal-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
+.modal-title { 
+    font-size: 22px; 
+    color: #2b4a3b; /* 墨綠色 */
+    margin-bottom: 5px; 
+    border: none;
+}
+.modal-subtitle { 
+    font-size: 14px; 
+    color: #666666; /* 深灰色 */
+    margin-bottom: 20px; 
+}
 
 .modal-input {
-    width: 100%; padding: 12px 15px; margin-bottom: 15px;
-    border: 1px solid var(--border); border-radius: 10px;
-    font-size: 15px; outline: none; transition: border 0.2s;
+    width: 100%; 
+    padding: 12px 15px; 
+    margin-bottom: 15px;
+    border: 1px solid #cccccc; /* 灰色邊框 */
+    border-radius: 10px;
+    font-size: 15px; 
+    color: #333333; /* 輸入的文字為深黑色 */
+    background: #ffffff;
+    outline: none; 
+    transition: border 0.2s;
+    box-sizing: border-box;
 }
-.modal-input:focus { border-color: var(--green-main); box-shadow: 0 0 5px rgba(36, 182, 87, 0.3); }
+.modal-input:focus { 
+    border-color: #387c59; /* 聚焦時變成主色綠 */
+    box-shadow: 0 0 5px rgba(56, 124, 89, 0.3); 
+}
 
 .modal-btn {
-    width: 100%; padding: 12px; border-radius: 10px;
-    font-size: 16px; font-weight: bold; cursor: pointer; border: none;
-    transition: all 0.2s; margin-bottom: 10px;
+    width: 100%; 
+    padding: 12px; 
+    border-radius: 10px;
+    font-size: 16px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    border: none;
+    transition: all 0.2s; 
+    margin-bottom: 10px;
 }
-.primary-btn { background: var(--green-main); color: white; }
-.primary-btn:hover { background: var(--green-dark); transform: translateY(-2px); }
-.secondary-btn { background: #f0f7f3; color: var(--green-dark); width: auto; padding: 0 15px; font-size: 20px;}
-.text-btn { background: transparent; color: var(--text-light); }
-.text-btn:hover { color: var(--green-dark); text-decoration: underline; }
-.dashed-btn { background: transparent; border: 2px dashed #c8e6d4; color: var(--green-main); }
+.primary-btn { 
+    background: #387c59; /* 網站主色綠 */
+    color: #ffffff; 
+}
+.primary-btn:hover { 
+    background: #2b4a3b; 
+    transform: translateY(-2px); 
+}
+.secondary-btn { 
+    background: #f0f7f3; 
+    color: #2b4a3b; 
+    width: auto; 
+    padding: 0 15px; 
+    font-size: 20px;
+}
+.text-btn { 
+    background: transparent; 
+    color: #888888; 
+}
+.text-btn:hover { 
+    color: #2b4a3b; 
+    text-decoration: underline; 
+}
+.dashed-btn { 
+    background: transparent; 
+    border: 2px dashed #c8e6d4; 
+    color: #387c59; 
+}
 .dashed-btn:hover { background: #f0f7f3; }
 
 /* 寵物設定區特製 UX */
 .profile-group { margin-bottom: 20px; text-align: left; }
-.profile-group label { display: block; font-size: 14px; font-weight: bold; color: var(--green-dark); margin-bottom: 8px; }
+.profile-group label { 
+    display: block; 
+    font-size: 14px; 
+    font-weight: bold; 
+    color: #2b4a3b; 
+    margin-bottom: 8px; 
+}
 .nickname-box { display: flex; gap: 10px; }
 .nickname-box input { margin-bottom: 0; }
 
 .status-cards { display: flex; gap: 10px; }
 .status-card {
-    flex: 1; padding: 15px 10px; text-align: center; border: 2px solid var(--border);
-    border-radius: 12px; cursor: pointer; font-size: 14px; color: var(--text-muted);
+    flex: 1; padding: 15px 10px; text-align: center; border: 2px solid #cccccc;
+    border-radius: 12px; cursor: pointer; font-size: 14px; color: #666666;
     transition: all 0.2s;
 }
-.status-card.active { border-color: var(--green-main); background: var(--green-bg); color: var(--green-dark); font-weight: bold; }
+.status-card.active { 
+    border-color: #387c59; 
+    background: #f0f7f3; 
+    color: #2b4a3b; 
+    font-weight: bold; 
+}
 
-.pet-selector-area { background: #fafdfb; border-radius: 12px; padding: 15px; border: 1px solid #e0f0e8; }
+.pet-selector-area { 
+    background: #fafdfb; 
+    border-radius: 12px; 
+    padding: 15px; 
+    border: 1px solid #e0f0e8; 
+}
 .pet-row { display: flex; gap: 10px; align-items: center; }
 .pet-breed { flex: 2; margin-bottom: 10px; }
 .pet-count { flex: 1; margin-bottom: 10px; }
-.remove-pet-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--danger); padding-bottom: 10px;}
+.remove-pet-btn { 
+    background: none; border: none; font-size: 20px; 
+    cursor: pointer; color: #d9534f; padding-bottom: 10px;
+}
