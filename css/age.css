@@ -1,0 +1,95 @@
+/* =============================================
+   05 狗狗年紀狀況專屬樣式表 (05年紀專用.css)
+   ============================================= */
+
+/* 1. 調整與下方區塊的距離，與02導覽列拉開 */
+.container {
+    padding-top: 15px !important;
+}
+
+/* 邁入老犬期：字體大小顛倒 (犬種標題大，歲數小) */
+.age-card p {
+    font-size: 25px !important;
+    /* 小型犬標籤變大 */
+    font-weight: bold;
+    color: var(--green-dark);
+    margin-bottom: 5px;
+}
+
+.age-card b {
+    font-size: 16px !important;
+    /* 歲數變小 */
+    color: var(--accent);
+    /* 橘色強調 */
+}
+
+/* 4. 成犬/老犬期 item-card 對齊與間距修正 */
+.item-grid .item-card {
+    height: 100%;
+    /* 強制等高 */
+}
+
+/* =============================================
+   解讀/說明框
+   ============================================= */
+.item-card .interpret-box {
+    background-color: var(--info-bg);
+    border-left: 5px solid var(--info-blue);
+    padding: 15px 14px;
+    font-size: 15px;
+    color: #444;
+    line-height: 1.6;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-top: auto;
+}
+
+.item-card .interpret-box strong {
+    color: var(--info-blue);
+}/* =============================================
+   05 狗狗年紀狀況專屬樣式表 (05年紀專用.css)
+   ============================================= */
+
+/* 1. 調整與下方區塊的距離，與02導覽列拉開 */
+.container {
+    padding-top: 15px !important;
+}
+
+/* 邁入老犬期：字體大小顛倒 (犬種標題大，歲數小) */
+.age-card p {
+    font-size: 25px !important;
+    /* 小型犬標籤變大 */
+    font-weight: bold;
+    color: var(--green-dark);
+    margin-bottom: 5px;
+}
+
+.age-card b {
+    font-size: 16px !important;
+    /* 歲數變小 */
+    color: var(--accent);
+    /* 橘色強調 */
+}
+
+/* 4. 成犬/老犬期 item-card 對齊與間距修正 */
+.item-grid .item-card {
+    height: 100%;
+    /* 強制等高 */
+}
+
+/* =============================================
+   解讀/說明框
+   ============================================= */
+.item-card .interpret-box {
+    background-color: var(--info-bg);
+    border-left: 5px solid var(--info-blue);
+    padding: 15px 14px;
+    font-size: 15px;
+    color: #444;
+    line-height: 1.6;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-top: auto;
+}
+
+.item-card .interpret-box strong {
+    color: var(--info-blue);
+}

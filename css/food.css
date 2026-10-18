@@ -1,0 +1,66 @@
+/* =============================================
+   新增：03頁專屬版面微調與卡片說明框
+   ============================================= */
+
+/* 1. 調整 H2 下方前言與 H3 的距離 */
+.category-section > h2 + p {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    font-size: 17px;
+}
+
+/* 2. 藍色解讀說明框 (讓 HTML 徹底擺脫行內樣式) */
+.item-card .interpret-box {
+    background-color: var(--info-bg);
+    border-left: 5px solid var(--info-blue);
+    padding: 12px 14px;
+    font-size: 15px;           
+    color: #444;             
+    line-height: 1.6;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-top: auto; /* 保證永遠推到卡片最底部 */
+}
+
+/* 3. 專屬文字強調色工具 */
+.text-danger {
+    color: var(--danger);
+    font-weight: bold;
+}
+.text-warning {
+    color: #d35400;
+    font-weight: bold;
+}
+
+/* 4. 法國皇家專屬按鈕樣式 */
+.brand-cta-btn {
+    display: inline-block; 
+    padding: 14px 28px; 
+    background-color: #e2001a; /* 品牌紅 */
+    color: white !important; 
+    font-weight: bold; 
+    border-radius: 30px; 
+    font-size: 16px; 
+    box-shadow: 0 4px 12px rgba(226, 0, 26, 0.3); 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.brand-cta-btn:hover {
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 16px rgba(226, 0, 26, 0.4);
+    text-decoration: none !important;
+}
+
+/* 5. 資料來源區塊樣式 */
+.source-block {
+    margin-top: 40px; 
+    padding: 20px 25px; 
+    border-left: 4px solid var(--border); 
+    font-size: 14px; 
+    color: var(--text-muted); 
+    line-height: 1.8; 
+    background-color: #fcfcfc; 
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.source-block strong { color: var(--text-main); font-size: 15px; display: block; margin-bottom: 8px;}
+.source-block ul { list-style: none; padding-left: 0; margin: 0; }
+.source-block li { margin-bottom: 6px; }
+.source-block a { color: var(--green-main); font-weight: bold; text-decoration: underline; }

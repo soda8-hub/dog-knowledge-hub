@@ -1,0 +1,716 @@
+@charset "UTF-8";
+
+/* ========================================
+   全站基礎重置
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 讓所有 錨點跳轉時產生平滑滑動的動畫效果 */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Microsoft JhengHei', '微軟正黑體', sans-serif;
+    background-color: #f9f6f0;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+a {
+    text-decoration: none !important;
+    color: inherit;
+}
+
+/* ========================================
+   1. Header導覽列整體佈局 
+   ======================================== */
+#main-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    background-color: #5a8a6a;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.header-left-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#site-logo {
+    height: 70px;
+    width: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.site-name {
+    font-size: 32px;
+    /* 稍微縮小，避免跟搜尋欄打架 */
+    font-weight: bold;
+    white-space: nowrap;
+    letter-spacing: 2px;
+    /* 保留置中設定 */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.header-right-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* ========================================
+   2. 搜尋欄、下拉選單與登入按鈕
+   ======================================== */
+.searchBar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.searchBar input {
+    padding: 9px 18px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    font-size: 14px;
+    width: 180px;
+    transition: width 0.3s;
+}
+
+.searchBar input:focus {
+    width: 220px;
+}
+
+.searchBar button {
+    padding: 7px 16px;
+    background-color: #fff;
+    color: #5a8a6a;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.searchBar button:hover {
+    background-color: #e0f0e8;
+}
+
+.login-btn {
+    cursor: pointer;
+    padding: 7px 16px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.login-btn:hover {
+    background-color: #ffffff;
+    color: #5a8a6a;
+}
+
+#itemList {
+    display: none;
+    position: absolute;
+    top: 75px;
+    right: 120px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 200;
+    min-width: 200px;
+    padding: 8px 0;
+    list-style: none;
+}
+
+#itemList li {
+    display: none;
+    padding: 10px 16px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    transition: background-color 0.15s;
+}
+
+#itemList li:hover {
+    background-color: #f0f7f3;
+}
+
+#itemList li:last-child {
+    border-bottom: none;
+}
+
+/* ========================================
+   3. 導覽連結與層級篩選器 (維持浮動置左)
+   ======================================== */
+.main-nav {
+    /* 保留絕對定位與滑動設定 */
+    position: absolute;
+    top: 110px;
+    left: 20px;
+    width: 230px;
+    /* 給予固定寬度 */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: white;
+    padding: 20px 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 90;
+
+    /* 讓它可以內部滾動 */
+    max-height: calc(200vh - 130px);
+    overflow-y: auto;
+}
+
+/* 美化左側選單的滾動條 */
+.main-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.main-nav::-webkit-scrollbar-thumb {
+    background-color: #c8e6d4;
+    border-radius: 4px;
+}
+
+.main-nav>a {
+    color: #5a8a6a;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    background-color: #f0f7f3;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    display: block;
+}
+
+.main-nav>a:hover {
+    background-color: #e0f0e8;
+    border: 1px solid #5a8a6a;
+    transform: translateX(4px);
+}
+
+/* --- 篩選器樣式 (整合) --- */
+.nav-filter {
+    background-color: #fafdfb;
+    border-radius: 8px;
+    padding: 12px 10px;
+    border: 1px solid #e0f0e8;
+    margin-bottom: 5px;
+}
+
+.filter-section h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: #3b5c46;
+    border-bottom: 2px dashed #c8e6d4;
+    padding-bottom: 6px;
+    text-align: center;
+}
+
+.filter-group {
+    margin-bottom: 12px;
+}
+
+.filter-title {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: #5a8a6a;
+    margin-bottom: 6px;
+}
+
+.pill-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.filter-pill {
+    padding: 4px 10px;
+    border: 1px solid #c8e6d4;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #5a8a6a;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-pill:hover {
+    background-color: #f0f7f3;
+}
+
+.filter-pill.active {
+    background-color: #5a8a6a;
+    color: white;
+    font-weight: bold;
+    border-color: #5a8a6a;
+    box-shadow: 0 2px 6px rgba(90, 138, 106, 0.3);
+}
+
+#list {
+    margin-top: 12px;
+    padding: 0;
+    list-style: none;
+    max-height: 150px;
+    overflow-y: auto;
+    border-top: 2px dashed #e0f0e8;
+    padding-top: 12px;
+}
+
+#list li {
+    padding: 6px 10px;
+    background-color: white;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #2c3e50;
+    border-left: 4px solid #5a8a6a;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    font-weight: bold;
+}
+
+/* ========================================
+   4. 主內容區 (維持左推，並確保三欄靈活排版)
+   ======================================== */
+main {
+    flex: 1;
+    /* 推開左邊 230px(選單寬度) + 20px(左邊界) + 20px(間距) = 270px */
+    width: calc(100% - 270px);
+    max-width: none;
+    margin: 30px 0px 50px 270px;
+    /* 把主內容往右推開，留空間給左欄 */
+    padding: 0 20px 0 0;
+
+    min-height: 80vh;
+
+    /* 控制中間(輪播/九宮格)和右邊(側欄)的比例 */
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    /* 右側固定 300px，中間彈性伸縮 */
+    grid-template-rows: auto auto auto;
+    gap: 30px;
+
+    grid-template-areas:
+        "carousel  sidebar"
+        "icon-grid sidebar"
+        "news      sidebar";
+}
+
+/* ========================================
+   5. 輪播圖
+   ======================================== */
+#carousel-banner {
+    grid-area: carousel;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    height: 480px;
+    object-fit: contain;
+    background-color: white;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.45);
+    color: white;
+    border: none;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 22px;
+    border-radius: 50%;
+    z-index: 10;
+    transition: background 0.2s;
+    padding: 0;
+}
+
+.carousel-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.carousel-btn.prev {
+    left: 12px;
+}
+
+.carousel-btn.next {
+    right: 12px;
+}
+
+.carousel-dots {
+    text-align: center;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}
+
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 4px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dot.active {
+    background: white;
+}
+
+/* ========================================
+   6. 熱門探索 (圖示網格分類區)
+   ======================================== */
+.icon-grid-container {
+    grid-area: icon-grid;
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.grid-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.grid-header h3 {
+    margin-bottom: 0;
+    color: #5a8a6a;
+    font-size: 18px;
+    border-left: 4px solid #5a8a6a;
+    padding-left: 10px;
+}
+
+.more-btn {
+    background: none;
+    border: 1px solid #5a8a6a;
+    color: #5a8a6a;
+    padding: 4px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.more-btn:hover {
+    background: #5a8a6a;
+    color: white;
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 強制每排 4 個 */
+    gap: 15px;
+    text-align: center;
+}
+
+.grid-item {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.grid-item:hover {
+    background-color: #f0f7f3;
+    transform: translateY(-3px);
+}
+
+.img-box {
+    width: 60px;
+    height: 60px;
+    background-color: #e0f0e8;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.grid-item p {
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* ========================================
+   7. 右側側欄
+   ======================================== */
+#right-other>div {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+#right-other {
+    grid-area: sidebar;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#right-other h3 {
+    margin-bottom: 12px;
+    color: #5a8a6a;
+    font-size: 18px;
+    border-left: 4px solid #5a8a6a;
+    padding-left: 10px;
+}
+
+#right-other p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 6px;
+}
+
+/* 側欄連結特效 */
+.sidebar-link {
+    color: #5a8a6a;
+    /* 維持主題綠色 */
+    font-weight: bold;
+    /* 加粗提示重點 */
+    display: inline-block;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    /* 平滑過渡動畫 */
+}
+
+.sidebar-link:hover {
+    opacity: 0.7;
+    /* 滑鼠移上時微微變淡 */
+    transform: translateX(4px);
+    /* 微微向右移動，產生可以前往的效果 */
+}
+
+/* ========================================
+   8. 底部頁尾 (Footer)
+   ======================================== */
+#site-footer {
+    background-color: #3b5c46;
+    color: #ecf0f1;
+    padding: 10px 20px 10px;
+    margin-top: 5%;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.footer-about {
+    max-width: 1000px;
+    padding: 0 20px;
+}
+
+.footer-about h3 {
+    color: white;
+    border-left: none;
+    padding-left: 0;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.footer-about p {
+    font-family: 'Noto Serif TC', serif;
+    color: #d1e0d7;
+    line-height: 1.5;
+    font-size: 15px;
+    letter-spacing: 1.2px;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 15px;
+    letter-spacing: 1.1px;
+    color: #a3c2af;
+}
+
+/* ========================================
+   9. 最新公告與新聞區塊 (News Section)
+   ======================================== */
+.news-container {
+    grid-area: news;
+    /* 如果有用Grid擴展，預留名稱 */
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    margin-top: 30px;
+    /* 與上方熱門探索拉開距離 */
+    /* 預留 110px 的安全距離，確保標題不會被頂部的 Header 蓋住 */
+    scroll-margin-top: 110px; 
+}
+
+
+/* 標題帶綠色直條線 */
+.news-title {
+    margin-bottom: 0;
+    color: #5a8a6a;
+    font-size: 19px;
+    border-left: 5px solid #5a8a6a;
+    padding-left: 12px;
+}
+
+/* 新聞列表 */
+.news-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+    min-height: 250px;
+    /* 預留高度，防止換頁時畫面跳動 */
+}
+
+.news-list li {
+    border-bottom: 1px dashed #e0f0e8;
+    transition: background-color 0.2s ease;
+}
+
+.news-list li:last-child {
+    border-bottom: none;
+}
+
+.news-list a {
+    display: block;
+    padding: 14px 10px;
+    font-size: 16px;
+    color: #444;
+    font-weight: 500;
+    line-height: 1.5;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* 滑鼠移上去的特效：文字變綠並微向右移 */
+.news-list a:hover {
+    color: #5a8a6a;
+    background-color: #f9fcfa;
+    transform: translateX(4px);
+    border-radius: 6px;
+}
+
+/* ========================================
+   10. 分頁按鈕系統 (Pagination)
+   ======================================== */
+.pagination-container {
+    display: flex;
+    justify-content: flex-end;
+    /* 靠右下角對齊 */
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid #f0f7f3;
+}
+
+.pagination {
+    display: flex;
+    gap: 6px;
+}
+
+.page-btn {
+    padding: 4px 8px;
+    border: 1px solid #c8e6d4;
+    background-color: white;
+    color: #5a8a6a;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.page-btn:hover:not(:disabled) {
+    background-color: #e0f0e8;
+}
+
+/* 目前所在的頁碼樣式 */
+.page-btn.active {
+    background-color: #5a8a6a;
+    color: white;
+    border-color: #5a8a6a;
+    cursor: default;
+}
+
+/* 按鈕失效時的樣式 (例如第一頁時，「上一頁」不可點) */
+.page-btn:disabled {
+    color: #ccc;
+    border-color: #eee;
+    cursor: not-allowed;
+    background-color: #fafafa;
+}
+
+/* ========================================
+   11. RWD 響應式設計 (極端縮小才出現捲軸)
+   ======================================== */
+
+/* 🔹 當螢幕小於 1000px 時，才開始允許橫向捲軸出現 */
+@media (max-width: 1000px) {
+    body {
+        /* 設定最小寬度 ，如果視窗比 1000px 窄，就不再擠壓，直接顯示橫向滾動條 */
+        min-width: 1000px;
+        overflow-x: auto;
+    }
+
+    /* 解決標題撞在一起問題 */
+    .site-name {
+        position: static;
+        transform: none;
+        font-size: 28px;
+    }
+}

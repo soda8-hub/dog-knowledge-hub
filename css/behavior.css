@@ -1,0 +1,136 @@
+/* =============================================
+   04 狗狗行為專屬樣式表 (04行為專用.css)
+   ============================================= */
+
+/* 1. 資訊標籤統一為深灰藍色 */
+.item-card .info-label {
+    color: #2c3e50;
+}
+
+/* 2. 專屬解讀/說明框 */
+.item-card .interpret-box {
+    background-color: var(--info-bg);
+    border-left: 5px solid var(--info-blue);
+    padding: 12px 14px;
+    font-size: 15px;
+    color: #444;
+    line-height: 1.6;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-top: auto;
+}
+
+.item-card .interpret-box strong {
+    color: var(--info-blue);
+}
+
+/* =============================================
+   3. 叫聲模擬專屬大泡泡 (支援點擊播放與動畫)
+   ============================================= */
+.sound-mimic {
+    font-size: 26px;
+    font-weight: 900;
+    text-align: center;
+    margin: 15px 0;
+    padding: 12px 10px 16px 10px; /* 微調上下內距讓比例更好看 */
+    border-radius: var(--radius-sm);
+    letter-spacing: 2px;
+    
+    /* ✅ 關鍵改變：使用 Flexbox 並設定為「上下直排 (column)」 */
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    gap: 6px; /* 上下元素的間距 */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none; 
+}
+
+/* 滑鼠移上去的微小放大暗示 */
+.sound-mimic:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ 全新設計：把提示文字變成「上方的小標籤」 */
+.sound-mimic::before {
+    content: '▶️ 點擊播放';   /* 縮短文字更俐落 */
+    font-size: 12px;         /* 字體縮小，與主要叫聲拉開層次 */
+    font-weight: bold;
+    letter-spacing: 1px;
+    opacity: 1;           /* 半透明，不搶戲 */
+    background-color: rgba(255, 255, 255, 0.8); /* 給一個淡淡的白底 */
+    padding: 3px 10px;       /* 把它包裝成一個膠囊形狀 */
+    border-radius: 12px;
+}
+
+/* ✅ 播放時的標籤變化 */
+.sound-mimic.playing::before {
+    content: '🔊 播放中...';
+    opacity: 1;              /* 播放時恢復不透明，吸引目光 */
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* 依據緊急程度給予不同顏色的語音泡泡 */
+.sound-safe {
+    background-color: var(--green-bg);
+    color: var(--green-dark);
+}
+
+.sound-warning {
+    background-color: #fffaf0;
+    color: #d35400;
+}
+
+.sound-danger {
+    background-color: var(--danger-bg);
+    color: var(--danger);
+}
+
+/* =============================================
+   🌟 播放中的動態狀態 (明確展示)
+   ============================================= */
+.sound-mimic.playing {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+    animation: soundPulse 1.5s infinite;
+}
+
+@keyframes soundPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+}
+
+/* =============================================
+   4. 滿版提示框 (飛機耳小知識) 強制生效
+   ============================================= */
+.tips-box {
+    background-color: #fffaf0 !important;
+    border: 2px dashed var(--accent-yellow) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 25px !important;
+    text-align: center !important;
+    font-size: 18px !important;
+    color: var(--text-main) !important;
+    margin-top: 40px !important;
+    /* 與上方卡片拉開距離 */
+    margin-bottom: 10px !important;
+    display: block !important;
+}
+
+.tips-box strong {
+    color: #d35400 !important;
+    font-size: 22px !important;
+    font-weight: bold !important;
+    display: block !important;
+    margin-bottom: 10px !important;
+}
+
+/* =============================================
+   調整H2大標題下方的「前言說明文字」與下方內容的距離
+   ============================================= */
+.category-section>h2+p {
+    /* 選中跟在H2後面的那p段落 */
+    margin-bottom: 0px !important;
+    /* 數字越大，與下方的距離越遠 */
+}

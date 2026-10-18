@@ -1,0 +1,113 @@
+/* =============================================
+   01 品種專屬樣式表 (01品種專用.css)
+   ============================================= */
+
+/* 1. 調整品種標題的上下間距與各色 */
+.category-header {
+    border-bottom: 4px solid;
+    margin-top: 0px;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    background: none;
+    box-shadow: none;
+    padding-left: 0;
+}
+
+.category-header.large {
+    color: #e67e22;
+}
+
+.category-header.medium {
+    color: #27ae60;
+}
+
+.category-header.small {
+    color: #2980b9;
+}
+
+/* 2. 活動需求文字調整 */
+.category-section>p {
+    margin-top: 0px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: var(--text-muted);
+}
+
+/* 3. 網格與等高卡片設定 */
+.dog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.dog-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    background: var(--bg-white);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* 強制等高 */
+}
+
+.dog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.dog-name {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--green-dark);
+}
+
+/* 4. 標籤系統 */
+.tag-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    background: var(--green-bg);
+    color: var(--green-dark);
+    border: 1px solid #c8e6d4;
+}
+
+/* 5. 內文與資訊標籤 */
+.dog-card p {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+.info-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--green-dark);
+}
+
+/* 6. 注意事項黃框 (自動貼齊底部) */
+.warning-box {
+    background-color: #fffbea;
+    border-left: 5px solid var(--accent-yellow);
+    padding: 12px 14px;
+    font-size: 15px;
+    color: #444;
+    line-height: 1.6;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-top: auto;
+    /* 永遠推到卡片最底部 */
+}
+
+.warning-box strong {
+    color: #d35400;
+}

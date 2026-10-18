@@ -1,0 +1,671 @@
+@charset "UTF-8";
+
+/* =============================================
+   全站共用樣式表 (common.css)
+   ============================================= */
+
+:root {
+    --green-dark: #35aa5c;
+    --green-main: #24b657;
+    --green-light: #e0f0e8;
+    --green-bg: #f0f7f3;
+    --accent: #e67e22;
+    --accent-yellow: #f1c40f;
+    --danger: #c0392b;
+    --danger-bg: #fff5f5;
+    --info-blue: #2980b9;
+    --info-bg: #eaf2f8;
+    --bg-page: #f9f6f0;
+    --bg-white: #ffffff;
+    --text-main: #333333;
+    --text-muted: #555555;
+    --text-light: #7f8c8d;
+    --border: #dddddd;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.07);
+    --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 15px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft JhengHei', '微軟正黑體', 'PingFang TC', Arial, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    line-height: 1.7;
+    min-height: 100%;
+    font-size: 16px;
+
+    /* 關鍵新增：調整全站文字的左右間距 */
+    letter-spacing: 1.15px;
+}
+
+ul,
+ol {
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+a {
+    color: var(--green-main);
+    text-decoration: none !important;
+}
+
+a:hover {
+    text-decoration: underline !important;
+}
+
+/* =============================================
+   1. 頂部 Header & 導覽列 (整合 02 的膠囊按鈕設計)
+   ============================================= */
+header {
+    text-align: center;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-main) 100%);
+    color: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    margin: 10px 10px 20px 10px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+    letter-spacing: 2px;
+}
+
+header p {
+    margin-top: 0px;
+    opacity: 0.9;
+    font-size: 16px;
+}
+
+nav {
+    background-color: var(--green-dark);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    /* 整合 02 醫療飲食的專屬設定 */
+    margin-top: -5px;
+    margin-bottom: 25px;
+    padding: 10px 0;
+}
+
+nav a {
+    color: white;
+    font-weight: bold;
+    /* 膠囊按鈕設計 */
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    padding: 5px 24px;
+    margin: 2px 10px;
+    font-size: 17px;
+    transition: all 0.3s ease;
+    border-bottom: none;
+}
+
+nav a:hover {
+    background-color: #ffffff;
+    color: var(--green-dark);
+    border-bottom: none !important;
+    transform: translateY(-3px); /* 微微往上浮起 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* =============================================
+   2. 共用容器與卡片底座
+   ============================================= */
+.container {
+    max-width: none;
+    margin: 0;
+    padding: 0 80px;
+}
+
+.category-section,
+section,
+.section,
+.category-block,
+.card,
+.care-section,
+.sport-card {
+    background: var(--bg-white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 40px;
+    padding: 20px 40px 30px 40px;
+    
+    /* ✅ 關鍵新增：全站錨點防遮擋機制，預留 70px 給上方浮動選單 */
+    scroll-margin-top: 70px; 
+}
+
+/* =============================================
+   3. 標題系統與表格
+   ============================================= */
+h2 {
+    color: var(--green-dark);
+    font-size: 28px;
+    /* 放大主標題 */
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    padding-left: 0;
+    border-left: none;
+    border-bottom: 1px solid #eee;
+}
+
+h3 {
+    color: var(--green-main);
+    font-size: 22px;
+    /* 放大次標題 */
+    margin-top: 24px;
+    margin-bottom: 12px;
+    padding: 8px 14px;
+    background-color: var(--green-bg);
+    border-radius: var(--radius-sm);
+}
+
+h4 {
+    color: var(--text-main);
+    font-size: 21px;
+    /* 微調分類標題 (確保比卡片文字大) */
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-left: 4px solid var(--accent);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 15px;
+    background: var(--bg-white);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+th,
+td {
+    border: 1px solid #e0e0e0;
+    padding: 12px 14px;
+    text-align: left;
+}
+
+th {
+    background-color: var(--green-main);
+    color: white;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: var(--green-bg);
+}
+
+tr:hover {
+    background-color: var(--green-light);
+}
+
+/* =============================================
+   4. 全站卡片網格系統 (01至08頁共用)
+   ============================================= */
+.item-grid {
+    display: grid;
+    /* ✅ 關鍵魔法：加入 min(100%, 280px)。
+       如果螢幕夠寬，最小維持 280px；如果螢幕太窄，就乖乖縮小到 100%，絕對不准突出去！ */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 20px;
+    margin-top: 16px;
+}
+
+.item-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    background: var(--bg-white);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* ✅ 加上斷字設定，防止過長的英文單字或網址把卡片撐破 */
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
+}
+
+.item-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.item-name {
+    font-size: 20px;
+    /* 稍微縮小卡片標題，視覺重點在 H2/H3/H4 */
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--green-dark);
+}
+
+/* 專屬危險卡片的紅/橘字標題 */
+.item-name.danger-text {
+    color: var(--danger);
+}
+
+.item-name.warning-text {
+    color: #d35400;
+}
+
+.item-card p {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+/* =============================================
+   原有的標籤系統 
+   ============================================= */
+.info-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--green-dark);
+
+    /* 讓彩色標籤獨立佔據一行，把黑色文字擠到下面 */
+    display: block;
+    margin-bottom: 4px;
+    /* 與下方的黑色文字保留空間 */
+}
+
+/* =============================================
+   14. 全域通用：解讀/說明框
+   ============================================= */
+.item-card .interpret-box strong {
+    color: var(--info-blue);
+    display: block;
+    /* 讓「解讀/說明：」斷行 */
+    margin-bottom: 4px;
+}
+
+/* 注意事項黃框 (自動貼齊底部) */
+.warning-box {
+    background-color: #fffbea;
+    border-left: 5px solid var(--accent-yellow);
+    padding: 12px 14px;
+    font-size: 15px;
+    color: #444;
+    line-height: 1.6;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-top: auto;
+    /* 永遠推到卡片最底部 */
+}
+
+.warning-box strong {
+    color: #d35400;
+    display: block;
+    /* 讓「注意：」斷行 */
+    margin-bottom: 4px;
+}
+
+/* 飲食警示區底色 */
+.food-danger {
+    background-color: var(--danger-bg);
+    border: 2px dashed var(--danger);
+    /* ✅ 將 padding 從原本的 25px 改為 20px (手機版我們會在 media query 再縮小) */
+    padding: 20px; 
+    border-radius: var(--radius-md);
+    margin-bottom: 30px;
+}
+
+.food-warning {
+    background-color: #fffaf0;
+    border: 2px dashed var(--accent-yellow);
+    /* ✅ 同上，稍微縮小 */
+    padding: 20px; 
+    border-radius: var(--radius-md);
+    margin-bottom: 30px;
+}
+
+/* =============================================
+   5. 頁 04 (狗狗行為)
+   ============================================= */
+.tips {
+    background-color: #fff8ee;
+    border-left: 5px solid var(--accent);
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-style: italic;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--text-muted);
+}
+
+.behavior-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.item {
+    border: 1px solid #e8e8e8;
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-white);
+    transition: box-shadow 0.2s;
+}
+
+.item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.item h3 {
+    margin-top: 0;
+    font-size: 18px;
+    padding: 6px 10px;
+}
+
+/* =============================================
+   6. 頁 05 (年紀狀況)
+   ============================================= */
+.age-standard {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.age-card {
+    background: var(--green-bg);
+    padding: 18px 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid #c8e6d4;
+    text-align: center;
+    min-width: 150px;
+    box-shadow: var(--shadow-sm);
+}
+
+.age-card p {
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.age-card b {
+    font-size: 22px;
+    color: var(--green-main);
+}
+
+.highlight-box {
+    background-color: var(--green-bg);
+    border-left: 5px solid var(--green-main);
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.highlight-box h3 {
+    margin-top: 0;
+    background: none;
+    padding: 0;
+    color: var(--green-dark);
+}
+
+/* =============================================
+   7. 頁 06 (寵物用品)
+   ============================================= */
+.category-block {
+    border-top: 5px solid var(--green-main);
+    border-left: none;
+}
+
+.category-block>h2::before {
+    content: "🦴";
+    margin-right: 8px;
+    font-size: 24px;
+}
+
+.category-block>h2 {
+    border-left: none;
+    padding-left: 0;
+}
+
+.item-group {
+    margin-bottom: 20px;
+}
+
+.item-title {
+    font-weight: bold;
+    color: var(--green-dark);
+    display: block;
+    font-size: 19px;
+    margin-bottom: 5px;
+}
+
+.item-desc {
+    margin: 0;
+    padding-left: 18px;
+    position: relative;
+    color: var(--text-muted);
+    font-size: 16px;
+}
+
+.item-desc::before {
+    content: "•";
+    position: absolute;
+    left: 4px;
+    color: var(--green-main);
+    font-weight: bold;
+}
+
+/* =============================================
+   8. 頁 07 (照顧方法)
+   ============================================= */
+.care-section {
+    border-left: 6px solid var(--green-main);
+}
+
+.care-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.care-section ul li {
+    margin-bottom: 12px;
+    padding-left: 26px;
+    position: relative;
+    font-size: 16px;
+}
+
+.care-section ul li::before {
+    content: "🐾";
+    position: absolute;
+    left: 0;
+    font-size: 14px;
+}
+
+.highlight {
+    font-weight: bold;
+    color: #c0392b;
+}
+
+/* =============================================
+   9. 頁 08 (運動) 
+   ============================================= */
+.sport-card {
+    border-left: 6px solid var(--green-main);
+}
+
+.sport-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sport-card ul li {
+    margin-bottom: 14px;
+    padding-left: 26px;
+    position: relative;
+    font-size: 16px;
+}
+
+.sport-card ul li::before {
+    content: "✔";
+    position: absolute;
+    left: 0;
+    color: var(--green-main);
+    font-weight: bold;
+}
+
+.info-tag {
+    font-weight: bold;
+    color: var(--green-dark);
+}
+
+.sport-card>h2::before {
+    content: "🎾";
+    margin-right: 8px;
+    font-size: 24px;
+}
+
+.sport-card>h2 {
+    border-left: none;
+    padding-left: 0;
+}
+
+/* =============================================
+   10. Footer 頁尾
+   ============================================= */
+footer {
+    text-align: center;
+    padding: 20px 20px;
+    background-color: var(--green-dark);
+    color: #c8ddd2;
+    font-size: 15px;
+    margin-top: 40px;
+}
+
+footer p {
+    color: #c8ddd2;
+    letter-spacing: 1.2px;
+}
+
+/* =============================================
+   11. RWD 響應式設計 (手機/平板 - UX 優化版)
+   ============================================= */
+@media (max-width: 768px) {
+    header {
+        margin: 10px 10px 20px;
+        padding: 20px 15px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+
+    .container {
+        padding: 0 12px;
+    }
+
+    .category-section,
+    section,
+    .section,
+    .care-section,
+    .category-block,
+    .card,
+    .sport-card {
+        padding: 15px 15px 20px 15px;
+    }
+
+    .food-danger,
+    .food-warning {
+        padding: 12px;
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .item-card {
+        padding: 15px;
+    }
+
+    .warning-box,
+    .item-card .interpret-box {
+        padding: 10px 12px; 
+        font-size: 14px;
+    }
+
+    /* ✅ 導覽列 UI/UX 升級：加入高質感捲軸提示，取代原本的隱藏設定 */
+    nav {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start; 
+        padding: 12px 15px 16px 15px; /* 底部稍微多留一點空間給捲軸 */
+        margin-bottom: 20px;
+        -webkit-overflow-scrolling: touch; 
+        
+        /* 針對 Firefox 的細捲軸設定 */
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+    }
+    
+    /* ✅ 把原本的 display: none 換成漂亮的半透明細捲軸 */
+    nav::-webkit-scrollbar { 
+        height: 6px; /* 橫向捲軸的高度，纖細優雅 */
+    }
+    nav::-webkit-scrollbar-track {
+        background: transparent; /* 軌道全透明，保持背景乾淨 */
+    }
+    nav::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.4); /* 半透明白色的拉桿 */
+        border-radius: 10px; /* 圓角拉桿 */
+    }
+    nav::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.8); /* 電腦版滑鼠移上去時變亮，強化互動感 */
+    }
+
+    /* ✅ 貼心細節：用偽元素在最後面撐開空間，確保滑到最後一個按鈕時不會貼死右邊界 */
+    nav::after {
+        content: '';
+        flex: 0 0 10px; 
+    }
+
+    nav a {
+        display: inline-block;
+        flex-shrink: 0;
+        margin: 0 5px;
+        font-size: 15px;
+        padding: 6px 16px;
+    }
+
+    .item-grid,
+    .behavior-box {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+    th, td {
+        padding: 8px 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 0;
+    }
+    .age-standard {
+        flex-direction: column;
+        align-items: center;
+    }
+}
