@@ -5,43 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>狗狗友善知識網</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="css/home.css">
 </head>
-    
+
 <body>
 
     <header id="main-header">
-
         <div class="header-left-group">
             <a href="index.html">
                 <img src="images/site-logo.png" alt="狗狗友善知識網Logo" id="site-logo">
             </a>
             <div class="site-name">狗狗友善知識網</div>
         </div>
-
         <div class="header-right-group" style="display: flex; align-items: center; gap: 20px;">
-
             <div class="searchBar">
                 <input type="text" id="searchInput" placeholder="搜尋狗狗知識...">
                 <button id="searchBtn">搜尋</button>
-
                 <div id="searchSuggestions"
                     style="position: absolute; left: 0; top: 100%; width: 100%; background-color: white; border: 1px solid #ccc; display: none; z-index: 999; max-height: 200px; overflow-y: auto;">
                 </div>
             </div>
-
-
             <div class="login-btn" id="loginBtn">
                 <span id="loginBtnText">👤 登入 / 註冊</span>
             </div>
         </div>
-
-
         <ul id="itemList">
             <li>Breeds - 品種</li>
             <li>Health & Diet - 醫療</li>
@@ -59,11 +49,9 @@
 
     <nav class="main-nav">
         <a href="breeds.html">品種</a>
-
         <div class="nav-filter">
             <section id="filter-section" class="filter-section">
                 <h3>🔍 尋找命定狗狗</h3>
-
                 <div class="filter-group">
                     <span class="filter-title">1. 選擇體型</span>
                     <div class="pill-container">
@@ -73,7 +61,6 @@
                         <button class="filter-pill" data-group="size" data-value="small">小型</button>
                     </div>
                 </div>
-
                 <div class="filter-group">
                     <span class="filter-title">2. 毛髮長度</span>
                     <div class="pill-container">
@@ -82,7 +69,6 @@
                         <button class="filter-pill" data-group="hair" data-value="short">短毛</button>
                     </div>
                 </div>
-
                 <div class="filter-group">
                     <span class="filter-title">3. 性格特質</span>
                     <div class="pill-container">
@@ -94,19 +80,16 @@
                         <button class="filter-pill" data-group="personality" data-value="adaptability">適應力</button>
                     </div>
                 </div>
-
                 <ul id="list">
                     <li data-size="large" data-hair="long" data-personality="docile">黃金獵犬</li>
                     <li data-size="large" data-hair="short" data-personality="active">拉不拉多</li>
                     <li data-size="large" data-hair="short" data-personality="howl">哈士奇</li>
                     <li data-size="large" data-hair="short" data-personality="loyalty">德國牧羊犬</li>
                     <li data-size="large" data-hair="short" data-personality="adaptability">台灣土狗</li>
-
                     <li data-size="medium" data-hair="short" data-personality="active">柴犬</li>
                     <li data-size="medium" data-hair="short" data-personality="docile">法國鬥牛犬</li>
                     <li data-size="medium" data-hair="short" data-personality="active">柯基犬</li>
                     <li data-size="medium" data-hair="long" data-personality="active">邊境牧羊犬</li>
-
                     <li data-size="small" data-hair="short" data-personality="active">吉娃娃</li>
                     <li data-size="small" data-hair="long" data-personality="active">博美</li>
                     <li data-size="small" data-hair="long" data-personality="docile">貴賓犬</li>
@@ -114,7 +97,6 @@
                 </ul>
             </section>
         </div>
-
         <a href="medical.html">醫療與飲食</a>
         <a href="food.html">飼料食物</a>
         <a href="behavior.html">狗狗行為</a>
@@ -141,41 +123,16 @@
         <section class="icon-grid-container">
             <div class="grid-header">
                 <h3>熱門探索</h3>
-               <!-- <button class="more-btn">查看更多</button> -->
             </div>
             <div class="icon-grid">
-                <a href="breeds.html" class="grid-item">
-                    <div class="img-box">🐕</div>
-                    <p>品種</p>
-                </a>
-                <a href="medical.html" class="grid-item">
-                    <div class="img-box">🏥</div>
-                    <p>醫療飲食</p>
-                </a>
-                <a href="food.html" class="grid-item">
-                    <div class="img-box">🦴</div>
-                    <p>飼料</p>
-                </a>
-                <a href="behavior.html" class="grid-item">
-                    <div class="img-box">🎾</div>
-                    <p>行為</p>
-                </a>
-                <a href="age.html" class="grid-item">
-                    <div class="img-box">⏳</div>
-                    <p>年紀狀況</p>
-                </a>
-                <a href="supplies.html" class="grid-item">
-                    <div class="img-box">🪢</div>
-                    <p>寵物用品</p>
-                </a>
-                <a href="care.html" class="grid-item">
-                    <div class="img-box">🛁</div>
-                    <p>照顧方法</p>
-                </a>
-                <a href="exercise.html" class="grid-item">
-                    <div class="img-box">🥏</div>
-                    <p>運動</p>
-                </a>
+                <a href="breeds.html" class="grid-item"><div class="img-box">🐕</div><p>品種</p></a>
+                <a href="medical.html" class="grid-item"><div class="img-box">🏥</div><p>醫療飲食</p></a>
+                <a href="food.html" class="grid-item"><div class="img-box">🦴</div><p>飼料</p></a>
+                <a href="behavior.html" class="grid-item"><div class="img-box">🎾</div><p>行為</p></a>
+                <a href="age.html" class="grid-item"><div class="img-box">⏳</div><p>年紀狀況</p></a>
+                <a href="supplies.html" class="grid-item"><div class="img-box">🪢</div><p>寵物用品</p></a>
+                <a href="care.html" class="grid-item"><div class="img-box">🛁</div><p>照顧方法</p></a>
+                <a href="exercise.html" class="grid-item"><div class="img-box">🥏</div><p>運動</p></a>
             </div>
         </section>
 
@@ -183,13 +140,9 @@
             <div class="grid-header">
                 <h3 class="news-title">📢 相關新聞</h3>
             </div>
-
-            <ul class="news-list" id="newsList">
-            </ul>
-
+            <ul class="news-list" id="newsList"></ul>
             <div class="pagination-container">
-                <div class="pagination" id="pagination">
-                </div>
+                <div class="pagination" id="pagination"></div>
             </div>
         </section>
 
@@ -197,7 +150,6 @@
             <div class="announcements">
                 <h3>公告</h3>
                 <p><a href="#news-section" class="sidebar-link">相關新聞</a></p>
-                <!-- <p>網站功能更新</p> -->
             </div>
             <div class="discussion-board">
                 <h3>討論區</h3>
@@ -222,7 +174,7 @@
         </div>
     </footer>
 
-<!-- ==========================================
+    <!-- ==========================================
          登入與個人檔案設定彈窗 (Modal)
          ========================================== -->
     <div id="authModal" class="modal-overlay" style="display: none;">
@@ -249,9 +201,9 @@
                 <button id="backToLoginBtn" class="modal-btn text-btn">上一步</button>
             </div>
 
-            <!-- 畫面三：新手引導 (領取身分證) -->
+            <!-- 畫面三：新手引導 (領取身分證與資料修改) -->
             <div id="step3-profile" style="display: none;">
-                <h2 class="modal-title">🎉 登入成功！領取你的身分證</h2>
+                <h2 class="modal-title">🎉 領取 / 修改你的身分證</h2>
                 <p class="modal-subtitle">在討論區，我們使用匿名保護您的隱私</p>
                 
                 <div class="profile-group">
@@ -277,63 +229,40 @@
                 <!-- 動態寵物新增區 -->
                 <div id="petSelectorArea" class="pet-selector-area">
                     <div id="petList">
-                        <!-- 第一隻寵物 -->
-                        <div class="pet-row">
-                            <select class="pet-breed modal-input">
-                                <option value="柴犬">柴犬</option>
-                                <option value="黃金獵犬">黃金獵犬</option>
-                                <option value="柯基犬">柯基犬</option>
-                                <option value="台灣土狗">台灣土狗</option>
-                                <option value="米克斯">米克斯</option>
-                                <option value="其他">其他</option>
-                            </select>
-                            <input type="number" class="pet-count modal-input" value="1" min="1" max="10" title="數量">
-                        </div>
+                        <!-- 第一隻寵物會由 auth.js 動態生成塞入 -->
                     </div>
                     <button id="addPetBtn" class="modal-btn dashed-btn">➕ 新增其他品種</button>
                 </div>
 
                 <button id="finishProfileBtn" class="modal-btn primary-btn" style="margin-top: 20px;">完成設定，開始探索！</button>
+                <button id="logoutBtn" class="modal-btn dashed-btn" style="color: #d9534f; border-color: #d9534f; margin-top: 5px;">登出帳號</button>
             </div>
         </div>
     </div>
     
-    <!-- 引入 Supabase SDK -->
+    <!-- 引入 SDK 與腳本 -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- 引入我們的核心登入與資料庫控制腳本 -->
     <script src="js/auth.js"></script>
-    
     <script src="js/search.js"></script>
     <script src="js/carousel.js"></script>
     <script src="js/filter.js"></script>
     <script src="js/news-pagination.js"></script>
 
-    <!-- 攔截「相關新聞」的點擊，不寫入歷史紀錄並平滑滑動 -->
+    <!-- 平滑滾動腳本 -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // 找出側欄中跳轉到新聞區塊的連結
             const newsLink = document.querySelector('a[href="#news-section"]');
-
             if (newsLink) {
                 newsLink.addEventListener("click", function(e) {
-                    e.preventDefault(); // 阻止預設的「跳轉寫入歷史紀錄」行為
-                    
+                    e.preventDefault(); 
                     const targetId = this.getAttribute("href");
                     const targetElement = document.querySelector(targetId);
-
                     if (targetElement) {
-                        // 指揮頁面平滑滾動到目標位置
-                        targetElement.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start"
-                        });
+                        targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
                     }
                 });
             }
         });
     </script>
-
 </body>
-
 </html>
