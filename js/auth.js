@@ -102,6 +102,40 @@ document.addEventListener('DOMContentLoaded', () => {
         return row;
     }
 
+    // 當從資料庫撈取寵物資料 (data) 後，動態生成寵物列表的迴圈內：
+data.forEach(pet => {
+    const row = document.createElement('div');
+    row.className = 'pet-row';
+    row.innerHTML = `
+        <select class="pet-breed modal-input">
+            <!-- ... 你的 15 個品種選項 ... -->
+            <option value="其他">其他 (自行輸入)</option>
+        </select>
+        <input type="text" class="custom-breed-input modal-input" placeholder="請輸入品種" style="display: none;">
+        <input type="number" class="pet-count modal-input" value="1" min="1" max="10">
+        <button class="remove-pet-btn" title="移除">🗑️</button>
+    `;
+    petList.appendChild(row);
+
+    const selectEl = row.querySelector('.pet-breed');
+    const customInputEl = row.querySelector('.custom-breed-input');
+    const countEl = row.querySelector('.pet-count');
+
+    // 🌟 智慧判斷：檢查該品種是否在預設的 select 選項中
+    const optionExists = Array.from(selectEl.options).some(opt => opt.value === pet.breed);
+    
+    if (optionExists) {
+        selectEl.value = pet.breed; // 是標準品種，直接選取
+    } else {
+        selectEl.value = "其他"; // 不在清單內，選取「其他」
+        customInputEl.style.display = "block"; // 顯示自填框
+        customInputEl.value = pet.breed; // 填入自填的品種 (例如: 臘腸狗)
+    }
+    countEl.value = pet.count;
+    
+    // ... 綁定移除按鈕與切換監聽器 ...
+});
+
     // 初始化：清空列表並加入第一列
     petList.innerHTML = '';
     petList.appendChild(createPetRow());
@@ -336,3 +370,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// ==========================================
+    // 11. 危險操作：註銷帳號 (Delete Account)
+    // ==========================================
+    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+    if (deleteAccountBtn) {
+        deleteAccountBtn.addEventListener('click', async () => {
+            // 雙重確認機制，防止誤觸
+            const confirm1 = confirm("⚠️ 警告：您確定要註銷帳號嗎？\n這將會刪除您的個人檔案與寵物資料。");
+            if (confirm1) {
+                const confirm2 = confirm("資料刪除後將無法復原，請再次確認是否繼續？");
+                if (confirm2) {
+                    deleteAccountBtn.textContent = "刪除中...";
+                    deleteAccountBtn.disabled = true;
+
+                    // 呼叫我們剛才在 Supabase 建立的 SQL 函數
+                    const { error } = await supabaseClient.rpc('delete_my_account');
+                    
+                    if (error) {
+                        alert("註銷失敗：" + error.message);
+                        deleteAccountBtn.textContent = "危險操作：註銷並刪除我的帳戶資料";
+                        deleteAccountBtn.disabled = false;
+                    } else {
+                        // 刪除成功後，清除前端登入狀態並重整
+                        await supabaseClient.auth.signOut();
+                        alert("您的帳戶與相關資料已徹底刪除。期待您未來再次加入！");
+                        window.location.reload();
+                    }
+                }
+            }
+        });
+    }
