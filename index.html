@@ -13,6 +13,82 @@
     <link rel="stylesheet" href="css/home.css">
 </head>
 
+<!-- ==========================================
+         登入與個人檔案設定彈窗 (Modal)
+         ========================================== -->
+    <div id="authModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            
+            <!-- 畫面一：輸入帳密 -->
+            <div id="step1-login">
+                <h2 class="modal-title">🐾 歡迎來到狗狗友善知識網</h2>
+                <p class="modal-subtitle">請輸入 Email 與密碼進行登入或註冊</p>
+                <input type="email" id="authEmail" class="modal-input" placeholder="請輸入 Email (如: test@gmail.com)" required>
+                <input type="password" id="authPassword" class="modal-input" placeholder="請設定 6 碼以上密碼" required>
+                <button id="sendCodeBtn" class="modal-btn primary-btn">下一步 (獲取驗證碼)</button>
+            </div>
+
+            <!-- 畫面二：模擬驗證碼 -->
+            <div id="step2-verify" style="display: none;">
+                <h2 class="modal-title">🔐 安全驗證</h2>
+                <p class="modal-subtitle">請輸入剛才彈出的 6 位數展示驗證碼</p>
+                <div class="otp-container">
+                    <input type="text" id="otpCode" class="modal-input otp-input" placeholder="輸入 6 碼驗證碼" maxlength="6">
+                </div>
+                <button id="verifyLoginBtn" class="modal-btn primary-btn">驗證並登入</button>
+                <button id="backToLoginBtn" class="modal-btn text-btn">上一步</button>
+            </div>
+
+            <!-- 畫面三：新手引導 (領取身分證) -->
+            <div id="step3-profile" style="display: none;">
+                <h2 class="modal-title">🎉 登入成功！領取你的身分證</h2>
+                <p class="modal-subtitle">在討論區，我們使用匿名保護您的隱私</p>
+                
+                <div class="profile-group">
+                    <label>你的專屬暱稱：</label>
+                    <div class="nickname-box">
+                        <input type="text" id="profileNickname" class="modal-input" value="毛孩好朋友">
+                        <button id="randomNameBtn" class="modal-btn secondary-btn" title="隨機換一個">🎲</button>
+                    </div>
+                </div>
+
+                <div class="profile-group">
+                    <label>你的飼養狀態：</label>
+                    <div class="status-cards">
+                        <div class="status-card" data-status="false" id="statusNoPet">
+                            🌱 準備養狗/做功課
+                        </div>
+                        <div class="status-card active" data-status="true" id="statusHasPet">
+                            🐶 我是毛孩家長
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 動態寵物新增區 -->
+                <div id="petSelectorArea" class="pet-selector-area">
+                    <div id="petList">
+                        <!-- 第一隻寵物 -->
+                        <div class="pet-row">
+                            <select class="pet-breed modal-input">
+                                <option value="柴犬">柴犬</option>
+                                <option value="黃金獵犬">黃金獵犬</option>
+                                <option value="柯基犬">柯基犬</option>
+                                <option value="台灣土狗">台灣土狗</option>
+                                <option value="米克斯">米克斯</option>
+                                <option value="其他">其他</option>
+                            </select>
+                            <input type="number" class="pet-count modal-input" value="1" min="1" max="10" title="數量">
+                        </div>
+                    </div>
+                    <button id="addPetBtn" class="modal-btn dashed-btn">➕ 新增其他品種</button>
+                </div>
+
+                <button id="finishProfileBtn" class="modal-btn primary-btn" style="margin-top: 20px;">完成設定，開始探索！</button>
+            </div>
+        </div>
+    </div>
+    
 <body>
 
     <header id="main-header">
@@ -36,8 +112,8 @@
             </div>
 
 
-            <div class="login-btn">
-                <span>👤 登入</span>
+            <div class="login-btn" id="loginBtn">
+                <span id="loginBtnText">👤 登入 / 註冊</span>
             </div>
         </div>
 
@@ -222,6 +298,9 @@
         </div>
     </footer>
 
+    <!-- 引入 Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script src="js/search.js"></script>
     <script src="js/carousel.js"></script>
     <script src="js/filter.js"></script>
