@@ -1,0 +1,234 @@
+// ==========================================
+// 1. 初始化 Supabase 用戶端
+// ==========================================
+const supabaseUrl = 'https://lgmldvqahmldeiqnghxx.supabase.co';
+const supabaseKey = 'sb_publishable_mOxugRr-BiPlt2zujAvqeA_W3x7IwN1';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+// ==========================================
+// 2. 抓取 DOM 元素
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    // 按鈕與彈窗
+    const loginBtn = document.getElementById('loginBtn');
+    const loginBtnText = document.getElementById('loginBtnText');
+    const authModal = document.getElementById('authModal');
+    const closeModal = document.getElementById('closeModal');
+    
+    // 步驟區塊
+    const step1 = document.getElementById('step1-login');
+    const step2 = document.getElementById('step2-verify');
+    const step3 = document.getElementById('step3-profile');
+    
+    // 步驟一：登入/註冊
+    const authEmail = document.getElementById('authEmail');
+    const authPassword = document.getElementById('authPassword');
+    const sendCodeBtn = document.getElementById('sendCodeBtn');
+    
+    // 步驟二：驗證碼
+    const otpCode = document.getElementById('otpCode');
+    const verifyLoginBtn = document.getElementById('verifyLoginBtn');
+    
+    // 步驟三：個人檔案
+    const profileNickname = document.getElementById('profileNickname');
+    const randomNameBtn = document.getElementById('randomNameBtn');
+    const statusNoPet = document.getElementById('statusNoPet');
+    const statusHasPet = document.getElementById('statusHasPet');
+    const petSelectorArea = document.getElementById('petSelectorArea');
+    const petList = document.getElementById('petList');
+    const addPetBtn = document.getElementById('addPetBtn');
+    const finishProfileBtn = document.getElementById('finishProfileBtn');
+
+    // 狀態變數
+    let currentUser = null;
+    let isNewUser = false;
+
+    // ==========================================
+    // 3. 監聽登入狀態改變 (Header 連動)
+    // ==========================================
+    supabase.auth.onAuthStateChange(async (event, session) => {
+        if (session && session.user) {
+            currentUser = session.user;
+            // 去資料庫抓取使用者的暱稱
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('nickname, has_pet')
+                .eq('id', currentUser.id)
+                .single();
+            
+            if (data) {
+                const badge = data.has_pet ? '🐾' : '🌱';
+                loginBtnText.textContent = `${badge} ${data.nickname} ▾`;
+                isNewUser = (data.nickname === '毛孩好朋友'); // 判斷是否為剛註冊的預設狀態
+            }
+        } else {
+            currentUser = null;
+            loginBtnText.textContent = '👤 登入 / 註冊';
+        }
+    });
+
+    // ==========================================
+    // 4. 彈窗控制邏輯
+    // ==========================================
+    loginBtn.addEventListener('click', () => {
+        if (currentUser) {
+            // 已登入狀態，這裡未來可以改成展開下拉選單 (個人資料/登出)
+            if(confirm("您已經登入，是否要登出？")) {
+                supabase.auth.signOut();
+                alert("已成功登出！");
+            }
+            return;
+        }
+        authModal.style.display = 'flex';
+        step1.style.display = 'block';
+        step2.style.display = 'none';
+        step3.style.display = 'none';
+    });
+
+    closeModal.addEventListener('click', () => authModal.style.display = 'none');
+    window.addEventListener('click', (e) => {
+        if (e.target === authModal) authModal.style.display = 'none';
+    });
+
+    // ==========================================
+    // 5. 步驟一：送出帳密 (真實連接 Supabase)
+    // ==========================================
+    sendCodeBtn.addEventListener('click', async () => {
+        const email = authEmail.value;
+        const password = authPassword.value;
+        if (!email || password.length < 6) {
+            alert("請輸入有效的 Email 與至少 6 碼密碼！");
+            return;
+        }
+
+        sendCodeBtn.textContent = '連線中...';
+        sendCodeBtn.disabled = true;
+
+        // 嘗試登入
+        let { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        
+        // 如果登入失敗(找不到帳號)，則自動嘗試註冊
+        if (error && error.message.includes("Invalid login")) {
+            const signupRes = await supabase.auth.signUp({ email, password });
+            error = signupRes.error;
+            data = signupRes.data;
+        }
+
+        sendCodeBtn.textContent = '下一步 (獲取驗證碼)';
+        sendCodeBtn.disabled = false;
+
+        if (error) {
+            alert(`發生錯誤：${error.message}`);
+        } else {
+            // 登入/註冊成功，進入模擬驗證碼流程 (保護隱私機制)
+            alert(`[系統展示模式]\n已發送驗證碼至 ${email}\n\n您的驗證碼為：882520\n(請於 60 秒內輸入)`);
+            step1.style.display = 'none';
+            step2.style.display = 'block';
+        }
+    });
+
+    // ==========================================
+    // 6. 步驟二：模擬驗證碼核對
+    // ==========================================
+    verifyLoginBtn.addEventListener('click', () => {
+        if (otpCode.value === '882520') {
+            // 驗證成功，判斷是否為新用戶，決定是否要顯示步驟三
+            if (isNewUser) {
+                step2.style.display = 'none';
+                step3.style.display = 'block';
+            } else {
+                alert("歡迎回來！");
+                authModal.style.display = 'none';
+            }
+        } else {
+            alert("驗證碼錯誤，請輸入 882520");
+        }
+    });
+
+    // ==========================================
+    // 7. 步驟三：新手個人檔案設定 UX
+    // ==========================================
+    // 隨機暱稱產生器
+    const randomNames = ['柴犬小隊長', '奔跑的柯基屁屁', '新手汪爸', '想養狗的小萱', '毛孩守護者', '汪星人好朋友', '熱愛薩摩耶'];
+    randomNameBtn.addEventListener('click', () => {
+        const random = randomNames[Math.floor(Math.random() * randomNames.length)];
+        profileNickname.value = random;
+    });
+
+    // 飼養狀態切換
+    let hasPet = true;
+    statusNoPet.addEventListener('click', () => {
+        statusNoPet.classList.add('active');
+        statusHasPet.classList.remove('active');
+        petSelectorArea.style.display = 'none'; // 隱藏狗狗選擇器
+        hasPet = false;
+    });
+    statusHasPet.addEventListener('click', () => {
+        statusHasPet.classList.add('active');
+        statusNoPet.classList.remove('active');
+        petSelectorArea.style.display = 'block'; // 顯示狗狗選擇器
+        hasPet = true;
+    });
+
+    // 動態新增狗狗品種列
+    addPetBtn.addEventListener('click', () => {
+        const row = document.createElement('div');
+        row.className = 'pet-row';
+        row.innerHTML = `
+            <select class="pet-breed modal-input">
+                <option value="柴犬">柴犬</option>
+                <option value="黃金獵犬">黃金獵犬</option>
+                <option value="柯基犬">柯基犬</option>
+                <option value="台灣土狗">台灣土狗</option>
+                <option value="貴賓犬">貴賓犬</option>
+                <option value="米克斯">米克斯</option>
+                <option value="其他">其他</option>
+            </select>
+            <input type="number" class="pet-count modal-input" value="1" min="1" max="10">
+            <button class="remove-pet-btn" title="移除">🗑️</button>
+        `;
+        petList.appendChild(row);
+
+        // 綁定移除按鈕
+        row.querySelector('.remove-pet-btn').addEventListener('click', () => row.remove());
+    });
+
+    // ==========================================
+    // 8. 最終寫入資料庫
+    // ==========================================
+    finishProfileBtn.addEventListener('click', async () => {
+        finishProfileBtn.textContent = '儲存中...';
+        finishProfileBtn.disabled = true;
+
+        const nickname = profileNickname.value;
+
+        // 更新 profiles 主檔
+        await supabase
+            .from('profiles')
+            .update({ nickname: nickname, has_pet: hasPet })
+            .eq('id', currentUser.id);
+
+        // 如果有養寵物，將清單寫入 user_pets 表 (一對多關聯)
+        if (hasPet) {
+            const petRows = document.querySelectorAll('.pet-row');
+            const petData = [];
+            petRows.forEach(row => {
+                const breed = row.querySelector('.pet-breed').value;
+                const count = row.querySelector('.pet-count').value;
+                petData.push({
+                    user_id: currentUser.id,
+                    breed: breed,
+                    count: parseInt(count)
+                });
+            });
+            // 寫入多筆資料
+            await supabase.from('user_pets').insert(petData);
+        }
+
+        alert("設定完成！您的身分證已生效，馬上前往討論區吧！");
+        authModal.style.display = 'none';
+        
+        // 重新整理網頁以套用最新 Header 狀態
+        window.location.reload(); 
+    });
+});
