@@ -728,13 +728,15 @@ main {
 }
 
 .modal-content {
-    background: white;
-    padding: 30px 40px;
-    border-radius: 20px;
-    width: 90%; max-width: 450px;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    animation: modalFadeIn 0.3s ease;
+   background: white;
+   padding: 30px 40px;
+   border-radius: 20px;
+   width: 90%; max-width: 450px;
+   position: relative;
+   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+   animation: modalFadeIn 0.3s ease;
+   max-height: 85vh; 
+   overflow-y: auto;
 }
 
 @keyframes modalFadeIn {
