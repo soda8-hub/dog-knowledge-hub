@@ -6,7 +6,7 @@ const supabaseKey = 'sb_publishable_mOxugRr-BiPlt2zujAvqeA_W3x7IwN1';
 const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 // ==========================================
-// 2. 抓取 DOM 元素
+// 2. 抓取 DOM 元素與全域狀態宣告
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     // 按鈕與彈窗
@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 狀態變數
     let currentUser = null;
     let isNewUser = false;
+    let hasPet = true;    // 預設為有養寵物
+    let currentOtp = '';    // 用來儲存每次隨機產生的 6 位數
 
     // ==========================================
     // 3. 監聽登入狀態改變 (Header 連動)
@@ -49,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
         if (session && session.user) {
             currentUser = session.user;
-            // 去資料庫抓取使用者的暱稱
             const { data, error } = await supabaseClient
                 .from('profiles')
                 .select('nickname, has_pet')
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data) {
                 const badge = data.has_pet ? '🐾' : '🌱';
                 loginBtnText.textContent = `${badge} ${data.nickname} ▾`;
-                isNewUser = (data.nickname === '毛孩好朋友'); // 判斷是否為剛註冊的預設狀態
+                isNewUser = (data.nickname === '毛孩好朋友'); 
             }
         } else {
             currentUser = null;
@@ -68,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 4. 彈窗控制邏輯
+    // 4. 彈窗開啟與關閉邏輯
     // ==========================================
     loginBtn.addEventListener('click', () => {
         if (currentUser) {
@@ -103,10 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
         sendCodeBtn.textContent = '連線中...';
         sendCodeBtn.disabled = true;
 
-        // 嘗試登入
         let { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
         
-        // 如果登入失敗(找不到帳號)，則自動嘗試註冊
         if (error && error.message.includes("Invalid login")) {
             const signupRes = await supabaseClient.auth.signUp({ email, password });
             error = signupRes.error;
@@ -119,8 +118,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (error) {
             alert(`發生錯誤：${error.message}`);
         } else {
-            // 登入/註冊成功，進入模擬驗證碼流程
-            alert(`[系統展示模式]\n已發送驗證碼至 ${email}\n\n您的驗證碼為：882520\n(請於 60 秒內輸入)`);
+            // 🌟 產生一組 100000 到 999999 的隨機整數
+            currentOtp = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            // 將動態產生的密碼放入提示框中
+            alert(`[系統展示模式]\n已發送驗證碼至 ${email}\n\n您的驗證碼為：${currentOtp}\n(請於 60 秒內輸入)`);
             step1.style.display = 'none';
             step2.style.display = 'block';
         }
@@ -130,16 +132,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // 6. 步驟二：模擬驗證碼核對
     // ==========================================
     verifyLoginBtn.addEventListener('click', () => {
-        if (otpCode.value === '882520') {
+        if (otpCode.value === currentOtp) {
             if (isNewUser) {
                 step2.style.display = 'none';
                 step3.style.display = 'block';
             } else {
                 alert("歡迎回來！");
                 authModal.style.display = 'none';
+                window.location.reload(); // 老手登入後直接重整畫面更新 Header
             }
         } else {
-            alert("驗證碼錯誤，請輸入 882520");
+            alert("驗證碼錯誤，請重新輸入！");
         }
     });
 
@@ -147,29 +150,62 @@ document.addEventListener('DOMContentLoaded', () => {
     // 7. 步驟三：新手個人檔案設定 UX (智慧情境版)
     // ==========================================
     randomNameBtn.addEventListener('click', () => {
-        let baseName = "毛孩"; // 預設核心詞
-
+        let baseName = "毛孩"; 
+        
+        // 判斷是否有養寵物，並抓取第一個選擇的品種作為名字基底
         if (hasPet) {
-            // 如果有養寵物，去抓第一隻選擇的品種
             const firstBreedSelect = document.querySelector('.pet-breed');
             if (firstBreedSelect && firstBreedSelect.value !== "其他") {
-                baseName = firstBreedSelect.value; // 例如變成 "柴犬" 或 "柯基犬"
+                baseName = firstBreedSelect.value;
             }
         } else {
-            // 如果選擇還沒養，給予專屬核心詞
-            baseName = "汪星人"; 
+            baseName = "汪星人";
         }
 
-        // 隨機前綴與後綴詞庫
         const prefixes = ['奔跑的', '可愛的', '調皮的', '霸氣', '新手', '熱愛', '迷茫的'];
         const suffixes = ['小隊長', '拔拔', '麻麻', '奴才', '守護者', '探險家', '好朋友'];
         
-        // 隨機抽取
         const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
         const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
         
-        // 組合字串，例如：「奔跑的柴犬小隊長」或「新手汪星人拔拔」
         profileNickname.value = `${prefix}${baseName}${suffix}`;
+    });
+
+    // 飼養狀態按鈕切換
+    statusNoPet.addEventListener('click', () => {
+        statusNoPet.classList.add('active');
+        statusHasPet.classList.remove('active');
+        petSelectorArea.style.display = 'none';
+        hasPet = false;
+    });
+
+    statusHasPet.addEventListener('click', () => {
+        statusHasPet.classList.add('active');
+        statusNoPet.classList.remove('active');
+        petSelectorArea.style.display = 'block';
+        hasPet = true;
+    });
+
+    // 新增其他品種按鈕
+    addPetBtn.addEventListener('click', () => {
+        const row = document.createElement('div');
+        row.className = 'pet-row';
+        row.innerHTML = `
+            <select class="pet-breed modal-input">
+                <option value="柴犬">柴犬</option>
+                <option value="黃金獵犬">黃金獵犬</option>
+                <option value="柯基犬">柯基犬</option>
+                <option value="台灣土狗">台灣土狗</option>
+                <option value="貴賓犬">貴賓犬</option>
+                <option value="米克斯">米克斯</option>
+                <option value="其他">其他</option>
+            </select>
+            <input type="number" class="pet-count modal-input" value="1" min="1" max="10">
+            <button class="remove-pet-btn" title="移除">🗑️</button>
+        `;
+        petList.appendChild(row);
+        // 綁定動態產生的垃圾桶按鈕
+        row.querySelector('.remove-pet-btn').addEventListener('click', () => row.remove());
     });
 
     // ==========================================
@@ -181,11 +217,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const nickname = profileNickname.value;
 
+        // 寫入 profiles
         await supabaseClient
             .from('profiles')
             .update({ nickname: nickname, has_pet: hasPet })
             .eq('id', currentUser.id);
 
+        // 如果有養，寫入 user_pets
         if (hasPet) {
             const petRows = document.querySelectorAll('.pet-row');
             const petData = [];
