@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addPetBtn = document.getElementById('addPetBtn');
     const finishProfileBtn = document.getElementById('finishProfileBtn');
     const logoutBtn = document.getElementById('logoutBtn');
+    const deleteAccountBtn = document.getElementById('deleteAccountBtn'); // 確保有抓到註銷按鈕
 
     // 狀態變數
     let currentUser = null;
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentOtp = ''; // 儲存動態生成的 6 碼驗證碼
 
     // ==========================================
-    // 3. 建置 15 種狗狗的下拉選單 HTML 模板 (含 optgroup)
+    // 3. 建置下拉選單 HTML 模板與生成列函數
     // ==========================================
     const breedOptionsHTML = `
         <optgroup label="大型犬">
@@ -54,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <option value="台灣土狗">台灣土狗</option>
         </optgroup>
         <optgroup label="中型犬">
-            <option value="柴犬" selected>柴犬</option>
+            <option value="柴犬">柴犬</option>
             <option value="法國鬥牛犬">法國鬥牛犬</option>
             <option value="柯基犬">柯基犬</option>
             <option value="邊境牧羊犬">邊境牧羊犬</option>
@@ -71,21 +72,33 @@ document.addEventListener('DOMContentLoaded', () => {
         </optgroup>
     `;
 
-    // 生成單一寵物設定列的函數
-    function createPetRow() {
+    // 整合後的動態生成寵物列函數 (解決 data 懸空錯誤，支援帶入資料庫現有資料)
+    function createPetRow(defaultBreed = '柴犬', defaultCount = 1) {
         const row = document.createElement('div');
         row.className = 'pet-row';
+        row.style.display = 'flex';
+        row.style.gap = '10px';
+        row.style.marginBottom = '10px';
+        
         row.innerHTML = `
-            <div class="pet-inputs">
-                <select class="pet-breed modal-input">${breedOptionsHTML}</select>
-                <input type="number" class="pet-count modal-input" value="1" min="1" max="10" title="數量">
-            </div>
-            <button class="remove-pet-btn" title="移除">🗑️</button>
-            <input type="text" class="other-breed-input modal-input" style="display:none;" placeholder="請輸入狗狗品種 (如: 臘腸犬)">
+            <select class="pet-breed modal-input" style="flex: 2; margin-bottom: 0;">${breedOptionsHTML}</select>
+            <input type="text" class="other-breed-input modal-input" style="display:none; flex: 1.5; margin-bottom: 0;" placeholder="請輸入品種">
+            <input type="number" class="pet-count modal-input" value="${defaultCount}" min="1" max="10" title="數量" style="flex: 1; margin-bottom: 0;">
+            <button class="remove-pet-btn" title="移除" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #d9534f;">🗑️</button>
         `;
 
         const select = row.querySelector('.pet-breed');
         const otherInput = row.querySelector('.other-breed-input');
+
+        // 智慧判斷：檢查傳入的品種是否存在於預設選項中
+        const optionExists = Array.from(select.options).some(opt => opt.value === defaultBreed);
+        if (optionExists) {
+            select.value = defaultBreed; // 是標準品種，直接選取
+        } else {
+            select.value = "其他"; // 不在清單內，選取「其他」
+            otherInput.style.display = 'block';
+            otherInput.value = defaultBreed; // 填入資料庫自訂的品種
+        }
 
         // 監聽下拉選單，如果選「其他」就顯示自訂輸入框
         select.addEventListener('change', (e) => {
@@ -101,44 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
         row.querySelector('.remove-pet-btn').addEventListener('click', () => row.remove());
         return row;
     }
-
-    // 當從資料庫撈取寵物資料 (data) 後，動態生成寵物列表的迴圈內：
-data.forEach(pet => {
-    const row = document.createElement('div');
-    row.className = 'pet-row';
-    row.innerHTML = `
-        <select class="pet-breed modal-input">
-            <!-- ... 你的 15 個品種選項 ... -->
-            <option value="其他">其他 (自行輸入)</option>
-        </select>
-        <input type="text" class="custom-breed-input modal-input" placeholder="請輸入品種" style="display: none;">
-        <input type="number" class="pet-count modal-input" value="1" min="1" max="10">
-        <button class="remove-pet-btn" title="移除">🗑️</button>
-    `;
-    petList.appendChild(row);
-
-    const selectEl = row.querySelector('.pet-breed');
-    const customInputEl = row.querySelector('.custom-breed-input');
-    const countEl = row.querySelector('.pet-count');
-
-    // 🌟 智慧判斷：檢查該品種是否在預設的 select 選項中
-    const optionExists = Array.from(selectEl.options).some(opt => opt.value === pet.breed);
-    
-    if (optionExists) {
-        selectEl.value = pet.breed; // 是標準品種，直接選取
-    } else {
-        selectEl.value = "其他"; // 不在清單內，選取「其他」
-        customInputEl.style.display = "block"; // 顯示自填框
-        customInputEl.value = pet.breed; // 填入自填的品種 (例如: 臘腸狗)
-    }
-    countEl.value = pet.count;
-    
-    // ... 綁定移除按鈕與切換監聽器 ...
-});
-
-    // 初始化：清空列表並加入第一列
-    petList.innerHTML = '';
-    petList.appendChild(createPetRow());
 
     // ==========================================
     // 4. 監聽登入狀態改變 (Header 連動)
@@ -156,7 +131,6 @@ data.forEach(pet => {
                 const badge = data.has_pet ? '🐾' : '🌱';
                 loginBtnText.textContent = `${badge} ${data.nickname} ▾`;
                 isNewUser = (data.nickname === '毛孩好朋友'); 
-                profileNickname.value = data.nickname; // 將現有暱稱填入修改框
             }
         } else {
             currentUser = null;
@@ -180,15 +154,43 @@ data.forEach(pet => {
     triggerClickOnEnter(otpCode, verifyLoginBtn);
 
     // ==========================================
-    // 6. 彈窗開啟與關閉邏輯 (包含修改檔案)
+    // 6. 彈窗開啟與關閉邏輯 (包含讀取現有資料)
     // ==========================================
-    loginBtn.addEventListener('click', () => {
+    loginBtn.addEventListener('click', async () => {
         authModal.style.display = 'flex';
+        
         if (currentUser) {
-            // 已登入：直接打開步驟三（修改檔案模式）
+            // 已登入：打開步驟三（修改檔案模式）
             step1.style.display = 'none';
             step2.style.display = 'none';
             step3.style.display = 'block';
+
+            // 從資料庫抓取最新資料填入畫面
+            const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', currentUser.id).single();
+            if(profile) {
+                profileNickname.value = profile.nickname;
+                hasPet = profile.has_pet;
+                if(hasPet) {
+                    statusHasPet.classList.add('active');
+                    statusNoPet.classList.remove('active');
+                    petSelectorArea.style.display = 'block';
+                } else {
+                    statusNoPet.classList.add('active');
+                    statusHasPet.classList.remove('active');
+                    petSelectorArea.style.display = 'none';
+                }
+            }
+
+            // 抓取寵物清單並渲染
+            petList.innerHTML = ''; 
+            const { data: pets } = await supabaseClient.from('user_pets').select('*').eq('user_id', currentUser.id);
+            if (pets && pets.length > 0) {
+                // 將資料庫的寵物利用 createPetRow 函數一筆一筆畫出來
+                pets.forEach(pet => petList.appendChild(createPetRow(pet.breed, pet.count)));
+            } else if (hasPet) {
+                petList.appendChild(createPetRow()); // 沒資料但選了有養，給預設空列
+            }
+
         } else {
             // 未登入：打開步驟一
             step1.style.display = 'block';
@@ -235,7 +237,7 @@ data.forEach(pet => {
             alert(`[系統展示模式]\n已發送驗證碼至 ${email}\n\n您的動態驗證碼為：${currentOtp}\n(請於 60 秒內輸入)`);
             step1.style.display = 'none';
             step2.style.display = 'block';
-            setTimeout(() => otpCode.focus(), 100); // 自動聚焦
+            setTimeout(() => otpCode.focus(), 100); 
         }
     });
 
@@ -247,6 +249,8 @@ data.forEach(pet => {
             if (isNewUser) {
                 step2.style.display = 'none';
                 step3.style.display = 'block';
+                petList.innerHTML = ''; 
+                petList.appendChild(createPetRow()); // 新手預設給一行
             } else {
                 alert("歡迎回來！");
                 authModal.style.display = 'none';
@@ -362,22 +366,22 @@ data.forEach(pet => {
         window.location.reload(); 
     });
 
-    logoutBtn.addEventListener('click', async () => {
-        if(confirm("確定要登出帳號嗎？")) {
-            await supabaseClient.auth.signOut();
-            alert("已成功登出！");
-            window.location.reload();
-        }
-    });
-});
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+            if(confirm("確定要登出帳號嗎？")) {
+                await supabaseClient.auth.signOut();
+                alert("已成功登出！");
+                window.location.reload();
+            }
+        });
+    }
 
-// ==========================================
+    // ==========================================
     // 11. 危險操作：註銷帳號 (Delete Account)
     // ==========================================
-    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+    // 將第 11 區塊移進 DOMContentLoaded 內，確保抓得到元素與 supabaseClient
     if (deleteAccountBtn) {
         deleteAccountBtn.addEventListener('click', async () => {
-            // 雙重確認機制，防止誤觸
             const confirm1 = confirm("⚠️ 警告：您確定要註銷帳號嗎？\n這將會刪除您的個人檔案與寵物資料。");
             if (confirm1) {
                 const confirm2 = confirm("資料刪除後將無法復原，請再次確認是否繼續？");
@@ -385,7 +389,6 @@ data.forEach(pet => {
                     deleteAccountBtn.textContent = "刪除中...";
                     deleteAccountBtn.disabled = true;
 
-                    // 呼叫我們剛才在 Supabase 建立的 SQL 函數
                     const { error } = await supabaseClient.rpc('delete_my_account');
                     
                     if (error) {
@@ -393,7 +396,6 @@ data.forEach(pet => {
                         deleteAccountBtn.textContent = "危險操作：註銷並刪除我的帳戶資料";
                         deleteAccountBtn.disabled = false;
                     } else {
-                        // 刪除成功後，清除前端登入狀態並重整
                         await supabaseClient.auth.signOut();
                         alert("您的帳戶與相關資料已徹底刪除。期待您未來再次加入！");
                         window.location.reload();
@@ -402,3 +404,4 @@ data.forEach(pet => {
             }
         });
     }
+});
