@@ -1,1 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>狗狗友善知識網</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="CSS/001首頁.css">
+</head>
+
+<body>
+
+    <header id="main-header">
+
+        <div class="header-left-group">
+            <a href="/">
+                <img src="images/狗狗友善知識網Logo-Photoroom.png" alt="狗狗友善知識網Logo" id="site-logo">
+            </a>
+            <div class="site-name">狗狗友善知識網</div>
+        </div>
+
+        <div class="header-right-group" style="display: flex; align-items: center; gap: 20px;">
+
+            <div class="searchBar">
+                <input type="text" id="searchInput" placeholder="搜尋狗狗知識...">
+                <button id="searchBtn">搜尋</button>
+
+                <div id="searchSuggestions"
+                    style="position: absolute; left: 0; top: 100%; width: 100%; background-color: white; border: 1px solid #ccc; display: none; z-index: 999; max-height: 200px; overflow-y: auto;">
+                </div>
+            </div>
+
+
+            <div class="login-btn">
+                <span>👤 登入</span>
+            </div>
+        </div>
+
+
+        <ul id="itemList">
+            <li>Breeds - 品種</li>
+            <li>Health & Diet - 醫療</li>
+            <li>飼料食物</li>
+            <li>行為</li>
+            <li>Age & Condition - 年紀狀況</li>
+            <li>Supplies - 寵物用品</li>
+            <li>Care & Grooming - 照顧方法</li>
+            <li>Exercise - 運動</li>
+            <li>Large Breeds - 大型犬</li>
+            <li>Medium Breeds - 中型犬</li>
+            <li>Small Breeds - 小型犬</li>
+        </ul>
+    </header>
+
+    <nav class="main-nav">
+        <a href="01品種.html">品種</a>
+
+        <div class="nav-filter">
+            <section id="filter-section" class="filter-section">
+                <h3>🔍 尋找命定狗狗</h3>
+
+                <div class="filter-group">
+                    <span class="filter-title">1. 選擇體型</span>
+                    <div class="pill-container">
+                        <button class="filter-pill active" data-group="size" data-value="all">全部</button>
+                        <button class="filter-pill" data-group="size" data-value="large">大型</button>
+                        <button class="filter-pill" data-group="size" data-value="medium">中型</button>
+                        <button class="filter-pill" data-group="size" data-value="small">小型</button>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <span class="filter-title">2. 毛髮長度</span>
+                    <div class="pill-container">
+                        <button class="filter-pill active" data-group="hair" data-value="all">全部</button>
+                        <button class="filter-pill" data-group="hair" data-value="long">長毛</button>
+                        <button class="filter-pill" data-group="hair" data-value="short">短毛</button>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <span class="filter-title">3. 性格特質</span>
+                    <div class="pill-container">
+                        <button class="filter-pill active" data-group="personality" data-value="all">全部</button>
+                        <button class="filter-pill" data-group="personality" data-value="docile">溫順</button>
+                        <button class="filter-pill" data-group="personality" data-value="active">活潑</button>
+                        <button class="filter-pill" data-group="personality" data-value="howl">愛嚎叫</button>
+                        <button class="filter-pill" data-group="personality" data-value="loyalty">忠誠</button>
+                        <button class="filter-pill" data-group="personality" data-value="adaptability">適應力</button>
+                    </div>
+                </div>
+
+                <ul id="list">
+                    <li data-size="large" data-hair="long" data-personality="docile">黃金獵犬</li>
+                    <li data-size="large" data-hair="short" data-personality="active">拉不拉多</li>
+                    <li data-size="large" data-hair="short" data-personality="howl">哈士奇</li>
+                    <li data-size="large" data-hair="short" data-personality="loyalty">德國牧羊犬</li>
+                    <li data-size="large" data-hair="short" data-personality="adaptability">台灣土狗</li>
+
+                    <li data-size="medium" data-hair="short" data-personality="active">柴犬</li>
+                    <li data-size="medium" data-hair="short" data-personality="docile">法國鬥牛犬</li>
+                    <li data-size="medium" data-hair="short" data-personality="active">柯基犬</li>
+                    <li data-size="medium" data-hair="long" data-personality="active">邊境牧羊犬</li>
+
+                    <li data-size="small" data-hair="short" data-personality="active">吉娃娃</li>
+                    <li data-size="small" data-hair="long" data-personality="active">博美</li>
+                    <li data-size="small" data-hair="long" data-personality="docile">貴賓犬</li>
+                    <li data-size="small" data-hair="long" data-personality="docile">比熊犬</li>
+                </ul>
+            </section>
+        </div>
+
+        <a href="02醫療飲食.html">醫療與飲食</a>
+        <a href="03飼料食物.html">飼料食物</a>
+        <a href="04狗狗行為.html">狗狗行為</a>
+        <a href="05年紀狀況.html">年紀狀況</a>
+        <a href="06寵物用品.html">寵物用品</a>
+        <a href="07照顧方法.html">照顧方法</a>
+        <a href="08運動.html">運動</a>
+    </nav>
+
+    <main>
+        <section id="carousel-banner">
+            <div class="carousel-container">
+                <div class="carousel-track" id="carousel-track">
+                    <img src="images/橫幅輪播1.jpg" alt="橫幅輪播1" class="carousel-slide">
+                    <img src="images/橫幅輪播2.jpg" alt="橫幅輪播2" class="carousel-slide">
+                    <img src="images/橫幅輪播3.jpg" alt="橫幅輪播3" class="carousel-slide">
+                </div>
+                <button id="prev-btn" class="carousel-btn prev">←</button>
+                <button id="next-btn" class="carousel-btn next">→</button>
+                <div class="carousel-dots" id="carousel-dots"></div>
+            </div>
+        </section>
+
+        <section class="icon-grid-container">
+            <div class="grid-header">
+                <h3>熱門探索</h3>
+               <!-- <button class="more-btn">查看更多</button> -->
+            </div>
+            <div class="icon-grid">
+                <a href="01品種.html" class="grid-item">
+                    <div class="img-box">🐕</div>
+                    <p>品種</p>
+                </a>
+                <a href="02醫療飲食.html" class="grid-item">
+                    <div class="img-box">🏥</div>
+                    <p>醫療飲食</p>
+                </a>
+                <a href="03飼料食物.html" class="grid-item">
+                    <div class="img-box">🦴</div>
+                    <p>飼料</p>
+                </a>
+                <a href="04狗狗行為.html" class="grid-item">
+                    <div class="img-box">🎾</div>
+                    <p>行為</p>
+                </a>
+                <a href="05年紀狀況.html" class="grid-item">
+                    <div class="img-box">⏳</div>
+                    <p>年紀狀況</p>
+                </a>
+                <a href="06寵物用品.html" class="grid-item">
+                    <div class="img-box">🪢</div>
+                    <p>寵物用品</p>
+                </a>
+                <a href="07照顧方法.html" class="grid-item">
+                    <div class="img-box">🛁</div>
+                    <p>照顧方法</p>
+                </a>
+                <a href="08運動.html" class="grid-item">
+                    <div class="img-box">🥏</div>
+                    <p>運動</p>
+                </a>
+            </div>
+        </section>
+
+        <section class="news-container" id="news-section">
+            <div class="grid-header">
+                <h3 class="news-title">📢 相關新聞</h3>
+            </div>
+
+            <ul class="news-list" id="newsList">
+            </ul>
+
+            <div class="pagination-container">
+                <div class="pagination" id="pagination">
+                </div>
+            </div>
+        </section>
+
+        <section id="right-other">
+            <div class="announcements">
+                <h3>公告</h3>
+                <p><a href="#news-section" class="sidebar-link">相關新聞</a></p>
+                <!-- <p>網站功能更新</p> -->
+            </div>
+            <div class="discussion-board">
+                <h3>討論區</h3>
+                <p>在這裡發布最新話題～</p>
+            </div>
+        </section>
+    </main>
+
+    <footer id="site-footer">
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>關於我們</h3>
+                <p>
+                    許多渴望養狗的新手，常因資訊龐雜而感到不知所措。我們的網站「狗狗友善知識網」因此誕生了，旨在成為新手飼主的知識引路人。<br>
+                    我們致力於整合狗狗生活起居、品種特性、醫療照護等關鍵資訊，讓您無需耗費大量時間查詢，就能輕鬆掌握養狗知識。<br>
+                    現在，就讓我們一起踏入充滿愛的狗狗世界吧！
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 狗狗友善知識網. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../JavaScript/搜尋欄.js"></script>
+    <script src="../JavaScript/橫幅輪播.js"></script>
+    <script src="../JavaScript/篩選器.js"></script>
+    <script src="../JavaScript/新聞公告分頁.js"></script>
+
+    <!-- 攔截「相關新聞」的點擊，不寫入歷史紀錄並平滑滑動 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 找出側欄中跳轉到新聞區塊的連結
+            const newsLink = document.querySelector('a[href="#news-section"]');
+
+            if (newsLink) {
+                newsLink.addEventListener("click", function(e) {
+                    e.preventDefault(); // 阻止預設的「跳轉寫入歷史紀錄」行為
+                    
+                    const targetId = this.getAttribute("href");
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        // 指揮頁面平滑滾動到目標位置
+                        targetElement.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>
