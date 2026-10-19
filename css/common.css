@@ -792,7 +792,7 @@ button:active {
 }
 
 /* =================================================
-   common.css - 八大分頁共用基礎樣式 + 生動化互動升級
+   common.css - 八大分頁生動化視覺與手機呼吸感終極版
    ================================================= */
 
 * {
@@ -802,46 +802,56 @@ button:active {
 }
 
 html {
-    scroll-behavior: smooth; /* 讓分頁內點擊「大型犬/中型犬/幼犬期」皆為平滑滾動！ */
+    scroll-behavior: smooth;
 }
 
 body {
     font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
-    background-color: #f9fbf9;
-    color: #333;
-    line-height: 1.6;
+    background-color: #f4f9f5;
+    background-image: radial-gradient(#d8ece0 1px, transparent 1px);
+    background-size: 24px 24px; /* 為背景加上極細緻的森林系點陣紋理，告別單調白底 */
+    color: #2c3e35;
+    line-height: 1.75;
     overflow-x: hidden;
 }
 
-/* 1. 頁首區：漸層背景與圓角陰影 */
+/* 1. 頁首區：活潑的漸層光影與微浮動背景 */
 header {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    background: linear-gradient(135deg, #2b7a4b 0%, #27ae60 55%, #52c27d 100%);
     color: white;
     text-align: center;
-    padding: 3rem 1rem;
-    margin: 20px auto;
+    padding: 3rem 1.5rem;
+    margin: 22px auto;
     max-width: 1100px;
-    border-radius: 25px;
-    box-shadow: 0 10px 25px rgba(39, 174, 96, 0.2);
+    border-radius: 26px;
+    box-shadow: 0 12px 28px rgba(39, 174, 96, 0.22);
+    position: relative;
+    overflow: hidden;
     animation: subpageFadeUp 0.5s ease-out both;
 }
 
 header h1 {
-    font-size: 2.4rem;
-    margin-bottom: 0.5rem;
-    letter-spacing: 1px;
+    font-size: 2.3rem;
+    margin-bottom: 0.6rem;
+    letter-spacing: 1.5px;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
-/* 2. 導覽列：膠囊按鈕設計 */
+header p {
+    font-size: 1.05rem;
+    opacity: 0.95;
+}
+
+/* 2. 導覽列：毛玻璃固定膠囊列 */
 nav {
-    background-color: #27ae60;
-    padding: 0.8rem;
+    background-color: rgba(39, 174, 96, 0.95);
+    padding: 0.85rem 1rem;
     position: sticky;
     top: 0;
     z-index: 1000;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 16px rgba(27, 67, 50, 0.12);
+    backdrop-filter: blur(8px);
 }
 
 nav a {
@@ -852,7 +862,7 @@ nav a {
     margin: 4px 6px;
     border-radius: 50px;
     background: rgba(255, 255, 255, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.38);
     font-weight: bold;
     font-size: 0.95rem;
     transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -860,7 +870,7 @@ nav a {
 
 nav a:hover {
     background: white;
-    color: #27ae60;
+    color: #1e7040;
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
@@ -869,117 +879,160 @@ nav a:active {
     transform: scale(0.95);
 }
 
-/* 3. 主容器與大區塊設計 */
+/* 3. 主容器與大分類區塊 */
 .container {
     max-width: 1100px;
-    margin: 2rem auto;
-    padding: 0 20px;
+    margin: 2.2rem auto;
+    padding: 0 24px;
 }
 
 .section-block {
-    background: white;
-    padding: 35px;
-    margin-bottom: 35px;
-    border-radius: 25px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-    scroll-margin-top: 85px; /* 點擊上方膠囊跳轉時預留導覽列高度 */
-    animation: subpageFadeUp 0.6s ease-out both;
+    background: rgba(255, 255, 255, 0.92);
+    padding: 36px;
+    margin-bottom: 38px;
+    border-radius: 26px;
+    box-shadow: 0 10px 28px rgba(31, 64, 46, 0.06);
+    border: 1px solid #e2efe7;
+    scroll-margin-top: 85px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.section-block:nth-child(2) { animation-delay: 0.1s; }
-.section-block:nth-child(3) { animation-delay: 0.2s; }
-.section-block:nth-child(4) { animation-delay: 0.3s; }
-
-.section-block:hover {
-    box-shadow: 0 12px 30px rgba(39, 174, 96, 0.1);
-}
-
 h2 {
-    color: #27ae60;
-    border-bottom: 2px solid #eafaf1;
+    color: #1e6b3e;
+    border-bottom: 3px solid #dcf2e4;
     padding-bottom: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
+    font-size: 1.55rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* 4. 網格與八大分頁真實卡片（.card-item / .sub-card / .danger-card）：懸停立體浮起特效 */
+/* 4. 知識卡片：加上頂部森林綠漸層飾條與立體互動光影，徹底擺脫枯燥感 */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    margin-top: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 26px;
+    margin-top: 22px;
 }
 
 .card-item,
 .sub-card,
-.danger-card,
-.warning-box {
-    background: #fff;
-    border: 1px solid #e8f0eb;
-    border-radius: 18px;
-    padding: 22px;
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease, border-color 0.3s ease !important;
+.danger-card {
+    background: #ffffff;
+    border: 1px solid #dcebe2;
+    border-top: 5px solid #2ecc71; /* 頂部活潑色帶 */
+    border-radius: 20px;
+    padding: 26px 24px;
+    box-shadow: 0 6px 18px rgba(39, 174, 96, 0.06);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.3s ease !important;
     position: relative;
 }
 
-/* 當滑鼠滑過分頁中的任何一張知識卡片時，卡片會輕盈浮起並亮起森林綠邊框 */
+/* 危險誤食卡片專屬紅橘色頂部色帶 */
+.danger-card {
+    border-top-color: #e74c3c !important;
+}
+
+/* 滑鼠移過或手機觸控時的活潑上浮效果 */
 .card-item:hover,
 .sub-card:hover,
 .danger-card:hover {
-    transform: translateY(-7px) !important;
-    box-shadow: 0 14px 28px rgba(39, 174, 96, 0.16) !important;
-    border-color: #a3e4bd !important;
+    transform: translateY(-8px) !important;
+    box-shadow: 0 16px 32px rgba(39, 174, 96, 0.16) !important;
+    border-color: #8ce0b0 !important;
 }
 
 .card-item h3,
 .sub-card h4 {
-    color: #27ae60;
-    margin-bottom: 12px;
-    font-size: 1.3rem;
-    transition: transform 0.2s ease;
+    color: #1e6b3e;
+    margin-bottom: 14px;
+    font-size: 1.35rem;
+    transition: transform 0.25s ease;
 }
 
 .card-item:hover h3 {
-    transform: translateX(4px);
+    transform: translateX(5px);
 }
 
-/* 5. 品種與特質小標籤（.tag）：懸停 Q 彈放大 */
+/* 卡片內的注意方框：改為柔和圓角暖黃色塊，拿掉生硬邊框 */
+.warning-box {
+    background-color: #fffbf0 !important;
+    border: none !important;
+    border-left: 4px solid #f39c12 !important;
+    border-radius: 12px !important;
+    padding: 14px 16px !important;
+    margin-top: 14px !important;
+    line-height: 1.7 !important;
+}
+
+/* 5. 特質膠囊小標籤：活潑配色與彈跳感 */
 .tag {
     display: inline-block;
+    padding: 5px 13px !important;
+    margin: 0 6px 8px 0 !important;
+    border-radius: 20px !important;
+    font-size: 0.88rem !important;
+    font-weight: bold !important;
     transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-    cursor: default;
 }
 
 .tag:hover {
-    transform: translateY(-2px) scale(1.08) !important;
-    box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2) !important;
+    transform: translateY(-3px) scale(1.08) !important;
+    box-shadow: 0 4px 10px rgba(39, 174, 96, 0.22) !important;
 }
 
-/* 🌟 6. 優雅的「森林綠聚光燈」特效（取代破壞美感的瀏覽器紫色螢光筆！） */
-@keyframes elegantCardPulse {
+/* 🌟 6. 滑動網頁時的動態浮現效果 (Scroll Reveal) */
+.scroll-reveal-init {
+    opacity: 0;
+    transform: translateY(28px) scale(0.98);
+    transition: opacity 0.55s ease-out, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.scroll-reveal-init.revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* 🌟 7. 超醒目「搜尋/小知識跳轉定位聚光燈」 (金綠雙色動態外框 + 右上角提示徽章) */
+@keyframes targetCardHighlight {
     0% {
-        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7), 0 12px 28px rgba(39, 174, 96, 0.25);
-        border-color: #27ae60;
-        transform: scale(1.01);
-        background-color: #f4fcf7;
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.85), 0 14px 34px rgba(39, 174, 96, 0.35);
+        transform: scale(1.02);
+        background-color: #f0fdf4;
     }
     50% {
-        box-shadow: 0 0 0 10px rgba(46, 204, 113, 0), 0 16px 32px rgba(39, 174, 96, 0.3);
-        border-color: #2ecc71;
-        transform: scale(1.02);
-        background-color: #edfaf2;
+        box-shadow: 0 0 0 14px rgba(46, 204, 113, 0), 0 18px 40px rgba(243, 156, 18, 0.28);
+        transform: scale(1.03);
+        background-color: #fefce8;
     }
     100% {
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-        border-color: #e8f0eb;
+        box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.35), 0 12px 28px rgba(39, 174, 96, 0.2);
         transform: scale(1);
         background-color: #ffffff;
     }
 }
 
 .spotlight-focus-card {
-    animation: elegantCardPulse 2.6s ease-in-out forwards !important;
-    border-width: 2px !important;
+    animation: targetCardHighlight 1.4s ease-in-out 3 forwards !important;
+    border: 3px solid #27ae60 !important;
+    border-top: 6px solid #f39c12 !important;
+    z-index: 10 !important;
+}
+
+.spotlight-focus-card::after {
+    content: "🐾 您查找的知識點";
+    position: absolute;
+    top: -14px;
+    right: 16px;
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(230, 126, 34, 0.35);
+    letter-spacing: 0.5px;
 }
 
 @keyframes subpageFadeUp {
@@ -987,42 +1040,95 @@ h2 {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 7. 頁尾設定 */
+/* 8. 頁尾設定 */
 footer {
     text-align: center;
-    padding: 3rem 1rem;
+    padding: 3rem 1.5rem;
     background: #27ae60;
     color: white;
     margin-top: 4rem;
 }
 
-/* 8. 手機版 RWD 呼吸空間優化 */
+/* =========================================================
+   📱 八大分頁手機版「深呼吸空間」大改造 (解決三層框堆疊擁擠感)
+   ========================================================= */
 @media screen and (max-width: 768px) {
+    body {
+        line-height: 1.85 !important; /* 拉開手機版文字行距，閱讀更輕鬆 */
+    }
+
     header {
-        margin: 12px 14px !important;
-        padding: 2rem 1rem !important;
-        border-radius: 18px !important;
+        margin: 14px 16px !important;
+        padding: 2.2rem 1.2rem !important;
+        border-radius: 20px !important;
     }
+
     header h1 {
-        font-size: 1.75rem !important;
+        font-size: 1.65rem !important;
+        line-height: 1.35 !important;
     }
+
     nav {
-        padding: 10px 12px !important;
+        padding: 10px 14px !important;
         overflow-x: auto !important;
         white-space: nowrap !important;
+        -webkit-overflow-scrolling: touch;
     }
+
+    /* 關鍵改造：拉開手機版左右留白，並解除 .section-block 的多餘外框，消除三層框套娃的擁擠感！ */
     .container {
-        padding: 0 16px !important;
-        margin: 1.2rem auto !important;
+        padding: 0 18px !important;
+        margin: 1.5rem auto !important;
     }
+
     .section-block {
-        padding: 22px 18px !important;
-        margin-bottom: 22px !important;
-        border-radius: 18px !important;
+        background: transparent !important; /* 手機版拿掉外層大白盒，讓裡面的卡片直接呼吸 */
+        box-shadow: none !important;
+        border: none !important;
+        padding: 8px 0 !important;
+        margin-bottom: 32px !important;
     }
+
+    .section-block h2 {
+        background: #ffffff;
+        padding: 14px 18px !important;
+        border-radius: 16px !important;
+        border-left: 6px solid #27ae60 !important;
+        border-bottom: none !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+        font-size: 1.3rem !important;
+        margin-bottom: 16px !important;
+    }
+
+    .grid {
+        grid-template-columns: 1fr !important;
+        gap: 22px !important; /* 大幅拉開每張狗狗卡片之間的垂直呼吸空間 */
+        margin-top: 14px !important;
+    }
+
+    .card-item,
+    .sub-card,
+    .danger-card {
+        padding: 24px 22px !important; /* 卡片內部留白加大，文字不再貼齊邊框 */
+        border-radius: 20px !important;
+        box-shadow: 0 8px 22px rgba(31, 64, 46, 0.08) !important;
+    }
+
+    .card-item h3,
+    .sub-card h4 {
+        font-size: 1.35rem !important;
+        margin-bottom: 12px !important;
+    }
+
+    .warning-box {
+        padding: 16px 18px !important;
+        margin-top: 16px !important;
+        font-size: 0.96rem !important;
+    }
+
     footer {
         width: 100% !important;
-        margin: 30px 0 0 0 !important;
+        margin: 40px 0 0 0 !important;
         border-radius: 0 !important;
     }
 }
