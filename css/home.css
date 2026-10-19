@@ -821,62 +821,354 @@ button:active, .modal-btn:active, .filter-pill:active { transform: scale(0.95); 
     margin-left: 10px;
 }
 
-/* ==========================================
-   14. 手機版 RWD 完美排版補丁 (螢幕寬度小於 768px 時觸發)
-   ========================================== */
-@media (max-width: 768px) {
-    /* 1. Header 佈局重構：搜尋列換行並滿版 */
+/* =========================================================
+   🌟 網站生動化：自動呼吸動畫、互動小卡與點擊彩蛋
+   ========================================================= */
+
+/* 1. 修正電腦與手機版 Footer 滿版貼底，消除底部白邊 */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+}
+
+#site-footer {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 40px 0 0 0 !important;
+    border-radius: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* 2. 區塊進場柔和浮現動畫 */
+@keyframes fadeInUpCard {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.reveal-card {
+    animation: fadeInUpCard 0.6s ease-out both;
+}
+.icon-grid-container.reveal-card { animation-delay: 0.1s; }
+.news-container.reveal-card { animation-delay: 0.2s; }
+#right-other.reveal-card { animation-delay: 0.3s; }
+
+/* 3. 熱門探索圖示：常駐輕盈漂浮動畫 + 滑鼠懸停發光彈跳 */
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+}
+
+.grid-item {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    border-radius: 14px !important;
+    padding: 10px 5px !important;
+}
+.grid-item .img-box {
+    animation: floatIcon 3s ease-in-out infinite;
+    transition: all 0.3s ease !important;
+}
+/* 錯開每個圖示的漂浮時間，讓畫面像波浪一樣生動 */
+.grid-item:nth-child(2n) .img-box { animation-delay: 0.4s; }
+.grid-item:nth-child(3n) .img-box { animation-delay: 0.8s; }
+.grid-item:nth-child(4n) .img-box { animation-delay: 1.2s; }
+
+.grid-item:hover {
+    transform: translateY(-8px) !important;
+    background-color: #e8f5ee !important;
+    box-shadow: 0 10px 20px rgba(56, 124, 89, 0.18) !important;
+}
+.grid-item:hover .img-box {
+    animation-play-state: paused;
+    transform: scale(1.2) rotate(8deg) !important;
+    background-color: #d0ebdB !important;
+}
+
+/* 4. 每日汪星人冷知識互動小卡 */
+.daily-fact-card {
+    background: linear-gradient(145deg, #ffffff, #f2faf5);
+    border: 2px solid #cfe8d9;
+    border-radius: 16px;
+    padding: 18px;
+    margin: 18px 0;
+    box-shadow: 0 6px 16px rgba(43, 74, 59, 0.08);
+    text-align: left;
+    transition: transform 0.2s ease;
+}
+.fact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.fact-header h3 {
+    margin: 0 !important;
+    font-size: 16px !important;
+    color: #2b4a3b !important;
+}
+.fact-badge {
+    background: #387c59;
+    color: #ffffff;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+.fact-content {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444444;
+    margin-bottom: 14px;
+    min-height: 65px;
+}
+.fact-btn {
+    width: 100%;
+    padding: 9px 12px;
+    background-color: #387c59;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.fact-btn:hover {
+    background-color: #2b4a3b;
+    transform: translateY(-2px);
+}
+@keyframes cardPop {
+    0% { transform: scale(0.96); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+.daily-fact-card.pop-anim {
+    animation: cardPop 0.3s ease;
+}
+
+/* 5. 討論區熱門話題氣泡 */
+.topic-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.topic-tag {
+    display: block;
+    background-color: #f0f7f3;
+    color: #2b4a3b;
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid #d8ede1;
+    text-align: left;
+}
+.topic-tag:hover {
+    background-color: #387c59;
+    color: #ffffff;
+    transform: translateX(4px);
+}
+
+/* 6. 點擊畫面冒出狗腳印特效 */
+@keyframes pawFloat {
+    0% { opacity: 0.9; transform: translate(-50%, -50%) scale(0.8) rotate(-10deg); }
+    100% { opacity: 0; transform: translate(-50%, -95px) scale(1.35) rotate(15deg); }
+}
+.click-paw {
+    position: fixed;
+    pointer-events: none;
+    font-size: 22px;
+    z-index: 99999;
+    animation: pawFloat 0.8s ease-out forwards;
+}
+
+/* 7. 電腦版預設隱藏漢堡按鈕與遮罩 */
+.hamburger-menu { display: none; }
+.nav-overlay { display: none; }
+
+/* =========================================================
+   📱 手機與平板版 RWD 終極修復 (螢幕寬度 <= 768px)
+   ========================================================= */
+@media screen and (max-width: 768px) {
+
+    /* 1. 頂部 Header 重構：第一排 Logo + 登入 + 漢堡選單，第二排滿版搜尋列 */
+    #main-header {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 12px 15px !important;
+        width: 100% !important;
+        height: auto !important;
+        box-sizing: border-box !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 9990 !important;
+    }
+
+    .header-left-group {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        order: 1 !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+    }
+
+    #site-logo {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    .site-name {
+        font-size: 18px !important;
+        white-space: nowrap !important;
+    }
+
+    /* 關鍵：解除 header-right-group 的外層束縛，讓搜尋框能獨佔整排寬度 */
     .header-right-group {
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: 10px !important;
+        display: contents !important;
     }
+
+    .login-btn {
+        order: 2 !important;
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+        margin-left: auto !important;
+        white-space: nowrap !important;
+    }
+
+    .hamburger-menu {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        order: 3 !important;
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 24px !important;
+        color: #ffffff !important;
+        background: rgba(255, 255, 255, 0.2) !important;
+        border: 1px solid rgba(255, 255, 255, 0.4) !important;
+        border-radius: 8px !important;
+        margin-left: 8px !important;
+        cursor: pointer !important;
+    }
+
     .searchBar {
-        order: 3; /* 強制排到最後一列 */
-        width: 100%;
-        margin-top: 5px;
-        display: flex;
-    }
-    #searchInput { width: 100%; }
-    
-    .hamburger-menu { display: block; order: 2; }
-    .login-btn { order: 1; }
-
-    /* 2. 導覽列變成側滑漢堡選單 */
-    .main-nav {
-        position: fixed;
-        top: 0;
-        right: -100%; /* 預設隱藏在螢幕右側外 */
-        width: 260px;
-        height: 100vh;
-        background-color: #ffffff;
-        box-shadow: -5px 0 20px rgba(0,0,0,0.15);
-        flex-direction: column;
-        align-items: flex-start;
-        padding-top: 80px;
-        transition: right 0.3s ease-in-out;
-        z-index: 9990;
-        overflow-y: auto;
-    }
-    .main-nav.active { right: 0; /* 滑入螢幕 */ }
-    .main-nav a, .main-nav .nav-filter {
-        width: 100%;
-        padding: 15px 20px;
-        border-bottom: 1px solid #eeeeee;
-        box-sizing: border-box;
+        order: 4 !important;
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        margin: 10px 0 2px 0 !important;
+        display: flex !important;
+        gap: 8px !important;
     }
 
-    /* 3. 解決無法呼吸的問題與滿版 Footer */
-    main, .carousel-container, .filter-section {
-        padding-left: 15px !important;
-        padding-right: 15px !important;
-        box-sizing: border-box;
-        overflow-x: hidden;
+    #searchInput {
+        flex: 1 !important;
+        width: auto !important;
+        min-width: 0 !important;
     }
-    #site-footer {
+
+    /* 2. 左側欄徹底收納為右側滑出抽屜 (破除原本 left 屬性衝突) */
+    nav.main-nav, #mainNav {
+        position: fixed !important;
+        top: 0 !important;
+        left: auto !important; /* 關鍵：覆蓋原本的 left 設定 */
+        right: -320px !important; /* 徹底藏在螢幕右外侧 */
+        width: 280px !important;
+        max-width: 82vw !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 25px 18px 40px 18px !important;
+        background-color: #ffffff !important;
+        box-shadow: -8px 0 25px rgba(0, 0, 0, 0.25) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        z-index: 9999 !important;
+        overflow-y: auto !important;
+        box-sizing: border-box !important;
+        border-radius: 20px 0 0 20px !important;
+    }
+
+    nav.main-nav.active, #mainNav.active {
+        right: 0 !important;
+        left: auto !important;
+    }
+
+    /* 手機版選單開啟時的半透明黑底遮罩 */
+    .nav-overlay {
+        display: block !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
         width: 100vw !important;
-        margin-left: calc(-50vw + 50%); /* 強制滿版神技 */
-        padding: 30px 20px;
-        box-sizing: border-box;
+        height: 100vh !important;
+        background: rgba(0, 0, 0, 0.45) !important;
+        backdrop-filter: blur(2px) !important;
+        z-index: 9995 !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transition: opacity 0.3s ease !important;
+    }
+    .nav-overlay.active {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+
+    /* 3. 主內容區與右側欄強制轉為「直向單欄」，給予舒適呼吸空間 */
+    body {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    main {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 16px !important;
+        box-sizing: border-box !important;
+        gap: 18px !important;
+    }
+
+    main > section,
+    #carousel-banner,
+    .carousel-container,
+    .icon-grid-container,
+    .news-container,
+    #right-other,
+    .announcements,
+    .daily-fact-card,
+    .discussion-board {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        float: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        grid-column: auto !important;
+    }
+
+    #right-other {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+    }
+
+    .icon-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 10px !important;
     }
 }
