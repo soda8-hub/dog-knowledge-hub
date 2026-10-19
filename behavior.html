@@ -314,23 +314,73 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-<!-- 優雅卡片聚光燈定位腳本（支援 ?focus=關鍵字 平滑捲動與森林綠呼吸外框） -->
+<!-- 🌟 八大分頁共用：滑動動態浮現 (Scroll Reveal) ＋ 搜尋/小知識精準定位聚光燈 -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            // 1. 讓分頁所有卡片在往下滑動時「現場動態浮現」，滑動網頁不再枯燥！
+            const allCards = document.querySelectorAll('.card-item, .sub-card, .danger-card');
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.12, rootMargin: "0px 0px -30px 0px" });
+
+                allCards.forEach((card, idx) => {
+                    card.classList.add('scroll-reveal-init');
+                    card.style.transitionDelay = `${(idx % 3) * 0.08}s`;
+                    observer.observe(card);
+                });
+            }
+
+            // 2. 處理 ?focus=關鍵字 精準跳轉定位與醒目提示
             const params = new URLSearchParams(window.location.search);
             const focusText = params.get("focus");
             if (!focusText) return;
 
-            // 在分頁中尋找包含該標題文字的卡片 (.card-item, .sub-card, .danger-card, .section-block)
-            const candidates = document.querySelectorAll('.card-item, .sub-card, .danger-card, .warning-box, .section-block');
-            for (const card of candidates) {
-                if (card.textContent.includes(focusText)) {
-                    setTimeout(() => {
-                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        card.classList.add('spotlight-focus-card');
-                    }, 200);
+            // 優先精準鎖定內層知識小卡片 (.card-item, .sub-card, .danger-card, .warning-box)，避免誤抓外層大框
+            const cardTargets = document.querySelectorAll('.card-item, .sub-card, .danger-card, .warning-box');
+            let matchedTarget = null;
+
+            // 先比對卡片標題 (h3, h4, strong)，最精準
+            for (const card of cardTargets) {
+                const heading = card.querySelector('h3, h4, strong');
+                if (heading && heading.textContent.includes(focusText)) {
+                    matchedTarget = card;
                     break;
                 }
+            }
+
+            // 若標題沒找到，再比對卡片內文或大區塊標題 (h2)
+            if (!matchedTarget) {
+                for (const card of cardTargets) {
+                    if (card.textContent.includes(focusText)) {
+                        matchedTarget = card;
+                        break;
+                    }
+                }
+            }
+
+            if (!matchedTarget) {
+                const sectionTargets = document.querySelectorAll('.section-block');
+                for (const sec of sectionTargets) {
+                    if (sec.textContent.includes(focusText)) {
+                        matchedTarget = sec;
+                        break;
+                    }
+                }
+            }
+
+            // 找到目標卡片後，平滑捲動至螢幕正中央，並亮起「🐾 您查找的知識點」醒目聚光燈！
+            if (matchedTarget) {
+                matchedTarget.classList.add('revealed');
+                setTimeout(() => {
+                    matchedTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    matchedTarget.classList.add('spotlight-focus-card');
+                }, 300);
             }
         });
     </script>
