@@ -788,31 +788,44 @@ border-radius: 12px; cursor: pointer; font-size: 14px; color: #666666; transitio
 .remove-pet-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #d9534f; }
 
 /* =========================================================
-   13. 頂部大標題欄固定 (Sticky Header) 與下滑自動縮小特效
+   13. 頂部大標題欄：強制固定在畫面最上方 (Fixed) + 下滑自動縮小
    ========================================================= */
 #main-header {
-    position: sticky !important;
+    position: fixed !important;
     top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
     z-index: 9990 !important;
-    transition: padding 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease !important;
+    box-sizing: border-box !important;
+    transition: padding 0.3s ease, height 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* 為網頁主體預留頂部固定欄的高度，避免內容被遮住 */
+body {
+    padding-top: 86px !important;
+    margin: 0 !important;
+    overflow-x: hidden !important;
 }
 
 #site-logo, .site-name, .login-btn, .searchBar input, .searchBar button {
-    transition: all 0.3s ease !important;
+    transition: all 0.28s ease !important;
 }
 
-/* 當使用者往下滑動超過 50px 時，自動套用 .scrolled 縮小高度與字體 */
+/* 往下滑動超過 40px 時，自動縮小頂部欄高度與字體 */
 #main-header.scrolled {
     padding-top: 6px !important;
     padding-bottom: 6px !important;
+    height: auto !important;
+    min-height: 54px !important;
     background-color: rgba(43, 74, 59, 0.96) !important;
-    backdrop-filter: blur(6px) !important;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22) !important;
+    backdrop-filter: blur(8px) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22) !important;
 }
 
 #main-header.scrolled #site-logo {
-    width: 36px !important;
-    height: 36px !important;
+    width: 34px !important;
+    height: 34px !important;
 }
 
 #main-header.scrolled .site-name {
@@ -825,7 +838,30 @@ border-radius: 12px; cursor: pointer; font-size: 14px; color: #666666; transitio
 }
 
 /* =========================================================
-   14. 輕巧型「快速導覽膠囊列」 (不搶輪播圖視覺焦點)
+   14. 修復搜尋建議下拉框：鎖定在搜尋欄正下方，徹底消除左上角閃爍
+   ========================================================= */
+.searchBar {
+    position: relative !important;
+}
+
+#searchSuggestions {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    left: 0 !important;
+    width: 340px !important;
+    max-width: 90vw !important;
+    max-height: 320px !important;
+    overflow-y: auto !important;
+    background-color: #ffffff !important;
+    border: 2px solid #cfe8d9 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 12px 28px rgba(27, 54, 40, 0.22) !important;
+    z-index: 99999 !important;
+    display: none;
+}
+
+/* =========================================================
+   15. 輕巧型「快速導覽膠囊列」
    ========================================================= */
 .quick-jump-bar {
     display: flex;
@@ -867,14 +903,107 @@ border-radius: 12px; cursor: pointer; font-size: 14px; color: #666666; transitio
 }
 
 /* =========================================================
-   15. 網站生動化：自動呼吸動畫、互動小卡與點擊彩蛋
+   16. 每日汪星人冷知識互動小卡：標題單行 + 按鈕移至下一行靠右
    ========================================================= */
-html, body {
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow-x: hidden !important;
+.daily-fact-card {
+    background: linear-gradient(145deg, #ffffff, #f2faf5);
+    border: 2px solid #cfe8d9;
+    border-radius: 16px;
+    padding: 18px;
+    margin: 18px 0;
+    box-shadow: 0 6px 16px rgba(43, 74, 59, 0.08);
+    text-align: left;
+    transition: transform 0.2s ease;
 }
 
+.fact-header {
+    display: flex !important;
+    flex-direction: column !important; /* 讓標題與按鈕分成上下兩行 */
+    align-items: flex-start !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+}
+
+.fact-header h3 {
+    margin: 0 !important;
+    font-size: 16px !important;
+    color: #2b4a3b !important;
+    white-space: nowrap !important; /* 確保「💡 每日汪星人小知識」永遠維持單行 */
+    width: 100% !important;
+}
+
+.fact-badge {
+    align-self: flex-end !important; /* 強制將連結膠囊移至下一行並靠右對齊 */
+    background: #e8f5ee;
+    color: #2b4a3b !important;
+    border: 1px solid #b8dec8;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.fact-badge:hover {
+    background: #387c59;
+    color: #ffffff !important;
+    transform: translateX(2px);
+}
+
+.fact-content {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #444444;
+    margin-bottom: 14px;
+    min-height: 65px;
+}
+
+.fact-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.fact-counter {
+    font-size: 12px;
+    color: #777777;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.fact-btn {
+    flex: 1;
+    padding: 9px 12px;
+    background-color: #387c59;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.fact-btn:hover {
+    background-color: #2b4a3b;
+    transform: translateY(-2px);
+}
+
+@keyframes cardPop {
+    0% { transform: scale(0.96); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+.daily-fact-card.pop-anim {
+    animation: cardPop 0.3s ease;
+}
+
+/* =========================================================
+   17. 熱門探索呼吸動畫、討論區氣泡與狗腳印彩蛋
+   ========================================================= */
 #site-footer {
     width: 100% !important;
     max-width: 100% !important;
@@ -923,88 +1052,6 @@ html, body {
     background-color: #d0ebdb !important;
 }
 
-/* 升級版：每日汪星人冷知識互動小卡 */
-.daily-fact-card {
-    background: linear-gradient(145deg, #ffffff, #f2faf5);
-    border: 2px solid #cfe8d9;
-    border-radius: 16px;
-    padding: 18px;
-    margin: 18px 0;
-    box-shadow: 0 6px 16px rgba(43, 74, 59, 0.08);
-    text-align: left;
-    transition: transform 0.2s ease;
-}
-.fact-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    gap: 8px;
-}
-.fact-header h3 {
-    margin: 0 !important;
-    font-size: 16px !important;
-    color: #2b4a3b !important;
-}
-.fact-badge {
-    background: #387c59;
-    color: #ffffff !important;
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: bold;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: all 0.2s ease;
-}
-.fact-badge:hover {
-    background: #2b4a3b;
-    transform: scale(1.05);
-}
-.fact-content {
-    font-size: 14px;
-    line-height: 1.65;
-    color: #444444;
-    margin-bottom: 14px;
-    min-height: 65px;
-}
-.fact-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-}
-.fact-counter {
-    font-size: 12px;
-    color: #777777;
-    font-weight: bold;
-    white-space: nowrap;
-}
-.fact-btn {
-    flex: 1;
-    padding: 9px 12px;
-    background-color: #387c59;
-    color: #ffffff;
-    border: none;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-.fact-btn:hover {
-    background-color: #2b4a3b;
-    transform: translateY(-2px);
-}
-@keyframes cardPop {
-    0% { transform: scale(0.96); }
-    50% { transform: scale(1.02); }
-    100% { transform: scale(1); }
-}
-.daily-fact-card.pop-anim {
-    animation: cardPop 0.3s ease;
-}
-
 .topic-tags {
     display: flex;
     flex-direction: column;
@@ -1044,9 +1091,16 @@ html, body {
 .nav-overlay { display: none; }
 
 /* =========================================================
-   16. 手機與平板版 RWD 終極修復 (螢幕寬度 <= 768px)
+   18. 手機與平板版 RWD 終極修復 (螢幕寬度 <= 768px)
    ========================================================= */
 @media screen and (max-width: 768px) {
+
+    body {
+        padding-top: 112px !important; /* 預留手機版雙排 Header 的高度 */
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+    }
 
     #main-header {
         display: flex !important;
@@ -1059,7 +1113,6 @@ html, body {
         box-sizing: border-box !important;
     }
 
-    /* 手機版往下滑時，標題欄進一步緊湊化，讓出最大閱讀空間 */
     #main-header.scrolled {
         padding: 6px 12px !important;
     }
@@ -1071,13 +1124,7 @@ html, body {
         font-size: 16px !important;
     }
     #main-header.scrolled .searchBar {
-        margin-top: 5px !important;
-    }
-    #main-header.scrolled #searchInput,
-    #main-header.scrolled #searchBtn {
-        padding-top: 5px !important;
-        padding-bottom: 5px !important;
-        font-size: 13px !important;
+        margin-top: 4px !important;
     }
 
     .header-left-group {
@@ -1134,6 +1181,12 @@ html, body {
         margin: 8px 0 2px 0 !important;
         display: flex !important;
         gap: 8px !important;
+        position: relative !important;
+    }
+
+    #searchSuggestions {
+        width: 100% !important;
+        left: 0 !important;
     }
 
     #searchInput {
@@ -1142,7 +1195,6 @@ html, body {
         min-width: 0 !important;
     }
 
-    /* 手機版隱藏底部重複的「公告」空盒，因為上方已有快速導覽膠囊列 */
     .desktop-only-announcement {
         display: none !important;
     }
@@ -1192,12 +1244,6 @@ html, body {
     .nav-overlay.active {
         opacity: 1 !important;
         pointer-events: auto !important;
-    }
-
-    body {
-        display: block !important;
-        width: 100% !important;
-        min-width: 0 !important;
     }
 
     main {
