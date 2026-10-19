@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>狗狗友善知識網</title>
 
     <!-- 網頁頁籤小圖示 (Favicon) -->
@@ -20,10 +20,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/home.css">
 </head>
 
 <body>
+
+    <!-- 手機版側滑選單半透明黑底遮罩 -->
+    <div id="navOverlay" class="nav-overlay"></div>
 
     <header id="main-header">
         <div class="header-left-group">
@@ -32,22 +36,25 @@
             </a>
             <div class="site-name">狗狗友善知識網</div>
         </div>
+
         <div class="header-right-group" style="display: flex; align-items: center; gap: 20px;">
             <div class="searchBar">
                 <input type="text" id="searchInput" placeholder="搜尋狗狗知識...">
                 <button id="searchBtn">搜尋</button>
+
                 <div id="searchSuggestions"
                     style="position: absolute; left: 0; top: 100%; width: 100%; background-color: white; border: 1px solid #ccc; display: none; z-index: 999; max-height: 200px; overflow-y: auto;">
                 </div>
             </div>
+
             <div class="login-btn" id="loginBtn">
                 <span id="loginBtnText">👤 登入 / 註冊</span>
             </div>
-            
-            <!-- 漢堡選單按鈕 -->
-            <div class="hamburger-menu" id="hamburgerMenu">☰</div>
-            
+
+            <!-- 手機版漢堡選單按鈕 -->
+            <button class="hamburger-menu" id="hamburgerMenu" aria-label="開啟選單">☰</button>
         </div>
+
         <ul id="itemList">
             <li>Breeds - 品種</li>
             <li>Health & Diet - 醫療</li>
@@ -63,11 +70,13 @@
         </ul>
     </header>
 
-    <nav class="main-nav">
+    <nav class="main-nav" id="mainNav">
         <a href="breeds.html">品種</a>
+
         <div class="nav-filter">
             <section id="filter-section" class="filter-section">
                 <h3>🔍 尋找命定狗狗</h3>
+
                 <div class="filter-group">
                     <span class="filter-title">1. 選擇體型</span>
                     <div class="pill-container">
@@ -77,6 +86,7 @@
                         <button class="filter-pill" data-group="size" data-value="small">小型</button>
                     </div>
                 </div>
+
                 <div class="filter-group">
                     <span class="filter-title">2. 毛髮長度</span>
                     <div class="pill-container">
@@ -85,6 +95,7 @@
                         <button class="filter-pill" data-group="hair" data-value="short">短毛</button>
                     </div>
                 </div>
+
                 <div class="filter-group">
                     <span class="filter-title">3. 性格特質</span>
                     <div class="pill-container">
@@ -96,16 +107,19 @@
                         <button class="filter-pill" data-group="personality" data-value="adaptability">適應力</button>
                     </div>
                 </div>
+
                 <ul id="list">
                     <li data-size="large" data-hair="long" data-personality="docile">黃金獵犬</li>
                     <li data-size="large" data-hair="short" data-personality="active">拉不拉多</li>
                     <li data-size="large" data-hair="short" data-personality="howl">哈士奇</li>
                     <li data-size="large" data-hair="short" data-personality="loyalty">德國牧羊犬</li>
                     <li data-size="large" data-hair="short" data-personality="adaptability">台灣土狗</li>
+
                     <li data-size="medium" data-hair="short" data-personality="active">柴犬</li>
                     <li data-size="medium" data-hair="short" data-personality="docile">法國鬥牛犬</li>
                     <li data-size="medium" data-hair="short" data-personality="active">柯基犬</li>
                     <li data-size="medium" data-hair="long" data-personality="active">邊境牧羊犬</li>
+
                     <li data-size="small" data-hair="short" data-personality="active">吉娃娃</li>
                     <li data-size="small" data-hair="long" data-personality="active">博美</li>
                     <li data-size="small" data-hair="long" data-personality="docile">貴賓犬</li>
@@ -113,6 +127,7 @@
                 </ul>
             </section>
         </div>
+
         <a href="medical.html">醫療與飲食</a>
         <a href="food.html">飼料食物</a>
         <a href="behavior.html">狗狗行為</a>
@@ -123,7 +138,7 @@
     </nav>
 
     <main>
-        <section id="carousel-banner">
+        <section id="carousel-banner" class="reveal-card">
             <div class="carousel-container">
                 <div class="carousel-track" id="carousel-track">
                     <img src="images/banner-1.jpg" alt="橫幅輪播1" class="carousel-slide">
@@ -136,40 +151,83 @@
             </div>
         </section>
 
-        <section class="icon-grid-container">
+        <section class="icon-grid-container reveal-card">
             <div class="grid-header">
-                <h3>熱門探索</h3>
+                <h3>✨ 熱門探索</h3>
             </div>
             <div class="icon-grid">
-                <a href="breeds.html" class="grid-item"><div class="img-box">🐕</div><p>品種</p></a>
-                <a href="medical.html" class="grid-item"><div class="img-box">🏥</div><p>醫療飲食</p></a>
-                <a href="food.html" class="grid-item"><div class="img-box">🦴</div><p>飼料</p></a>
-                <a href="behavior.html" class="grid-item"><div class="img-box">🎾</div><p>行為</p></a>
-                <a href="age.html" class="grid-item"><div class="img-box">⏳</div><p>年紀狀況</p></a>
-                <a href="supplies.html" class="grid-item"><div class="img-box">🪢</div><p>寵物用品</p></a>
-                <a href="care.html" class="grid-item"><div class="img-box">🛁</div><p>照顧方法</p></a>
-                <a href="exercise.html" class="grid-item"><div class="img-box">🥏</div><p>運動</p></a>
+                <a href="breeds.html" class="grid-item">
+                    <div class="img-box">🐕</div>
+                    <p>品種</p>
+                </a>
+                <a href="medical.html" class="grid-item">
+                    <div class="img-box">🏥</div>
+                    <p>醫療飲食</p>
+                </a>
+                <a href="food.html" class="grid-item">
+                    <div class="img-box">🦴</div>
+                    <p>飼料</p>
+                </a>
+                <a href="behavior.html" class="grid-item">
+                    <div class="img-box">🎾</div>
+                    <p>行為</p>
+                </a>
+                <a href="age.html" class="grid-item">
+                    <div class="img-box">⏳</div>
+                    <p>年紀狀況</p>
+                </a>
+                <a href="supplies.html" class="grid-item">
+                    <div class="img-box">🪢</div>
+                    <p>寵物用品</p>
+                </a>
+                <a href="care.html" class="grid-item">
+                    <div class="img-box">🛁</div>
+                    <p>照顧方法</p>
+                </a>
+                <a href="exercise.html" class="grid-item">
+                    <div class="img-box">🥏</div>
+                    <p>運動</p>
+                </a>
             </div>
         </section>
 
-        <section class="news-container" id="news-section">
+        <section class="news-container reveal-card" id="news-section">
             <div class="grid-header">
                 <h3 class="news-title">📢 相關新聞</h3>
             </div>
+
             <ul class="news-list" id="newsList"></ul>
+
             <div class="pagination-container">
                 <div class="pagination" id="pagination"></div>
             </div>
         </section>
 
-        <section id="right-other">
+        <section id="right-other" class="reveal-card">
             <div class="announcements">
-                <h3>公告</h3>
-                <p><a href="#news-section" class="sidebar-link">相關新聞</a></p>
+                <h3>📌 公告</h3>
+                <p><a href="#news-section" class="sidebar-link">📰 前往最新相關新聞</a></p>
             </div>
+
+            <!-- 🌟 新增：互動式每日汪星人冷知識小卡 -->
+            <div class="daily-fact-card" id="dailyFactCard">
+                <div class="fact-header">
+                    <h3>💡 每日汪星人小知識</h3>
+                    <span class="fact-badge">知識補給</span>
+                </div>
+                <p id="dogFactText" class="fact-content">狗狗的鼻紋就像人類的指紋一樣，每一隻都是獨一無二的喔！🐾</p>
+                <button id="nextFactBtn" class="fact-btn">🎲 換一個冷知識</button>
+            </div>
+
+            <!-- 🌟 升級：生動的討論區預覽 -->
             <div class="discussion-board">
-                <h3>討論區</h3>
-                <p>在這裡發布最新話題～</p>
+                <h3>💬 討論區熱門話題</h3>
+                <p style="margin-bottom: 10px;">在這裡發布最新話題，與毛孩家長交流～</p>
+                <div class="topic-tags">
+                    <span class="topic-tag" onclick="document.getElementById('loginBtn').click()">🔥 #新手養柴犬要注意什麼？</span>
+                    <span class="topic-tag" onclick="document.getElementById('loginBtn').click()">🐾 #幼犬半夜一直哭怎麼辦？</span>
+                    <span class="topic-tag" onclick="document.getElementById('loginBtn').click()">🦴 #挑嘴狗飼料推薦清單</span>
+                </div>
             </div>
         </section>
     </main>
@@ -196,7 +254,7 @@
     <div id="authModal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <span class="close-modal" id="closeModal">&times;</span>
-            
+
             <!-- 畫面一：輸入帳密 -->
             <div id="step1-login">
                 <h2 class="modal-title">🐾 歡迎來到狗狗友善知識網</h2>
@@ -220,11 +278,11 @@
                 <button id="backToLoginBtn" class="modal-btn text-btn">上一步</button>
             </div>
 
-            <!-- 畫面三：新手引導 (領取身分證與資料修改) -->
+            <!-- 畫面三：新手引導與個人檔案修改 -->
             <div id="step3-profile" style="display: none;">
-                <h2 class="modal-title">🎉 領取 / 修改你的身分證</h2>
+                <h2 class="modal-title">🎉 登入成功！領取你的身分證</h2>
                 <p class="modal-subtitle">在討論區，我們使用匿名保護您的隱私</p>
-                
+
                 <div class="profile-group">
                     <label>你的專屬暱稱：</label>
                     <div class="nickname-box">
@@ -247,22 +305,20 @@
 
                 <!-- 動態寵物新增區 -->
                 <div id="petSelectorArea" class="pet-selector-area">
-                    <div id="petList">
-                        <!-- 第一隻寵物會由 auth.js 動態生成塞入 -->
-                    </div>
+                    <div id="petList"></div>
                     <button id="addPetBtn" class="modal-btn dashed-btn">➕ 新增其他品種</button>
                 </div>
 
                 <button id="finishProfileBtn" class="modal-btn primary-btn" style="margin-top: 20px;">完成設定，開始探索！</button>
-                <button id="logoutBtn" class="modal-btn dashed-btn" style="color: #d9534f; border-color: #d9534f; margin-top: 5px;">登出帳號</button>
-                <!-- 註銷帳號的隱蔽按鈕 -->
+                <button id="logoutBtn" class="modal-btn dashed-btn" style="border-color: #d9534f; color: #d9534f; margin-top: 10px;">登出帳號</button>
                 <div style="text-align: center; margin-top: 15px;">
-                <button id="deleteAccountBtn" class="text-btn" style="color: #999; font-size: 13px;">危險操作：註銷並刪除我的帳戶資料</button>
+                    <button id="deleteAccountBtn" class="text-btn" style="color: #999; font-size: 13px; border: none; cursor: pointer;">危險操作：註銷並刪除我的帳戶資料</button>
+                </div>
             </div>
         </div>
     </div>
-    
-    <!-- 引入 SDK 與腳本 -->
+
+    <!-- 引入 Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/auth.js"></script>
     <script src="js/search.js"></script>
@@ -270,47 +326,91 @@
     <script src="js/filter.js"></script>
     <script src="js/news-pagination.js"></script>
 
-    <!-- 平滑滾動腳本 -->
+    <!-- 🌟 網站生動化與手機選單互動腳本 -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            // 1. 平滑滾動至相關新聞
             const newsLink = document.querySelector('a[href="#news-section"]');
             if (newsLink) {
-                newsLink.addEventListener("click", function(e) {
-                    e.preventDefault(); 
-                    const targetId = this.getAttribute("href");
-                    const targetElement = document.querySelector(targetId);
+                newsLink.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(this.getAttribute("href"));
                     if (targetElement) {
                         targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
                     }
                 });
             }
-        });
-    </script>
 
-<!-- 獨立的 UI 控制腳本：漢堡選單 -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
+            // 2. 手機版漢堡選單與遮罩控制
             const hamburger = document.getElementById('hamburgerMenu');
-            const mainNav = document.querySelector('.main-nav');
+            const mainNav = document.getElementById('mainNav');
+            const navOverlay = document.getElementById('navOverlay');
+
+            function closeMobileNav() {
+                if (mainNav) mainNav.classList.remove('active');
+                if (navOverlay) navOverlay.classList.remove('active');
+                if (hamburger) hamburger.textContent = '☰';
+            }
 
             if (hamburger && mainNav) {
                 hamburger.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    mainNav.classList.toggle('active');
-                    // 切換圖示：打開時變成 X，關閉時變回 ☰
-                    hamburger.textContent = mainNav.classList.contains('active') ? '✕' : '☰';
+                    const isOpen = mainNav.classList.toggle('active');
+                    if (navOverlay) navOverlay.classList.toggle('active', isOpen);
+                    hamburger.textContent = isOpen ? '✕' : '☰';
                 });
+                if (navOverlay) {
+                    navOverlay.addEventListener('click', closeMobileNav);
+                }
+            }
 
-                // 點擊選單以外的空白處，自動收起選單
-                document.addEventListener('click', (e) => {
-                    if (!mainNav.contains(e.target) && e.target !== hamburger) {
-                        mainNav.classList.remove('active');
-                        hamburger.textContent = '☰';
-                    }
+            // 3. 每日汪星人小知識隨機抽籤器
+            const dogFacts = [
+                "狗狗的鼻紋就像人類的指紋一樣，每一隻都是獨一無二的喔！🐾",
+                "狗狗搖尾巴不一定代表開心！尾巴偏向「右邊」通常是開心，偏向「左邊」可能代表緊張或警戒。🐕",
+                "狗狗的嗅覺比人類靈敏 1 萬到 10 萬倍，牠們甚至能聞出人類情緒變化時產生的荷爾蒙！👃",
+                "剛出生的幼犬其實是「看不見也聽不見」的，大約要到兩週大時眼睛和耳朵才會慢慢張開。🍼",
+                "狗狗睡覺時腳腳抽動或發出輕微叫聲，代表牠們正在做夢，而且多半是夢到跟主人一起玩耍！💤",
+                "巧克力和葡萄對狗狗來說是劇毒！新手飼主一定要把零食收在狗狗碰不到的高處喔。🍫",
+                "狗狗只有腳掌肉墊有汗腺，夏天散步時記得摸摸地面溫度，避免燙傷毛孩的肉墊！☀️",
+                "當狗狗對你「打哈欠」或「舔嘴唇」時，有時不是想睡覺，而是牠正在釋放壓力、向你表達善意喔！💚"
+            ];
+            const factText = document.getElementById('dogFactText');
+            const nextFactBtn = document.getElementById('nextFactBtn');
+            const factCard = document.getElementById('dailyFactCard');
+
+            if (nextFactBtn && factText && factCard) {
+                let lastIndex = 0;
+                nextFactBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    let newIndex;
+                    do {
+                        newIndex = Math.floor(Math.random() * dogFacts.length);
+                    } while (newIndex === lastIndex);
+                    lastIndex = newIndex;
+
+                    factCard.classList.remove('pop-anim');
+                    void factCard.offsetWidth; // 觸發重繪以重新播放動畫
+                    factCard.classList.add('pop-anim');
+                    factText.textContent = dogFacts[newIndex];
                 });
             }
+
+            // 4. 點擊畫面冒出「可愛狗腳印 🐾」互動彩蛋
+            document.addEventListener('click', (e) => {
+                // 避免在點擊輸入框或彈窗內部時干擾操作
+                if (e.target.closest('.modal-content') || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+                
+                const paw = document.createElement('span');
+                paw.className = 'click-paw';
+                paw.textContent = '🐾';
+                paw.style.left = `${e.clientX}px`;
+                paw.style.top = `${e.clientY}px`;
+                document.body.appendChild(paw);
+                setTimeout(() => paw.remove(), 800);
+            });
         });
     </script>
-        
+
 </body>
 </html>
