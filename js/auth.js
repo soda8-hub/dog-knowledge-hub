@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     if (forgotPasswordBtn) {
         forgotPasswordBtn.addEventListener('click', () => {
-            alert("[系統提示] 忘記密碼功能需串接真實 SMTP 發信伺服器。\n專題展示期間若遺失密碼，請聯繫系統管理員進行後台重置。");
+            alert("[系統提示] 忘記密碼功能需串接真實 SMTP 發信伺服器。\n若遺失密碼，請聯繫系統管理員進行後台重置。");
         });
     }
 
