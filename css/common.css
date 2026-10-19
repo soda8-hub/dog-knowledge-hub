@@ -669,3 +669,22 @@ footer p {
         align-items: center;
     }
 
+/* ==========================================
+   11-5 分頁手機版呼吸空間優化 (common.css)
+   ========================================== */
+@media screen and (max-width: 768px) {
+    body {
+        overflow-x: hidden !important;
+        margin: 0 !important;
+    }
+    main, .container, .content-container, section {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        box-sizing: border-box !important;
+    }
+    #site-footer, footer {
+        width: 100% !important;
+        margin: 30px 0 0 0 !important;
+        box-sizing: border-box !important;
+    }
+}
