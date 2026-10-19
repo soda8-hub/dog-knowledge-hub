@@ -787,45 +787,88 @@ border-radius: 12px; cursor: pointer; font-size: 14px; color: #666666; transitio
 .other-breed-input { width: 100%; margin-top: 5px !important; margin-bottom: 0; border-color: #387c59; background: #f9fdfa;}
 .remove-pet-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #d9534f; }
 
-/* ==========================================
-   13. 網站生動化：微互動與動畫效果 (Hover Effects)
-   ========================================== */
-/* 熱門探索卡片：滑過會浮起、產生陰影，裡面的 Icon 會放大傾斜 */
-.grid-item { transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
-.grid-item:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 20px rgba(43, 74, 59, 0.15);
-    background-color: #f0f7f3;
-}
-.grid-item .img-box { transition: transform 0.3s ease; }
-.grid-item:hover .img-box { transform: scale(1.15) rotate(5deg); }
-
-/* 相關新聞：滑過會向右推，並亮起左側綠色邊條 */
-.news-list li { transition: all 0.2s ease-in-out; border-left: 4px solid transparent; }
-.news-list li:hover {
-    transform: translateX(5px);
-    border-left: 4px solid #387c59;
-    background-color: #fafdfb;
+/* =========================================================
+   13. 頂部大標題欄固定 (Sticky Header) 與下滑自動縮小特效
+   ========================================================= */
+#main-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 9990 !important;
+    transition: padding 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease !important;
 }
 
-/* 全域按鈕：點擊時會有微縮放的 Q 彈感 */
-button:active, .modal-btn:active, .filter-pill:active { transform: scale(0.95); }
+#site-logo, .site-name, .login-btn, .searchBar input, .searchBar button {
+    transition: all 0.3s ease !important;
+}
 
-/* 漢堡選單按鈕預設隱藏 (電腦版) */
-.hamburger-menu {
-    display: none;
-    font-size: 28px;
-    cursor: pointer;
-    color: #2b4a3b;
-    user-select: none;
-    margin-left: 10px;
+/* 當使用者往下滑動超過 50px 時，自動套用 .scrolled 縮小高度與字體 */
+#main-header.scrolled {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    background-color: rgba(43, 74, 59, 0.96) !important;
+    backdrop-filter: blur(6px) !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22) !important;
+}
+
+#main-header.scrolled #site-logo {
+    width: 36px !important;
+    height: 36px !important;
+}
+
+#main-header.scrolled .site-name {
+    font-size: 19px !important;
+}
+
+#main-header.scrolled .login-btn {
+    padding: 5px 12px !important;
+    font-size: 13px !important;
 }
 
 /* =========================================================
-   🌟 網站生動化：自動呼吸動畫、互動小卡與點擊彩蛋
+   14. 輕巧型「快速導覽膠囊列」 (不搶輪播圖視覺焦點)
    ========================================================= */
+.quick-jump-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(43, 74, 59, 0.07);
+    border: 1px solid #e2f0e8;
+}
 
-/* 1. 修正電腦與手機版 Footer 滿版貼底，消除底部白邊 */
+.jump-label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #2b4a3b;
+}
+
+.jump-pill {
+    display: inline-block;
+    padding: 5px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #2b4a3b;
+    background-color: #f0f7f3;
+    border: 1px solid #cfe8d9;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.jump-pill:hover, .jump-pill:active {
+    background-color: #387c59;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* =========================================================
+   15. 網站生動化：自動呼吸動畫、互動小卡與點擊彩蛋
+   ========================================================= */
 html, body {
     margin: 0 !important;
     padding: 0 !important;
@@ -840,7 +883,6 @@ html, body {
     box-sizing: border-box !important;
 }
 
-/* 2. 區塊進場柔和浮現動畫 */
 @keyframes fadeInUpCard {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -852,7 +894,6 @@ html, body {
 .news-container.reveal-card { animation-delay: 0.2s; }
 #right-other.reveal-card { animation-delay: 0.3s; }
 
-/* 3. 熱門探索圖示：常駐輕盈漂浮動畫 + 滑鼠懸停發光彈跳 */
 @keyframes floatIcon {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-6px); }
@@ -867,7 +908,6 @@ html, body {
     animation: floatIcon 3s ease-in-out infinite;
     transition: all 0.3s ease !important;
 }
-/* 錯開每個圖示的漂浮時間，讓畫面像波浪一樣生動 */
 .grid-item:nth-child(2n) .img-box { animation-delay: 0.4s; }
 .grid-item:nth-child(3n) .img-box { animation-delay: 0.8s; }
 .grid-item:nth-child(4n) .img-box { animation-delay: 1.2s; }
@@ -880,10 +920,10 @@ html, body {
 .grid-item:hover .img-box {
     animation-play-state: paused;
     transform: scale(1.2) rotate(8deg) !important;
-    background-color: #d0ebdB !important;
+    background-color: #d0ebdb !important;
 }
 
-/* 4. 每日汪星人冷知識互動小卡 */
+/* 升級版：每日汪星人冷知識互動小卡 */
 .daily-fact-card {
     background: linear-gradient(145deg, #ffffff, #f2faf5);
     border: 2px solid #cfe8d9;
@@ -899,6 +939,7 @@ html, body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    gap: 8px;
 }
 .fact-header h3 {
     margin: 0 !important;
@@ -907,21 +948,40 @@ html, body {
 }
 .fact-badge {
     background: #387c59;
-    color: #ffffff;
-    font-size: 11px;
-    padding: 3px 8px;
+    color: #ffffff !important;
+    font-size: 12px;
+    padding: 4px 10px;
     border-radius: 20px;
     font-weight: bold;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+.fact-badge:hover {
+    background: #2b4a3b;
+    transform: scale(1.05);
 }
 .fact-content {
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.65;
     color: #444444;
     margin-bottom: 14px;
     min-height: 65px;
 }
+.fact-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.fact-counter {
+    font-size: 12px;
+    color: #777777;
+    font-weight: bold;
+    white-space: nowrap;
+}
 .fact-btn {
-    width: 100%;
+    flex: 1;
     padding: 9px 12px;
     background-color: #387c59;
     color: #ffffff;
@@ -945,7 +1005,6 @@ html, body {
     animation: cardPop 0.3s ease;
 }
 
-/* 5. 討論區熱門話題氣泡 */
 .topic-tags {
     display: flex;
     flex-direction: column;
@@ -969,7 +1028,6 @@ html, body {
     transform: translateX(4px);
 }
 
-/* 6. 點擊畫面冒出狗腳印特效 */
 @keyframes pawFloat {
     0% { opacity: 0.9; transform: translate(-50%, -50%) scale(0.8) rotate(-10deg); }
     100% { opacity: 0; transform: translate(-50%, -95px) scale(1.35) rotate(15deg); }
@@ -982,28 +1040,44 @@ html, body {
     animation: pawFloat 0.8s ease-out forwards;
 }
 
-/* 7. 電腦版預設隱藏漢堡按鈕與遮罩 */
 .hamburger-menu { display: none; }
 .nav-overlay { display: none; }
 
 /* =========================================================
-   📱 手機與平板版 RWD 終極修復 (螢幕寬度 <= 768px)
+   16. 手機與平板版 RWD 終極修復 (螢幕寬度 <= 768px)
    ========================================================= */
 @media screen and (max-width: 768px) {
 
-    /* 1. 頂部 Header 重構：第一排 Logo + 登入 + 漢堡選單，第二排滿版搜尋列 */
     #main-header {
         display: flex !important;
         flex-wrap: wrap !important;
         justify-content: space-between !important;
         align-items: center !important;
-        padding: 12px 15px !important;
+        padding: 10px 14px !important;
         width: 100% !important;
         height: auto !important;
         box-sizing: border-box !important;
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 9990 !important;
+    }
+
+    /* 手機版往下滑時，標題欄進一步緊湊化，讓出最大閱讀空間 */
+    #main-header.scrolled {
+        padding: 6px 12px !important;
+    }
+    #main-header.scrolled #site-logo {
+        width: 28px !important;
+        height: 28px !important;
+    }
+    #main-header.scrolled .site-name {
+        font-size: 16px !important;
+    }
+    #main-header.scrolled .searchBar {
+        margin-top: 5px !important;
+    }
+    #main-header.scrolled #searchInput,
+    #main-header.scrolled #searchBtn {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        font-size: 13px !important;
     }
 
     .header-left-group {
@@ -1016,8 +1090,8 @@ html, body {
     }
 
     #site-logo {
-        width: 38px !important;
-        height: 38px !important;
+        width: 36px !important;
+        height: 36px !important;
     }
 
     .site-name {
@@ -1025,14 +1099,13 @@ html, body {
         white-space: nowrap !important;
     }
 
-    /* 關鍵：解除 header-right-group 的外層束縛，讓搜尋框能獨佔整排寬度 */
     .header-right-group {
         display: contents !important;
     }
 
     .login-btn {
         order: 2 !important;
-        padding: 6px 12px !important;
+        padding: 6px 10px !important;
         font-size: 13px !important;
         margin-left: auto !important;
         white-space: nowrap !important;
@@ -1043,9 +1116,9 @@ html, body {
         align-items: center !important;
         justify-content: center !important;
         order: 3 !important;
-        width: 38px !important;
-        height: 38px !important;
-        font-size: 24px !important;
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 22px !important;
         color: #ffffff !important;
         background: rgba(255, 255, 255, 0.2) !important;
         border: 1px solid rgba(255, 255, 255, 0.4) !important;
@@ -1058,7 +1131,7 @@ html, body {
         order: 4 !important;
         width: 100% !important;
         flex: 0 0 100% !important;
-        margin: 10px 0 2px 0 !important;
+        margin: 8px 0 2px 0 !important;
         display: flex !important;
         gap: 8px !important;
     }
@@ -1069,12 +1142,16 @@ html, body {
         min-width: 0 !important;
     }
 
-    /* 2. 左側欄徹底收納為右側滑出抽屜 (破除原本 left 屬性衝突) */
+    /* 手機版隱藏底部重複的「公告」空盒，因為上方已有快速導覽膠囊列 */
+    .desktop-only-announcement {
+        display: none !important;
+    }
+
     nav.main-nav, #mainNav {
         position: fixed !important;
         top: 0 !important;
-        left: auto !important; /* 關鍵：覆蓋原本的 left 設定 */
-        right: -320px !important; /* 徹底藏在螢幕右外侧 */
+        left: auto !important;
+        right: -320px !important;
         width: 280px !important;
         max-width: 82vw !important;
         height: 100vh !important;
@@ -1098,7 +1175,6 @@ html, body {
         left: auto !important;
     }
 
-    /* 手機版選單開啟時的半透明黑底遮罩 */
     .nav-overlay {
         display: block !important;
         position: fixed !important;
@@ -1118,7 +1194,6 @@ html, body {
         pointer-events: auto !important;
     }
 
-    /* 3. 主內容區與右側欄強制轉為「直向單欄」，給予舒適呼吸空間 */
     body {
         display: block !important;
         width: 100% !important;
@@ -1143,7 +1218,6 @@ html, body {
     .icon-grid-container,
     .news-container,
     #right-other,
-    .announcements,
     .daily-fact-card,
     .discussion-board {
         position: relative !important;
