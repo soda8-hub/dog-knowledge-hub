@@ -5,6 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>狗狗友善知識網</title>
+
+    <!-- 網頁頁籤小圖示 (Favicon) -->
+    <link rel="icon" href="images/site-logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="images/site-logo.png">
+
+    <!-- 社群分享預覽設定 (Open Graph) -->
+    <meta property="og:title" content="狗狗友善知識網 | 您的毛孩知識引路人">
+    <meta property="og:description" content="專為新手飼主打造，整合狗狗生活起居、品種特性、醫療照護等關鍵資訊，讓養狗變得輕鬆無負擔！">
+    <meta property="og:url" content="https://soda8-hub.github.io/dog-knowledge-hub/">
+    <meta property="og:image" content="https://soda8-hub.github.io/dog-knowledge-hub/images/site-logo.png">
+    <meta property="og:type" content="website">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
@@ -186,7 +198,10 @@
                 <h2 class="modal-title">🐾 歡迎來到狗狗友善知識網</h2>
                 <p class="modal-subtitle">請輸入 Email 與密碼進行登入或註冊</p>
                 <input type="email" id="authEmail" class="modal-input" placeholder="請輸入 Email (如: test@gmail.com)" required>
-                <input type="password" id="authPassword" class="modal-input" placeholder="請設定 6 碼以上密碼" required>
+                <input type="password" id="authPassword" class="modal-input" placeholder="請設定 8 碼以上密碼" required>
+                <div style="text-align: right; margin-top: -5px; margin-bottom: 15px;">
+                    <span id="forgotPasswordBtn" style="color: #999999; font-size: 13px; cursor: pointer; text-decoration: underline;">忘記密碼？</span>
+                </div>
                 <button id="sendCodeBtn" class="modal-btn primary-btn">下一步 (獲取驗證碼)</button>
             </div>
 
