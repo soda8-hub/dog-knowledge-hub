@@ -30,8 +30,9 @@
     <div id="navOverlay" class="nav-overlay"></div>
 
     <header id="main-header">
-        <div class="header-left-group">
-            <a href="index.html">
+        <!-- 點擊 Logo 或網站名稱皆可平滑回到最上方 -->
+        <div class="header-left-group" id="scrollToTopLogo" title="點擊回到最上方" style="cursor: pointer;">
+            <a href="#top" id="logoLink">
                 <img src="images/site-logo.png" alt="狗狗友善知識網Logo" id="site-logo">
             </a>
             <div class="site-name">狗狗友善知識網</div>
@@ -138,6 +139,7 @@
     </nav>
 
     <main>
+        <!-- 1. 黃金視覺焦點：橫幅輪播圖保持第一順位 -->
         <section id="carousel-banner" class="reveal-card">
             <div class="carousel-container">
                 <div class="carousel-track" id="carousel-track">
@@ -149,8 +151,17 @@
                 <button id="next-btn" class="carousel-btn next">→</button>
                 <div class="carousel-dots" id="carousel-dots"></div>
             </div>
+
+            <!-- 🌟 新增：輕巧型「快速傳送門膠囊列」，不搶輪播圖風采又能一鍵跳轉 -->
+            <div class="quick-jump-bar">
+                <span class="jump-label">📌 快速導覽：</span>
+                <a href="#news-section" class="jump-pill smooth-scroll">📢 相關新聞</a>
+                <a href="#dailyFactCard" class="jump-pill smooth-scroll">💡 每日小知識</a>
+                <a href="#discussion-section" class="jump-pill smooth-scroll">💬 熱門討論區</a>
+            </div>
         </section>
 
+        <!-- 2. 熱門探索八大入口 -->
         <section class="icon-grid-container reveal-card">
             <div class="grid-header">
                 <h3>✨ 熱門探索</h3>
@@ -191,6 +202,7 @@
             </div>
         </section>
 
+        <!-- 3. 相關新聞區 -->
         <section class="news-container reveal-card" id="news-section">
             <div class="grid-header">
                 <h3 class="news-title">📢 相關新聞</h3>
@@ -203,24 +215,30 @@
             </div>
         </section>
 
+        <!-- 4. 右側欄（手機版位於下方）：整合知識卡與討論區 -->
         <section id="right-other" class="reveal-card">
-            <div class="announcements">
-                <h3>📌 公告</h3>
-                <p><a href="#news-section" class="sidebar-link">📰 前往最新相關新聞</a></p>
+            <!-- 電腦版保留的快速連結，手機版會由上方膠囊列取代 -->
+            <div class="announcements desktop-only-announcement">
+                <h3>📌 站內快訊</h3>
+                <p><a href="#news-section" class="sidebar-link smooth-scroll">📰 前往最新相關新聞</a></p>
+                <p style="margin-top: 8px;"><a href="#discussion-section" class="sidebar-link smooth-scroll">💬 前往毛孩討論區</a></p>
             </div>
 
-            <!-- 🌟 新增：互動式每日汪星人冷知識小卡 -->
+            <!-- 🌟 升級：互動式每日汪星人小知識（右上角標籤可點擊前往對應分頁！） -->
             <div class="daily-fact-card" id="dailyFactCard">
                 <div class="fact-header">
                     <h3>💡 每日汪星人小知識</h3>
-                    <span class="fact-badge">知識補給</span>
+                    <a href="care.html" id="factCategoryLink" class="fact-badge" title="點擊前往相關知識分頁">🔗 照顧方法 ➔</a>
                 </div>
-                <p id="dogFactText" class="fact-content">狗狗的鼻紋就像人類的指紋一樣，每一隻都是獨一無二的喔！🐾</p>
-                <button id="nextFactBtn" class="fact-btn">🎲 換一個冷知識</button>
+                <p id="dogFactText" class="fact-content">狗狗的鼻紋就像人類的指紋一樣，每一隻都是獨一無二的，甚至可以用來作為身分識別喔！🐾</p>
+                <div class="fact-footer">
+                    <span id="factCounter" class="fact-counter">第 1 / 12 則</span>
+                    <button id="nextFactBtn" class="fact-btn">🎲 換一個冷知識</button>
+                </div>
             </div>
 
-            <!-- 🌟 升級：生動的討論區預覽 -->
-            <div class="discussion-board">
+            <!-- 🌟 討論區（加上專屬 ID 供頂部快速跳轉） -->
+            <div class="discussion-board" id="discussion-section">
                 <h3>💬 討論區熱門話題</h3>
                 <p style="margin-bottom: 10px;">在這裡發布最新話題，與毛孩家長交流～</p>
                 <div class="topic-tags">
@@ -326,22 +344,49 @@
     <script src="js/filter.js"></script>
     <script src="js/news-pagination.js"></script>
 
-    <!-- 🌟 網站生動化與手機選單互動腳本 -->
+    <!-- 🌟 網站生動化、下滑縮小 Header 與快速導覽腳本 -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // 1. 平滑滾動至相關新聞
-            const newsLink = document.querySelector('a[href="#news-section"]');
-            if (newsLink) {
-                newsLink.addEventListener("click", function (e) {
+            const mainHeader = document.getElementById('main-header');
+            const scrollToTopLogo = document.getElementById('scrollToTopLogo');
+
+            // 1. 往下滑時自動縮小 Header，往上滑回頂端時恢復原狀
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    mainHeader.classList.add('scrolled');
+                } else {
+                    mainHeader.classList.remove('scrolled');
+                }
+            }, { passive: true });
+
+            // 2. 點擊 Logo 或網站名稱，平滑滾動回到最上方
+            if (scrollToTopLogo) {
+                scrollToTopLogo.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const targetElement = document.querySelector(this.getAttribute("href"));
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
-                    }
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             }
 
-            // 2. 手機版漢堡選單與遮罩控制
+            // 3. 攔截所有 .smooth-scroll 錨點連結，平滑滾動且不蓋住固定標題欄
+            document.querySelectorAll('.smooth-scroll').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const headerOffset = mainHeader ? mainHeader.offsetHeight + 15 : 80;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // 4. 手機版漢堡選單與遮罩控制
             const hamburger = document.getElementById('hamburgerMenu');
             const mainNav = document.getElementById('mainNav');
             const navOverlay = document.getElementById('navOverlay');
@@ -364,43 +409,56 @@
                 }
             }
 
-            // 3. 每日汪星人小知識隨機抽籤器
+            // 5. 升級版：12 則每日汪星人小知識（每一則皆連動對應的知識分頁！）
             const dogFacts = [
-                "狗狗的鼻紋就像人類的指紋一樣，每一隻都是獨一無二的喔！🐾",
-                "狗狗搖尾巴不一定代表開心！尾巴偏向「右邊」通常是開心，偏向「左邊」可能代表緊張或警戒。🐕",
-                "狗狗的嗅覺比人類靈敏 1 萬到 10 萬倍，牠們甚至能聞出人類情緒變化時產生的荷爾蒙！👃",
-                "剛出生的幼犬其實是「看不見也聽不見」的，大約要到兩週大時眼睛和耳朵才會慢慢張開。🍼",
-                "狗狗睡覺時腳腳抽動或發出輕微叫聲，代表牠們正在做夢，而且多半是夢到跟主人一起玩耍！💤",
-                "巧克力和葡萄對狗狗來說是劇毒！新手飼主一定要把零食收在狗狗碰不到的高處喔。🍫",
-                "狗狗只有腳掌肉墊有汗腺，夏天散步時記得摸摸地面溫度，避免燙傷毛孩的肉墊！☀️",
-                "當狗狗對你「打哈欠」或「舔嘴唇」時，有時不是想睡覺，而是牠正在釋放壓力、向你表達善意喔！💚"
+                { text: "狗狗的鼻紋就像人類的指紋一樣，每一隻都是獨一無二的，甚至可以用來作為身分識別喔！🐾", tag: "🔗 照顧方法 ➔", link: "care.html" },
+                { text: "狗狗搖尾巴不一定代表開心！尾巴偏向「右邊」通常是開心，偏向「左邊」可能代表緊張或警戒。🐕", tag: "🔗 狗狗行為 ➔", link: "behavior.html" },
+                { text: "巧克力和葡萄對狗狗來說是劇毒！哪怕只是幾顆葡萄乾，都可能引發急性腎衰竭，務必收好。🍫", tag: "🔗 醫療飲食 ➔", link: "medical.html" },
+                { text: "拉布拉多體內常帶有 POMC 基因突變，這會讓牠們永遠覺得「沒吃飽」，飼主必須嚴格幫牠們控制熱量！🦴", tag: "🔗 品種百科 ➔", link: "breeds.html" },
+                { text: "剛出生的幼犬其實是「看不見也聽不見」的，大約要到兩週大時，眼睛和耳道才會慢慢張開喔。🍼", tag: "🔗 年紀狀況 ➔", link: "age.html" },
+                { text: "狗狗只有腳掌肉墊有汗腺，夏天散步前請用手背貼地面 5 秒測試溫度，避免燙傷毛孩的肉墊！☀️", tag: "🔗 運動指南 ➔", link: "exercise.html" },
+                { text: "小型犬（如博美、吉娃娃）氣管較脆弱，外出散步強烈建議使用「胸背帶」取代傳統項圈，避免壓迫氣管。🪢", tag: "🔗 寵物用品 ➔", link: "supplies.html" },
+                { text: "更換新品牌飼料時，千萬不能一次全換！建議採用「七日換食法」循序漸進混合，才不會害狗狗拉肚子。🥣", tag: "🔗 飼料食物 ➔", link: "food.html" },
+                { text: "當狗狗對你「打哈欠」或「舔鼻頭」時，有時不是想睡覺，而是牠正在釋放壓力、向你表達善意喔！💚", tag: "🔗 狗狗行為 ➔", link: "behavior.html" },
+                { text: "黃金獵犬與貴賓犬耳朵下垂、通風較差，洗完澡或游泳後一定要徹底擦乾耳道，否則極易引發外耳炎！🛁", tag: "🔗 照顧方法 ➔", link: "care.html" },
+                { text: "狗狗大約在 7 歲以後就會開始步入高齡期，建議每年安排一次血液生化與健檢，及早守護老犬健康。⏳", tag: "🔗 年紀狀況 ➔", link: "age.html" },
+                { text: "嗅聞 10 分鐘消耗的精力，相當於散步 30 分鐘！雨天無法出門時，在室內玩嗅聞墊也是極佳的運動。🥏", tag: "🔗 運動指南 ➔", link: "exercise.html" }
             ];
+
             const factText = document.getElementById('dogFactText');
             const nextFactBtn = document.getElementById('nextFactBtn');
             const factCard = document.getElementById('dailyFactCard');
+            const factCategoryLink = document.getElementById('factCategoryLink');
+            const factCounter = document.getElementById('factCounter');
 
             if (nextFactBtn && factText && factCard) {
-                let lastIndex = 0;
+                let currentIndex = 0;
                 nextFactBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     let newIndex;
                     do {
                         newIndex = Math.floor(Math.random() * dogFacts.length);
-                    } while (newIndex === lastIndex);
-                    lastIndex = newIndex;
+                    } while (newIndex === currentIndex);
+                    currentIndex = newIndex;
 
                     factCard.classList.remove('pop-anim');
-                    void factCard.offsetWidth; // 觸發重繪以重新播放動畫
+                    void factCard.offsetWidth;
                     factCard.classList.add('pop-anim');
-                    factText.textContent = dogFacts[newIndex];
+
+                    factText.textContent = dogFacts[currentIndex].text;
+                    if (factCategoryLink) {
+                        factCategoryLink.textContent = dogFacts[currentIndex].tag;
+                        factCategoryLink.href = dogFacts[currentIndex].link;
+                    }
+                    if (factCounter) {
+                        factCounter.textContent = `第 ${currentIndex + 1} / ${dogFacts.length} 則`;
+                    }
                 });
             }
 
-            // 4. 點擊畫面冒出「可愛狗腳印 🐾」互動彩蛋
+            // 6. 點擊畫面冒出「可愛狗腳印 🐾」互動彩蛋
             document.addEventListener('click', (e) => {
-                // 避免在點擊輸入框或彈窗內部時干擾操作
                 if (e.target.closest('.modal-content') || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
-                
                 const paw = document.createElement('span');
                 paw.className = 'click-paw';
                 paw.textContent = '🐾';
