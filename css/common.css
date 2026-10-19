@@ -669,22 +669,124 @@ footer p {
         align-items: center;
     }
 
-/* ==========================================
-   11-5 分頁手機版呼吸空間優化 (common.css)
-   ========================================== */
+/* =========================================================
+   12. 八大分頁全域生動化升級 (透過 common.css 統一賦予生命力)
+   ========================================================= */
+
+/* 1. 分頁區塊與知識卡片：進場柔和浮現動畫 */
+@keyframes subpageFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+main section,
+.card,
+.breed-card,
+.info-card,
+.food-card,
+.care-card,
+.supply-card,
+.age-card,
+.exercise-card {
+    animation: subpageFadeUp 0.55s ease-out both;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease !important;
+}
+
+/* 錯開分頁卡片浮現時間，創造視覺節奏感 */
+main section:nth-child(2) { animation-delay: 0.08s; }
+main section:nth-child(3) { animation-delay: 0.16s; }
+main section:nth-child(4) { animation-delay: 0.24s; }
+
+/* 2. 分頁知識卡片：滑鼠移過或手指觸碰時「微浮起 + 立體光影」 */
+.card:hover,
+.breed-card:hover,
+.info-card:hover,
+.food-card:hover,
+.care-card:hover,
+.supply-card:hover,
+.age-card:hover,
+.exercise-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 12px 24px rgba(43, 74, 59, 0.14) !important;
+}
+
+/* 3. 分頁頂部綠色膠囊導覽列 (如：大型犬/中型犬/小型犬)：Q彈按壓與懸停發光 */
+nav a,
+.sub-nav a,
+.category-nav a,
+.pill-btn {
+    transition: all 0.25s ease !important;
+}
+
+nav a:hover,
+.sub-nav a:hover,
+.category-nav a:hover {
+    transform: translateY(-2px) scale(1.04) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+nav a:active,
+.sub-nav a:active,
+button:active {
+    transform: scale(0.95) !important;
+}
+
+/* 4. 分頁內的特徵小標籤 (如：溫順、聰明、愛游泳) 懸停微放大 */
+.tag, .badge, .trait-tag, span[class*="tag"] {
+    transition: transform 0.2s ease, background-color 0.2s ease !important;
+    display: inline-block;
+}
+.tag:hover, .badge:hover, .trait-tag:hover {
+    transform: scale(1.08) !important;
+}
+
+/* =========================================================
+   13. 八大分頁手機版呼吸空間與滿版 Footer 優化
+   ========================================================= */
 @media screen and (max-width: 768px) {
-    body {
+    html, body {
         overflow-x: hidden !important;
         margin: 0 !important;
+        padding: 0 !important;
     }
-    main, .container, .content-container, section {
+
+    /* 為分頁主內容加上舒適的左右留白，解決貼邊壓迫感 */
+    main, .container, .content-container {
         padding-left: 16px !important;
         padding-right: 16px !important;
         box-sizing: border-box !important;
     }
+
+    /* 分頁頂部綠色橫幅保留適度圓角與呼吸空間 */
+    header {
+        margin-left: 12px !important;
+        margin-right: 12px !important;
+        border-radius: 16px !important;
+    }
+
+    /* 確保分頁導覽列在手機上可以順暢橫向滑動或自動換行 */
+    nav {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 990 !important;
+        padding: 10px 12px !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+
     #site-footer, footer {
         width: 100% !important;
+        max-width: 100% !important;
         margin: 30px 0 0 0 !important;
+        border-radius: 0 !important;
         box-sizing: border-box !important;
     }
 }
