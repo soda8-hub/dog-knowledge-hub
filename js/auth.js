@@ -433,34 +433,3 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-    // ==========================================
-    // 12. 漢堡選單
-    // ==========================================
-    // 將第 11 區塊移進 DOMContentLoaded 內，確保抓得到元素與 supabaseClient
-document.addEventListener('DOMContentLoaded', () => {
-    const hamburgerMenu = document.getElementById('hamburgerMenu');
-    const mainNav = document.querySelector('.main-nav');
-
-    if (hamburgerMenu && mainNav) {
-        hamburgerMenu.addEventListener('click', (e) => {
-            e.stopPropagation(); // 防止點擊事件擴散
-            mainNav.classList.toggle('active'); // 切換選單的開關
-            
-            // 點擊時漢堡圖示可以變成 X
-            if (mainNav.classList.contains('active')) {
-                hamburgerMenu.textContent = '✕';
-            } else {
-                hamburgerMenu.textContent = '☰';
-            }
-        });
-
-        // 點擊選單以外的空白處，自動收起選單 (提升 UX)
-        document.addEventListener('click', (e) => {
-            if (!mainNav.contains(e.target) && e.target !== hamburgerMenu) {
-                mainNav.classList.remove('active');
-                hamburgerMenu.textContent = '☰';
-            }
-        });
-    }
-});
-
