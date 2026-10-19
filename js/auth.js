@@ -205,13 +205,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 7. 步驟一：送出帳密
+    // 7. 步驟一：送出帳密 (加入雙重防護與友善錯誤翻譯)
     // ==========================================
     sendCodeBtn.addEventListener('click', async () => {
-        const email = authEmail.value;
+        const email = authEmail.value.trim(); // .trim() 可以自動消除使用者不小心在信箱前後多打的空白鍵
         const password = authPassword.value;
-        if (!email || password.length < 8) {
-            alert("為了您的帳號安全，請輸入有效的 Email 與至少 8 碼的密碼！");
+
+        // 【第一層防護】前端瞬間檢查 Email 格式與密碼長度
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 檢查是否有 @ 和 . 的標準格式
+        if (!email) {
+            alert("信箱欄位不能是空的喔！請輸入您的 Email。");
+            return;
+        }
+        if (!emailRegex.test(email)) {
+            alert("信箱格式好像不對喔！請檢查是否有漏打 '@' 或 '.com'（例如：dog@gmail.com）。");
+            return;
+        }
+        if (password.length < 8) {
+            alert("為了您的帳號安全，請輸入至少 8 碼的密碼！");
             return;
         }
 
@@ -229,15 +240,17 @@ document.addEventListener('DOMContentLoaded', () => {
         sendCodeBtn.textContent = '下一步 (獲取驗證碼)';
         sendCodeBtn.disabled = false;
 
+        // 【第二層防護】攔截後端英文報錯，翻譯成友善中文
         if (error) {
-            // 攔截特定的錯誤訊息，轉化為友善的 UX 提示
             if (error.message.includes("User already registered")) {
                 alert("此 Email 已被註冊，但您輸入的密碼錯誤！請重新確認。");
+            } else if (error.message.includes("invalid format") || error.message.includes("Unable to validate email address")) {
+                alert("系統無法辨識此信箱格式，請再次檢查是否有打錯字！");
             } else {
-                alert(`發生錯誤：${error.message}`);
+                alert(`連線發生錯誤：${error.message}`);
             }
         } else {
-            // 隨機產生 6 位數
+            // 隨機產生 6 位數驗證碼
             currentOtp = Math.floor(100000 + Math.random() * 900000).toString();
             alert(`[系統展示模式]\n已發送驗證碼至 ${email}\n\n您的動態驗證碼為：${currentOtp}\n(請於 60 秒內輸入)`);
             step1.style.display = 'none';
@@ -245,7 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => otpCode.focus(), 100); 
         }
     });
-
     // ==========================================
     // 7.5 忘記密碼提示邏輯
     // ==========================================
