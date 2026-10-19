@@ -1292,3 +1292,33 @@ body {
         gap: 10px !important;
     }
 }
+
+
+/* 搜尋面板：固定內容高度與狀態，避免輸入時整個下拉框閃爍 */
+#searchSuggestions { text-align: left; }
+.search-panel-inner { padding: 14px; }
+.search-panel-label { font-size: 12px; color: #587064; font-weight: 700; margin-bottom: 9px; }
+.hot-searches { display: flex; flex-wrap: wrap; gap: 7px; }
+.hot-kw-chip, .keyword-chip { border: 1px solid #cfe8d9; background: #f0f7f3; color: #2b4a3b; border-radius: 999px; font-weight: 700; }
+.hot-kw-chip { padding: 5px 11px; font-size: 12px; cursor: pointer; }
+.hot-kw-chip:hover, .hot-kw-chip:focus { background: #387c59; color: #fff; outline: none; }
+.search-option { display: block; padding: 11px 14px; border-bottom: 1px solid #eef5f0; text-decoration: none; color: #333; transition: background-color .15s ease, box-shadow .15s ease; }
+.search-option:last-child { border-bottom: 0; }
+.search-option:hover, .search-option.is-active { background: #f0f8f3; box-shadow: inset 4px 0 #387c59; }
+.search-option-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.search-option-top strong { color: #2b4a3b; font-size: 14px; }
+.search-category { background: #e8f5ee; color: #387c59; font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: 700; white-space: nowrap; }
+.search-summary { color: #666; font-size: 12px; line-height: 1.45; }
+.search-keywords { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 7px; color: #8a9890; font-size: 11px; }
+.keyword-chip { padding: 2px 6px; font-size: 10px; font-weight: 600; }
+#searchSuggestions mark { background: #ffe58f; color: #173b2a; padding: 0 3px; border-radius: 4px; font-weight: 800; }
+.search-empty { padding: 15px 16px; color: #555; font-size: 13px; line-height: 1.55; }
+.search-empty small { color: #888; }
+
+@media screen and (max-width: 768px) {
+    #searchSuggestions { max-height: min(52vh, 390px) !important; border-radius: 12px !important; }
+    .search-option { padding: 12px; }
+    .search-option-top { align-items: flex-start; }
+    .search-option-top strong { line-height: 1.4; }
+    .search-keywords { max-height: 23px; overflow: hidden; }
+}
