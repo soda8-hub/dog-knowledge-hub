@@ -671,6 +671,48 @@ footer p {
 
 
 /* ==========================================
+   11-5 手機版 RWD 完美排版補丁 (max-width: 768px)
+   ========================================== */
+@media (max-width: 768px) {
+    /* 1. 拯救無法呼吸的內容：加入左右安全距離 */
+    main, .carousel-container, .filter-section {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        box-sizing: border-box;
+        overflow-x: hidden; /* 防止橫向捲軸出現 */
+    }
+
+    /* 2. 滿版 Footer 修復術 (突破父層限制) */
+    #site-footer {
+        width: 100vw !important;
+        margin-left: calc(-50vw + 50%); /* 讓它強制對齊螢幕邊緣 */
+        padding: 30px 20px;
+        box-sizing: border-box;
+    }
+
+    /* 3. Header 聰明排版：讓搜尋列換行到第二列，並延展到 100% */
+    .header-right-group {
+        flex-wrap: wrap; /* 允許元素換行 */
+        gap: 10px !important;
+    }
+    .searchBar {
+        order: 3; /* 強制把搜尋列排到最後面 */
+        width: 100%;
+        margin-top: 5px;
+    }
+    #searchInput {
+        width: 100%; /* 搜尋框填滿手機螢幕 */
+        box-sizing: border-box;
+    }
+    
+    /* 登入按鈕微調，以免佔用太大空間 */
+    #loginBtnText {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+}
+   
+/* ==========================================
    12. 網站生動化：微互動與動畫效果 (Hover Effects)
    ========================================== */
 
