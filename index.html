@@ -26,7 +26,6 @@
 <body>
 
     <header id="main-header">
-        <div class="hamburger-menu" id="hamburgerMenu">☰</div>
         <div class="header-left-group">
             <a href="index.html">
                 <img src="images/site-logo.png" alt="狗狗友善知識網Logo" id="site-logo">
@@ -44,6 +43,10 @@
             <div class="login-btn" id="loginBtn">
                 <span id="loginBtnText">👤 登入 / 註冊</span>
             </div>
+            
+            <!-- 漢堡選單按鈕 -->
+            <div class="hamburger-menu" id="hamburgerMenu">☰</div>
+            
         </div>
         <ul id="itemList">
             <li>Breeds - 品種</li>
@@ -283,5 +286,31 @@
             }
         });
     </script>
+
+<!-- 獨立的 UI 控制腳本：漢堡選單 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.getElementById('hamburgerMenu');
+            const mainNav = document.querySelector('.main-nav');
+
+            if (hamburger && mainNav) {
+                hamburger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    mainNav.classList.toggle('active');
+                    // 切換圖示：打開時變成 X，關閉時變回 ☰
+                    hamburger.textContent = mainNav.classList.contains('active') ? '✕' : '☰';
+                });
+
+                // 點擊選單以外的空白處，自動收起選單
+                document.addEventListener('click', (e) => {
+                    if (!mainNav.contains(e.target) && e.target !== hamburger) {
+                        mainNav.classList.remove('active');
+                        hamburger.textContent = '☰';
+                    }
+                });
+            }
+        });
+    </script>
+        
 </body>
 </html>
