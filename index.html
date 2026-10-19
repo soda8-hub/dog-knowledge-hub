@@ -39,13 +39,11 @@
         </div>
 
         <div class="header-right-group" style="display: flex; align-items: center; gap: 20px;">
-            <div class="searchBar">
-                <input type="text" id="searchInput" placeholder="搜尋狗狗知識...">
-                <button id="searchBtn">搜尋</button>
+            <div class="searchBar" style="position: relative;">
+                <input type="text" id="searchInput" placeholder="搜尋狗狗知識 (如: 柴犬、葡萄、疫苗)..." autocomplete="off">
+                <button id="searchBtn" type="button">搜尋</button>
 
-                <div id="searchSuggestions"
-                    style="position: absolute; left: 0; top: 100%; width: 100%; background-color: white; border: 1px solid #ccc; display: none; z-index: 999; max-height: 200px; overflow-y: auto;">
-                </div>
+                <div id="searchSuggestions"></div>
             </div>
 
             <div class="login-btn" id="loginBtn">
@@ -56,19 +54,7 @@
             <button class="hamburger-menu" id="hamburgerMenu" aria-label="開啟選單">☰</button>
         </div>
 
-        <ul id="itemList">
-            <li>Breeds - 品種</li>
-            <li>Health & Diet - 醫療</li>
-            <li>飼料食物</li>
-            <li>行為</li>
-            <li>Age & Condition - 年紀狀況</li>
-            <li>Supplies - 寵物用品</li>
-            <li>Care & Grooming - 照顧方法</li>
-            <li>Exercise - 運動</li>
-            <li>Large Breeds - 大型犬</li>
-            <li>Medium Breeds - 中型犬</li>
-            <li>Small Breeds - 小型犬</li>
-        </ul>
+        <ul id="itemList" style="display: none;"></ul>
     </header>
 
     <nav class="main-nav" id="mainNav">
@@ -139,7 +125,7 @@
     </nav>
 
     <main>
-        <!-- 1. 黃金視覺焦點：橫幅輪播圖保持第一順位 -->
+        <!-- 1. 黃金視覺焦點：橫幅輪播圖 -->
         <section id="carousel-banner" class="reveal-card">
             <div class="carousel-container">
                 <div class="carousel-track" id="carousel-track">
@@ -152,7 +138,7 @@
                 <div class="carousel-dots" id="carousel-dots"></div>
             </div>
 
-            <!-- 🌟 新增：輕巧型「快速傳送門膠囊列」，不搶輪播圖風采又能一鍵跳轉 -->
+            <!-- 輕巧型「快速傳送門膠囊列」 -->
             <div class="quick-jump-bar">
                 <span class="jump-label">📌 快速導覽：</span>
                 <a href="#news-section" class="jump-pill smooth-scroll">📢 相關新聞</a>
@@ -215,29 +201,28 @@
             </div>
         </section>
 
-        <!-- 4. 右側欄（手機版位於下方）：整合知識卡與討論區 -->
+        <!-- 4. 右側欄：整合知識卡與討論區 -->
         <section id="right-other" class="reveal-card">
-            <!-- 電腦版保留的快速連結，手機版會由上方膠囊列取代 -->
             <div class="announcements desktop-only-announcement">
                 <h3>📌 站內快訊</h3>
                 <p><a href="#news-section" class="sidebar-link smooth-scroll">📰 前往最新相關新聞</a></p>
                 <p style="margin-top: 8px;"><a href="#discussion-section" class="sidebar-link smooth-scroll">💬 前往毛孩討論區</a></p>
             </div>
 
-            <!-- 🌟 升級：互動式每日汪星人小知識（右上角標籤可點擊前往對應分頁！） -->
+            <!-- 🌟 每日汪星人小知識：標題固定單行，連結按鈕獨立於下一行靠右 -->
             <div class="daily-fact-card" id="dailyFactCard">
                 <div class="fact-header">
                     <h3>💡 每日汪星人小知識</h3>
-                    <a href="medical.html#:~:text=寵物晶片" id="factCategoryLink" class="fact-badge" title="點擊直達該知識區塊">🔗 看寵物晶片 ➔</a>
+                    <a href="medical.html?focus=寵物晶片" id="factCategoryLink" class="fact-badge" title="點擊直達該知識卡片">🔗 看寵物晶片 ➔</a>
                 </div>
-                <p id="dogFactText" class="fact-content">狗狗的鼻紋就像人類的指紋一樣，每一隻都是獨一無二的，甚至可以用來作為身分識別喔！🐾</p>
+                <p id="dogFactText" class="fact-content">狗狗的鼻紋就像人類的指紋一樣，每一隻都是獨一無二的，甚至可以用來結合寵物晶片作為身分識別喔！🐾</p>
                 <div class="fact-footer">
                     <span id="factCounter" class="fact-counter">第 1 / 12 則</span>
                     <button id="nextFactBtn" class="fact-btn">🎲 換一個冷知識</button>
                 </div>
             </div>
 
-            <!-- 🌟 討論區（加上專屬 ID 供頂部快速跳轉） -->
+            <!-- 討論區 -->
             <div class="discussion-board" id="discussion-section">
                 <h3>💬 討論區熱門話題</h3>
                 <p style="margin-bottom: 10px;">在這裡發布最新話題，與毛孩家長交流～</p>
@@ -266,14 +251,11 @@
         </div>
     </footer>
 
-    <!-- ==========================================
-         登入與個人檔案設定彈窗 (Modal)
-         ========================================== -->
+    <!-- 登入與個人檔案設定彈窗 (Modal) -->
     <div id="authModal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <span class="close-modal" id="closeModal">&times;</span>
 
-            <!-- 畫面一：輸入帳密 -->
             <div id="step1-login">
                 <h2 class="modal-title">🐾 歡迎來到狗狗友善知識網</h2>
                 <p class="modal-subtitle">請輸入 Email 與密碼進行登入或註冊</p>
@@ -285,7 +267,6 @@
                 <button id="sendCodeBtn" class="modal-btn primary-btn">下一步 (獲取驗證碼)</button>
             </div>
 
-            <!-- 畫面二：模擬驗證碼 -->
             <div id="step2-verify" style="display: none;">
                 <h2 class="modal-title">🔐 安全驗證</h2>
                 <p class="modal-subtitle">請輸入剛才彈出的 6 位數展示驗證碼</p>
@@ -296,7 +277,6 @@
                 <button id="backToLoginBtn" class="modal-btn text-btn">上一步</button>
             </div>
 
-            <!-- 畫面三：新手引導與個人檔案修改 -->
             <div id="step3-profile" style="display: none;">
                 <h2 class="modal-title">🎉 登入成功！領取你的身分證</h2>
                 <p class="modal-subtitle">在討論區，我們使用匿名保護您的隱私</p>
@@ -321,7 +301,6 @@
                     </div>
                 </div>
 
-                <!-- 動態寵物新增區 -->
                 <div id="petSelectorArea" class="pet-selector-area">
                     <div id="petList"></div>
                     <button id="addPetBtn" class="modal-btn dashed-btn">➕ 新增其他品種</button>
@@ -336,7 +315,6 @@
         </div>
     </div>
 
-    <!-- 引入 Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/auth.js"></script>
     <script src="js/search.js"></script>
@@ -344,15 +322,15 @@
     <script src="js/filter.js"></script>
     <script src="js/news-pagination.js"></script>
 
-    <!-- 🌟 網站生動化、下滑縮小 Header 與快速導覽腳本 -->
+    <!-- 網站生動化、固定縮小 Header 與快速導覽腳本 -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const mainHeader = document.getElementById('main-header');
             const scrollToTopLogo = document.getElementById('scrollToTopLogo');
 
-            // 1. 往下滑時自動縮小 Header，往上滑回頂端時恢復原狀
+            // 1. 往下滑時自動縮小固定在頂部的 Header
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
+                if (window.scrollY > 40) {
                     mainHeader.classList.add('scrolled');
                 } else {
                     mainHeader.classList.remove('scrolled');
@@ -367,14 +345,14 @@
                 });
             }
 
-            // 3. 攔截所有 .smooth-scroll 錨點連結，平滑滾動且不蓋住固定標題欄
+            // 3. 攔截所有 .smooth-scroll 錨點連結，平滑滾動且預留固定標題欄高度
             document.querySelectorAll('.smooth-scroll').forEach(link => {
                 link.addEventListener('click', function (e) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href');
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
-                        const headerOffset = mainHeader ? mainHeader.offsetHeight + 15 : 80;
+                        const headerOffset = mainHeader ? mainHeader.offsetHeight + 18 : 85;
                         const elementPosition = targetElement.getBoundingClientRect().top;
                         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -409,68 +387,20 @@
                 }
             }
 
-            // 5. 深度連結版：12 則每日汪星人小知識（點擊右上角標籤，直接定位到分頁內的該張知識卡片！）
+            // 5. 優雅跳轉版：12 則每日汪星人小知識（使用 ?focus= 參數觸發森林綠呼吸邊框，告別刺眼螢光筆！）
             const dogFacts = [
-                { 
-                    text: "狗狗的鼻紋就像人類的指紋一樣，每一隻都是獨一無二的，甚至可以用來結合寵物晶片作為身分識別喔！🐾", 
-                    tag: "🔗 看寵物晶片 ➔", 
-                    link: "medical.html#:~:text=寵物晶片" 
-                },
-                { 
-                    text: "狗狗搖尾巴不一定代表開心！尾巴偏向「右邊」通常是開心，偏向「左邊」可能代表緊張或警戒。🐕", 
-                    tag: "🔗 看尾巴肢體 ➔", 
-                    link: "behavior.html#:~:text=尾巴肢體" 
-                },
-                { 
-                    text: "巧克力和葡萄對狗狗來說是劇毒！哪怕只是幾顆葡萄乾，都可能引發急性腎衰竭，務必收好。🍫", 
-                    tag: "🔗 看中毒食材 ➔", 
-                    link: "medical.html#:~:text=葡萄與葡萄乾" 
-                },
-                { 
-                    text: "拉布拉多體內常帶有 POMC 基因缺陷，這會讓牠們天生貪吃、永遠覺得沒吃飽，飼主必須嚴格控管體重！🦴", 
-                    tag: "🔗 看拉布拉多 ➔", 
-                    link: "breeds.html#:~:text=拉布拉多" 
-                },
-                { 
-                    text: "許多人喜歡餵狗狗吃雞骨頭，但煮熟的骨頭咬碎後邊緣極為鋒利，非常容易刺穿狗狗的食道與腸胃！⚠️", 
-                    tag: "🔗 看高風險食物 ➔", 
-                    link: "medical.html#:~:text=熟骨頭" 
-                },
-                { 
-                    text: "無糖口香糖與部分花生醬常見的「木糖醇」，會導致狗狗胰島素大量分泌、血糖驟降，並造成嚴重肝損傷！🥜", 
-                    tag: "🔗 看木糖醇危害 ➔", 
-                    link: "medical.html#:~:text=木糖醇" 
-                },
-                { 
-                    text: "高頻急促的「呃...汪！」通常是狗狗在主人回家或準備出門玩耍時的「興奮吠叫」，可以透過聲音頻率解讀情緒喔！🎵", 
-                    tag: "🔗 聽興奮吠叫 ➔", 
-                    link: "behavior.html#:~:text=興奮吠叫" 
-                },
-                { 
-                    text: "小型犬如吉娃娃代謝極快，建議一天分 3～4 餐餵食；且因為耐寒力差，冬天出門一定要注意穿衣保暖！🧥", 
-                    tag: "🔗 看吉娃娃養護 ➔", 
-                    link: "breeds.html#:~:text=吉娃娃" 
-                },
-                { 
-                    text: "黃金獵犬天性溫順愛游泳，但因為耳朵下垂蓋住耳道，每次游泳或洗澡後務必徹底擦乾耳朵，預防發炎！🛁", 
-                    tag: "🔗 看黃金獵犬 ➔", 
-                    link: "breeds.html#:~:text=黃金獵犬" 
-                },
-                { 
-                    text: "狗狗幼年需完成「核心疫苗」（包含犬瘟熱、狂犬病等），且年滿一歲後每年仍需定期補強一次基礎疫苗！💉", 
-                    tag: "🔗 看疫苗接種 ➔", 
-                    link: "medical.html#:~:text=疫苗接種" 
-                },
-                { 
-                    text: "洋蔥、大蒜、韭菜等蔥類植物含有硫化物，會破壞狗狗的紅血球並造成危險的溶血性貧血，絕對不可誤食！🧅", 
-                    tag: "🔗 看蔥類植物 ➔", 
-                    link: "medical.html#:~:text=蔥類植物" 
-                },
-                { 
-                    text: "貴賓犬與比熊犬毛捲親人、較不易掉毛，但玩具型貴賓易有漸進性視網膜萎縮，日常也務必天天幫牠們刷牙！🪥", 
-                    tag: "🔗 看貴賓與比熊 ➔", 
-                    link: "breeds.html#:~:text=貴賓犬" 
-                }
+                { text: "狗狗的鼻紋就像人類的指紋一樣，每一隻都是獨一無二的，甚至可以用來結合寵物晶片作為身分識別喔！🐾", tag: "🔗 看寵物晶片 ➔", link: "medical.html?focus=寵物晶片" },
+                { text: "狗狗搖尾巴不一定代表開心！尾巴偏向「右邊」通常是開心，偏向「左邊」可能代表緊張或警戒。🐕", tag: "🔗 看尾巴肢體 ➔", link: "behavior.html?focus=尾巴" },
+                { text: "巧克力和葡萄對狗狗來說是劇毒！哪怕只是幾顆葡萄乾，都可能引發急性腎衰竭，務必收好。🍫", tag: "🔗 看中毒食材 ➔", link: "medical.html?focus=葡萄與葡萄乾" },
+                { text: "拉布拉多體內常帶有 POMC 基因缺陷，這會讓牠們天生貪吃、永遠覺得沒吃飽，飼主必須嚴格控管體重！🦴", tag: "🔗 看拉布拉多 ➔", link: "breeds.html?focus=拉布拉多" },
+                { text: "許多人喜歡餵狗狗吃雞骨頭，但煮熟的骨頭咬碎後邊緣極為鋒利，非常容易刺穿狗狗的食道與腸胃！⚠️", tag: "🔗 看高風險食物 ➔", link: "medical.html?focus=熟骨頭" },
+                { text: "無糖口香糖與部分花生醬常見的「木糖醇」，會導致狗狗胰島素大量分泌、血糖驟降，並造成嚴重肝損傷！🥜", tag: "🔗 看木糖醇危害 ➔", link: "medical.html?focus=木糖醇" },
+                { text: "高頻急促的「呃...汪！」通常是狗狗在主人回家或準備出門玩耍時的「興奮吠叫」，可以透過聲音頻率解讀情緒喔！🎵", tag: "🔗 聽興奮吠叫 ➔", link: "behavior.html?focus=興奮吠叫" },
+                { text: "小型犬如吉娃娃代謝極快，建議一天分 3～4 餐餵食；且因為耐寒力差，冬天出門一定要注意穿衣保暖！🧥", tag: "🔗 看吉娃娃養護 ➔", link: "breeds.html?focus=吉娃娃" },
+                { text: "黃金獵犬天性溫順愛游泳，但因為耳朵下垂蓋住耳道，每次游泳或洗澡後務必徹底擦乾耳朵，預防發炎！🛁", tag: "🔗 看黃金獵犬 ➔", link: "breeds.html?focus=黃金獵犬" },
+                { text: "狗狗幼年需完成「核心疫苗」（包含犬瘟熱、狂犬病等），且年滿一歲後每年仍需定期補強一次基礎疫苗！💉", tag: "🔗 看疫苗接種 ➔", link: "medical.html?focus=疫苗接種" },
+                { text: "洋蔥、大蒜、韭菜等蔥類植物含有硫化物，會破壞狗狗的紅血球並造成危險的溶血性貧血，絕對不可誤食！🧅", tag: "🔗 看蔥類植物 ➔", link: "medical.html?focus=蔥類植物" },
+                { text: "貴賓犬與比熊犬毛捲親人、較不易掉毛，但玩具型貴賓易有漸進性視網膜萎縮，日常也務必天天幫牠們刷牙！🪥", tag: "🔗 看貴賓與比熊 ➔", link: "breeds.html?focus=貴賓犬" }
             ];
 
             const factText = document.getElementById('dogFactText');
@@ -506,7 +436,7 @@
 
             // 6. 點擊畫面冒出「可愛狗腳印 🐾」互動彩蛋
             document.addEventListener('click', (e) => {
-                if (e.target.closest('.modal-content') || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+                if (e.target.closest('.modal-content') || e.target.closest('.searchBar') || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
                 const paw = document.createElement('span');
                 paw.className = 'click-paw';
                 paw.textContent = '🐾';
