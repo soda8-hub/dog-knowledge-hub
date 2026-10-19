@@ -35,15 +35,16 @@
     box-sizing: border-box;
 }
 
+/* 讓所有 錨點跳轉時產生平滑滑動的動畫效果 */
 html {
     scroll-behavior: smooth;
 }
 
 body {
     font-family: 'Microsoft JhengHei', '微軟正黑體', 'PingFang TC', Arial, sans-serif;
-    /* 加入淡淡的森林系網格背景，增加質感 */
     background-color: var(--bg-page);
-    background-image: radial-gradient(#d8ece0 1px, transparent 1px);
+    /* 增加極細緻的森林系網點，讓背景不那麼死白單調 */
+    background-image: radial-gradient(#e5f2eb 1px, transparent 1px);
     background-size: 24px 24px;
     color: var(--text-main);
     line-height: 1.7;
@@ -73,11 +74,6 @@ a:hover {
 /* =============================================
    1. 頂部 Header & 導覽列
    ============================================= */
-@keyframes subpageFadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
 header {
     text-align: center;
     padding: 15px 20px;
@@ -86,13 +82,15 @@ header {
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
     margin: 10px 10px 20px 10px;
-    animation: subpageFadeUp 0.5s ease-out both;
+    position: relative;
+    overflow: hidden;
 }
 
 header h1 {
     margin: 0;
     font-size: 32px;
     letter-spacing: 2px;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 header p {
@@ -108,10 +106,10 @@ nav {
     z-index: 1000;
     text-align: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(6px);
     margin-top: -5px;
     margin-bottom: 25px;
     padding: 10px 0;
+    backdrop-filter: blur(8px);
 }
 
 nav a {
@@ -141,7 +139,7 @@ nav a:active {
 }
 
 /* =============================================
-   2. 共用容器與卡片大底座 (.section-block)
+   2. 共用容器與大分類卡片底座
    ============================================= */
 .container {
     max-width: none;
@@ -155,14 +153,14 @@ section,
 .category-block,
 .card,
 .care-section,
-.sport-card,
-.section-block {
+.sport-card {
     background: var(--bg-white);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
     margin-bottom: 40px;
     padding: 20px 40px 30px 40px;
-    scroll-margin-top: 70px;
+    scroll-margin-top: 85px; /* 防遮擋 */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 /* =============================================
@@ -176,7 +174,7 @@ h2 {
     padding-bottom: 10px;
     padding-left: 0;
     border-left: none;
-    border-bottom: 2px solid var(--green-light);
+    border-bottom: 1px solid #eee;
 }
 
 h3 {
@@ -208,23 +206,13 @@ table {
     box-shadow: var(--shadow-sm);
 }
 
-th, td {
-    border: 1px solid #e0e0e0;
-    padding: 12px 14px;
-    text-align: left;
-}
-
-th {
-    background-color: var(--green-main);
-    color: white;
-    font-weight: bold;
-}
-
+th, td { border: 1px solid #e0e0e0; padding: 12px 14px; text-align: left; }
+th { background-color: var(--green-main); color: white; font-weight: bold; }
 tr:nth-child(even) { background-color: var(--green-bg); }
 tr:hover { background-color: var(--green-light); }
 
 /* =============================================
-   4. 全站小卡片網格與生動化互動特效
+   4. 全站小卡片網格系統與生動互動
    ============================================= */
 .item-grid {
     display: grid;
@@ -233,15 +221,13 @@ tr:hover { background-color: var(--green-light); }
     margin-top: 16px;
 }
 
-.item-card, 
-.sub-card, 
-.danger-card {
+.item-card, .dog-card, .danger-card {
     border: 1px solid var(--border);
-    border-top: 5px solid var(--green-main); /* 頂部活潑色帶 */
+    border-top: 5px solid var(--green-main); /* 讓小卡片頂部有活潑色彩 */
     border-radius: var(--radius-md);
     padding: 20px;
     background: var(--bg-white);
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease, border-color 0.3s ease !important;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease, border-color 0.3s ease;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -250,21 +236,14 @@ tr:hover { background-color: var(--green-light); }
     position: relative;
 }
 
-/* 危險食物卡片紅色帶 */
-.danger-card {
-    border-top-color: var(--danger) !important;
+/* 滑鼠移入卡片時微浮起 */
+.item-card:hover, .dog-card:hover, .danger-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(36, 182, 87, 0.12);
+    border-color: #a3e4bd;
 }
 
-/* 🌟 卡片懸停立體上浮特效 */
-.item-card:hover,
-.sub-card:hover,
-.danger-card:hover {
-    transform: translateY(-6px) !important;
-    box-shadow: 0 12px 24px rgba(36, 182, 87, 0.15) !important;
-    border-color: #a3e4bd !important;
-}
-
-.item-name {
+.item-name, .dog-name {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
@@ -272,22 +251,22 @@ tr:hover { background-color: var(--green-light); }
     transition: transform 0.2s ease;
 }
 
-/* 卡片標題懸停右移 */
-.item-card:hover .item-name {
+.item-card:hover .item-name, 
+.dog-card:hover .dog-name {
     transform: translateX(4px);
 }
 
 .item-name.danger-text { color: var(--danger); }
 .item-name.warning-text { color: #d35400; }
 
-.item-card p {
+.item-card p, .dog-card p {
     font-size: 16px;
     color: #444;
     margin-bottom: 8px;
 }
 
 /* =============================================
-   5. 標籤與提示方框
+   5. 標籤與警示框
    ============================================= */
 .info-label {
     font-size: 16px;
@@ -297,19 +276,14 @@ tr:hover { background-color: var(--green-light); }
     margin-bottom: 4px;
 }
 
+/* 標籤懸停 Q 彈特效 */
 .tag, .badge, span[class*="tag"] {
     display: inline-block;
-    padding: 4px 12px !important;
-    margin: 0 4px 6px 0 !important;
-    border-radius: 20px !important;
-    font-size: 0.88rem !important;
-    font-weight: bold !important;
-    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
-.tag:hover, .badge:hover {
-    transform: translateY(-2px) scale(1.08) !important;
-    box-shadow: 0 4px 8px rgba(36, 182, 87, 0.2) !important;
+.tag:hover {
+    transform: translateY(-2px) scale(1.08);
+    box-shadow: 0 4px 8px rgba(36, 182, 87, 0.2);
 }
 
 .item-card .interpret-box strong {
@@ -318,16 +292,15 @@ tr:hover { background-color: var(--green-light); }
     margin-bottom: 4px;
 }
 
-/* 注意事項黃框 */
 .warning-box {
-    background-color: #fffbea !important;
-    border-left: 5px solid var(--accent-yellow) !important;
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
-    padding: 12px 14px !important;
-    font-size: 15px !important;
-    color: #444 !important;
-    line-height: 1.6 !important;
-    margin-top: auto !important;
+    background-color: #fffbea;
+    border-left: 5px solid var(--accent-yellow);
+    padding: 12px 14px;
+    font-size: 15px;
+    color: #444;
+    line-height: 1.6;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-top: auto;
 }
 
 .warning-box strong {
@@ -353,7 +326,7 @@ tr:hover { background-color: var(--green-light); }
 }
 
 /* =============================================
-   6. 其他分頁專屬細節 (行為、年紀、用品、運動)
+   6. 其他分頁細節
    ============================================= */
 .tips {
     background-color: #fff8ee;
@@ -377,48 +350,23 @@ tr:hover { background-color: var(--green-light); }
     padding: 16px;
     border-radius: var(--radius-sm);
     background: var(--bg-white);
-    transition: box-shadow 0.2s;
+    transition: box-shadow 0.2s, transform 0.2s;
 }
 
-.item:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
+.item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
 .item h3 { margin-top: 0; font-size: 18px; padding: 6px 10px; }
 
-.age-standard {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin: 20px 0;
-}
-
-.age-card {
-    background: var(--green-bg);
-    padding: 18px 20px;
-    border-radius: var(--radius-md);
-    border: 1px solid #c8e6d4;
-    text-align: center;
-    min-width: 150px;
-    box-shadow: var(--shadow-sm);
-}
-
+.age-standard { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 16px; margin: 20px 0; }
+.age-card { background: var(--green-bg); padding: 18px 20px; border-radius: var(--radius-md); border: 1px solid #c8e6d4; text-align: center; min-width: 150px; box-shadow: var(--shadow-sm); }
 .age-card p { color: var(--text-muted); margin-bottom: 6px; }
 .age-card b { font-size: 22px; color: var(--green-main); }
 
-.highlight-box {
-    background-color: var(--green-bg);
-    border-left: 5px solid var(--green-main);
-    padding: 16px 20px;
-    margin: 16px 0;
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-}
-
-.highlight-box h3 {
-    margin-top: 0;
-    background: none;
-    padding: 0;
-    color: var(--green-dark);
-}
-
+.highlight-box { background-color: var(--green-bg); border-left: 5px solid var(--green-main); padding: 16px 20px; margin: 16px 0; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.highlight-box h3 { margin-top: 0; background: none; padding: 0; color: var(--green-dark); }
 .category-block { border-top: 5px solid var(--green-main); border-left: none; }
 .category-block>h2::before { content: "🦴"; margin-right: 8px; font-size: 24px; }
 .category-block>h2 { border-left: none; padding-left: 0; }
@@ -426,13 +374,11 @@ tr:hover { background-color: var(--green-light); }
 .item-title { font-weight: bold; color: var(--green-dark); display: block; font-size: 19px; margin-bottom: 5px; }
 .item-desc { margin: 0; padding-left: 18px; position: relative; color: var(--text-muted); font-size: 16px; }
 .item-desc::before { content: "•"; position: absolute; left: 4px; color: var(--green-main); font-weight: bold; }
-
 .care-section { border-left: 6px solid var(--green-main); }
 .care-section ul { list-style: none; padding: 0; }
 .care-section ul li { margin-bottom: 12px; padding-left: 26px; position: relative; font-size: 16px; }
 .care-section ul li::before { content: "🐾"; position: absolute; left: 0; font-size: 14px; }
 .highlight { font-weight: bold; color: #c0392b; }
-
 .sport-card { border-left: 6px solid var(--green-main); }
 .sport-card ul { list-style: none; padding: 0; margin: 0; }
 .sport-card ul li { margin-bottom: 14px; padding-left: 26px; position: relative; font-size: 16px; }
@@ -462,40 +408,25 @@ footer p { color: #c8ddd2; letter-spacing: 1.2px; }
     transform: translateY(28px) scale(0.98);
     transition: opacity 0.55s ease-out, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
-
 .scroll-reveal-init.revealed {
     opacity: 1;
     transform: translateY(0) scale(1);
 }
 
 /* =========================================================
-   🌟 9. 超醒目「跳轉定位聚光燈」 (金綠雙色動態外框 + 徽章)
+   🌟 9. 超醒目「跳轉定位聚光燈」 (取代舊版醜陋紫色框)
    ========================================================= */
-@keyframes targetCardHighlight {
-    0% {
-        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.85), 0 14px 34px rgba(39, 174, 96, 0.35);
-        transform: scale(1.02);
-        background-color: #f0fdf4;
-    }
-    50% {
-        box-shadow: 0 0 0 14px rgba(46, 204, 113, 0), 0 18px 40px rgba(243, 156, 18, 0.28);
-        transform: scale(1.03);
-        background-color: #fefce8;
-    }
-    100% {
-        box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.35), 0 12px 28px rgba(39, 174, 96, 0.2);
-        transform: scale(1);
-        background-color: #ffffff;
-    }
+@keyframes elegantSpotlight {
+    0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); border-color: #2ecc71; background-color: #f0fdf4; transform: scale(1.02); }
+    50% { box-shadow: 0 0 0 12px rgba(46, 204, 113, 0); border-color: #27ae60; background-color: #e8f8ed; transform: scale(1.03); }
+    100% { box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-color: var(--border); background-color: var(--bg-white); transform: scale(1); }
 }
 
 .spotlight-focus-card {
-    animation: targetCardHighlight 1.4s ease-in-out 3 forwards !important;
-    border: 3px solid #27ae60 !important;
-    border-top: 6px solid #f39c12 !important;
-    z-index: 10 !important;
+    animation: elegantSpotlight 2.5s ease-out forwards !important;
+    position: relative;
+    border-width: 2px !important;
 }
-
 .spotlight-focus-card::after {
     content: "🐾 您查找的知識點";
     position: absolute;
@@ -508,83 +439,72 @@ footer p { color: #c8ddd2; letter-spacing: 1.2px; }
     padding: 4px 12px;
     border-radius: 20px;
     box-shadow: 0 4px 10px rgba(230, 126, 34, 0.35);
-    letter-spacing: 0.5px;
+    z-index: 10;
 }
 
 /* =============================================
-   📱 10. RWD 手機版大解放 (解除三層框，找回呼吸空間)
+   📱 10. RWD 響應式設計 (手機/平板 - 解除擁擠感)
    ============================================= */
 @media (max-width: 768px) {
     header {
         margin: 10px 10px 20px;
         padding: 20px 15px;
     }
-
-    header h1 {
-        font-size: 24px;
-    }
-
+    header h1 { font-size: 24px; }
+    
     .container {
-        padding: 0 12px !important;
+        padding: 0 12px !important; /* 收窄外側留白 */
     }
 
     /* 關鍵：把外層的白底方塊變透明，消除壓迫感 */
-    .category-section,
-    section,
-    .section,
-    .care-section,
-    .category-block,
-    .card,
-    .sport-card,
-    .section-block {
+    .category-section, section, .section, .care-section, .category-block, .card, .sport-card {
         background: transparent !important;
         box-shadow: none !important;
         border: none !important;
         padding: 0 !important;
-        margin-bottom: 32px !important;
+        margin-bottom: 30px !important;
     }
 
-    .section-block h2 {
+    .category-section h2, .section-block h2 {
         background: white;
-        padding: 14px 18px !important;
+        padding: 12px 15px !important;
         border-radius: 12px !important;
         border-left: 6px solid var(--green-main) !important;
         border-bottom: none !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04) !important;
         font-size: 1.35rem !important;
         margin-bottom: 16px !important;
     }
 
-    .food-danger,
-    .food-warning {
+    .food-danger, .food-warning {
         padding: 12px;
         margin-left: -5px;
         margin-right: -5px;
     }
 
-    /* 內層卡片真正拉開距離，增加左右內距 */
+    /* 內層小卡片真正拉開距離 */
     .item-grid {
         grid-template-columns: 1fr;
         gap: 20px !important;
+        padding: 0 !important;
     }
 
-    .item-card, .sub-card, .danger-card {
-        padding: 24px 20px !important;
+    .item-card, .dog-card, .sub-card, .danger-card {
+        padding: 22px 18px !important;
         border-radius: 16px !important;
-        box-shadow: 0 8px 22px rgba(31, 64, 46, 0.08) !important;
+        box-shadow: 0 6px 18px rgba(31, 64, 46, 0.08) !important;
     }
 
-    /* 將警告框貼緊底部，節省空間 */
-    .warning-box,
-    .item-card .interpret-box {
+    .warning-box, .item-card .interpret-box {
         padding: 14px 16px !important; 
         font-size: 14.5px !important;
-        margin: 16px -20px -20px -20px !important; 
+        margin: 16px -18px -22px -18px !important; /* 貼底 */
         border-radius: 0 0 16px 16px !important;
         border-left: none !important;
         border-top: 3px solid var(--accent-yellow) !important;
     }
 
+    /* 導覽列 UI/UX 升級 */
     nav {
         display: flex;
         flex-wrap: nowrap;
@@ -603,13 +523,7 @@ footer p { color: #c8ddd2; letter-spacing: 1.2px; }
         background: rgba(255, 255, 255, 0.4);
         border-radius: 10px;
     }
-    nav::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.8);
-    }
-    nav::after {
-        content: '';
-        flex: 0 0 10px; 
-    }
+    nav::after { content: ''; flex: 0 0 10px; }
 
     nav a {
         display: inline-block;
@@ -619,11 +533,7 @@ footer p { color: #c8ddd2; letter-spacing: 1.2px; }
         padding: 6px 16px;
     }
 
-    .behavior-box {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-
+    .behavior-box { grid-template-columns: 1fr; gap: 15px; }
     table { font-size: 14px; }
     th, td { padding: 8px 10px; }
     
