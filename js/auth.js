@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const authEmail = document.getElementById('authEmail');
     const authPassword = document.getElementById('authPassword');
     const sendCodeBtn = document.getElementById('sendCodeBtn');
+    const forgotPasswordBtn = document.getElementById('forgotPasswordBtn'); 
     
     const otpCode = document.getElementById('otpCode');
     const verifyLoginBtn = document.getElementById('verifyLoginBtn');
@@ -67,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <option value="比熊犬">比熊犬</option>
         </optgroup>
         <optgroup label="其他">
-            <option value="米克斯">米克斯</option>
             <option value="其他">其他 (自行輸入)</option>
         </optgroup>
     `;
@@ -210,8 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
     sendCodeBtn.addEventListener('click', async () => {
         const email = authEmail.value;
         const password = authPassword.value;
-        if (!email || password.length < 6) {
-            alert("請輸入有效的 Email 與至少 6 碼密碼！");
+        if (!email || password.length < 8) {
+            alert("為了您的帳號安全，請輸入有效的 Email 與至少 8 碼的密碼！");
             return;
         }
 
@@ -230,7 +230,12 @@ document.addEventListener('DOMContentLoaded', () => {
         sendCodeBtn.disabled = false;
 
         if (error) {
-            alert(`發生錯誤：${error.message}`);
+            // 攔截特定的錯誤訊息，轉化為友善的 UX 提示
+            if (error.message.includes("User already registered")) {
+                alert("此 Email 已被註冊，但您輸入的密碼錯誤！請重新確認。");
+            } else {
+                alert(`發生錯誤：${error.message}`);
+            }
         } else {
             // 隨機產生 6 位數
             currentOtp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -240,6 +245,15 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => otpCode.focus(), 100); 
         }
     });
+
+    // ==========================================
+    // 7.5 忘記密碼提示邏輯
+    // ==========================================
+    if (forgotPasswordBtn) {
+        forgotPasswordBtn.addEventListener('click', () => {
+            alert("[系統提示] 忘記密碼功能需串接真實 SMTP 發信伺服器。\n專題展示期間若遺失密碼，請聯繫系統管理員進行後台重置。");
+        });
+    }
 
     // ==========================================
     // 8. 步驟二：模擬驗證碼核對
