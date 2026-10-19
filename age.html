@@ -181,5 +181,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 </script>
+
+<!-- 優雅卡片聚光燈定位腳本（支援 ?focus=關鍵字 平滑捲動與森林綠呼吸外框） -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const focusText = params.get("focus");
+            if (!focusText) return;
+
+            // 在分頁中尋找包含該標題文字的卡片 (.card-item, .sub-card, .danger-card, .section-block)
+            const candidates = document.querySelectorAll('.card-item, .sub-card, .danger-card, .warning-box, .section-block');
+            for (const card of candidates) {
+                if (card.textContent.includes(focusText)) {
+                    setTimeout(() => {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        card.classList.add('spotlight-focus-card');
+                    }, 200);
+                    break;
+                }
+            }
+        });
+    </script>    
+    
 </body>
 </html>
