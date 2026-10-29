@@ -255,6 +255,59 @@
     <p>&copy; 2026 狗狗行為研究室 - 資料來源：狗狗行為與年紀狀況手冊</p>
 </footer>
 
+
+<!-- 🎵 狗狗行為專屬：音效播放與 UI 互動腳本 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const soundMimics = document.querySelectorAll('.sound-mimic');
+            let currentAudio = null;
+            let currentBox = null;
+
+            soundMimics.forEach(box => {
+                box.addEventListener('click', function() {
+                    const soundSrc = this.getAttribute('data-sound');
+                    if (!soundSrc) return;
+
+                    // 1. 如果點擊的是「正在播放中」的同一個按鈕，則暫停播放並移除動畫
+                    if (currentAudio && currentBox === this) {
+                        currentAudio.pause();
+                        currentAudio.currentTime = 0; // 音軌歸零
+                        this.classList.remove('playing');
+                        currentAudio = null;
+                        currentBox = null;
+                        return;
+                    }
+
+                    // 2. 如果點擊了新的按鈕，但有其他聲音正在播放，先停止舊的
+                    if (currentAudio) {
+                        currentAudio.pause();
+                        if (currentBox) currentBox.classList.remove('playing');
+                    }
+
+                    // 3. 建立新的音頻物件並播放
+                    currentAudio = new Audio(soundSrc);
+                    currentBox = this;
+                    
+                    // 加上播放中的視覺動畫 class (對應 behavior.css 中的 .playing)
+                    this.classList.add('playing');
+
+                    currentAudio.play().catch(e => {
+                        console.error("播放音效失敗，可能是瀏覽器阻擋自動播放:", e);
+                        this.classList.remove('playing');
+                    });
+
+                    // 4. 當音效播放完畢後，自動移除動畫狀態
+                    currentAudio.addEventListener('ended', () => {
+                        this.classList.remove('playing');
+                        currentAudio = null;
+                        currentBox = null;
+                    });
+                });
+            });
+        });
+    </script>
+
+    
 <!-- 🌟 八大分頁共用：滑動動態浮現 ＋ 搜尋精準定位聚光燈 -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
