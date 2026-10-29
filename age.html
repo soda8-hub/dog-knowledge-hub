@@ -165,43 +165,70 @@
     <p>&copy; 2026 狗狗照護百科 - 內容參考自《狗狗行為與年紀狀況》</p>
 </footer>
 
-<!-- ✅ 新增的平滑滾動腳本 -->
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const navLinks = document.querySelectorAll('nav a[href^="#"]');
-    navLinks.forEach(link => {
-        link.addEventListener("click", function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute("href");
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-        });
-    });
-});
-</script>
-
-<!-- 優雅卡片聚光燈定位腳本（支援 ?focus=關鍵字 平滑捲動與森林綠呼吸外框） -->
+<!-- 🌟 八大分頁共用：滑動動態浮現 ＋ 搜尋精準定位聚光燈 -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const params = new URLSearchParams(window.location.search);
-            const focusText = params.get("focus");
-            if (!focusText) return;
+            // 1. 滑動動態浮現 (讓所有卡片與區塊活起來)
+            const cards = document.querySelectorAll('.item-card, .dog-card, .sub-card, .danger-card, .age-card, .sport-card, .food-danger, .food-warning, .section-block');
+            
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                            observer.unobserve(entry.target); 
+                            
+                            // 動畫結束後移除初始化 class，把控制權還給 hover 特效，徹底解決 CSS 衝突
+                            setTimeout(() => {
+                                entry.target.classList.remove('scroll-reveal-init', 'revealed');
+                            }, 700);
+                        }
+                    });
+                }, { threshold: 0.05, rootMargin: "50px 0px -20px 0px" });
 
-            // 在分頁中尋找包含該標題文字的卡片 (.card-item, .sub-card, .danger-card, .section-block)
-            const candidates = document.querySelectorAll('.dog-card, .item-card, .age-card, .card-item, .sub-card, .danger-card, .warning-box, .section-block');
-            for (const card of candidates) {
-                if (card.textContent.includes(focusText)) {
+                cards.forEach((card) => {
+                    card.classList.add('scroll-reveal-init');
+                    observer.observe(card);
+                });
+            }
+
+            // 2. 接收 ?focus= 網址參數，進行精準跳轉與動畫打光
+            const params = new URLSearchParams(window.location.search);
+            const focusKw = params.get('focus');
+            
+            if (focusKw) {
+                // 從最內層、最小的小卡片開始找，避免一開始就抓到外層的大容器
+                const targetSelectors = ['.item-card', '.dog-card', '.sub-card', '.danger-card', '.food-warning', '.food-danger', '.warning-box', '.section-block'];
+                let targetCard = null;
+
+                for (let selector of targetSelectors) {
+                    const elements = document.querySelectorAll(selector);
+                    for (let el of elements) {
+                        if (el.textContent.includes(focusKw)) {
+                            targetCard = el;
+                            break; 
+                        }
+                    }
+                    if (targetCard) break; // 只要在較小層級找到，就立即停止尋找
+                }
+
+                if (targetCard) {
+                    // 解除該卡片的隱藏狀態，防止跳轉時卡片不可見
+                    targetCard.classList.remove('scroll-reveal-init');
+                    
+                    // 稍微延遲讓 DOM 準備好，然後平滑滾動到螢幕正中央
                     setTimeout(() => {
-                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        card.classList.add('spotlight-focus-card');
-                    }, 200);
-                    break;
+                        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                    
+                    // 🌟 關鍵：等待滾動差不多到達定位後，再觸發連續彈跳光暈動畫，保證使用者看見！
+                    setTimeout(() => {
+                        targetCard.classList.add('spotlight-focus-card');
+                    }, 600);
                 }
             }
         });
-    </script>    
+    </script> 
     
 </body>
 </html>
