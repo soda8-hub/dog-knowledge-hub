@@ -131,10 +131,32 @@
     <p>&copy; 2026 狗狗食物飼料專題 - 保持愛犬健康，從了解開始</p>
 </footer>
 
-<!-- 🌟 八大分頁共用：滑動動態浮現 ＋ 搜尋精準定位聚光燈 -->
+<!-- 🌟 八大分頁共用：導覽列返回防呆 ＋ 滑動特效 ＋ 搜尋精準定位 -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // 1. 滑動動態浮現 (讓所有卡片與區塊活起來)
+            
+            // ==========================================
+            // 1. 解決導覽列上一頁問題：攔截點擊，防止產生歷史紀錄
+            // ==========================================
+            const navLinks = document.querySelectorAll('nav a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener("click", function(e) {
+                    // 阻擋預設的錨點跳轉行為 (防止將 #hash 寫入瀏覽器歷史紀錄)
+                    e.preventDefault(); 
+                    
+                    const targetId = this.getAttribute("href");
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        // 僅執行平滑滾動，網址列不變，按「上一頁」就會直接離開此分頁
+                        targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }
+                });
+            });
+
+            // ==========================================
+            // 2. 滑動動態浮現 (讓所有卡片與區塊活起來)
+            // ==========================================
             const cards = document.querySelectorAll('.item-card, .dog-card, .sub-card, .danger-card, .age-card, .sport-card, .food-danger, .food-warning, .section-block');
             
             if ('IntersectionObserver' in window) {
@@ -144,7 +166,7 @@
                             entry.target.classList.add('revealed');
                             observer.unobserve(entry.target); 
                             
-                            // 動畫結束後移除初始化 class，把控制權還給 hover 特效，徹底解決 CSS 衝突
+                            // 動畫結束後移除初始化 class，把控制權還給 hover 特效，解決 CSS 衝突
                             setTimeout(() => {
                                 entry.target.classList.remove('scroll-reveal-init', 'revealed');
                             }, 700);
@@ -152,13 +174,19 @@
                     });
                 }, { threshold: 0.05, rootMargin: "50px 0px -20px 0px" });
 
-                cards.forEach((card) => {
+                cards.forEach((card, idx) => {
                     card.classList.add('scroll-reveal-init');
+                    // 製造波浪般的錯開浮現感
+                    card.style.transitionDelay = `${(idx % 3) * 0.05}s`;
                     observer.observe(card);
                 });
+            } else {
+                cards.forEach(card => card.classList.add('revealed'));
             }
 
-            // 2. 接收 ?focus= 網址參數，進行精準跳轉與動畫打光
+            // ==========================================
+            // 3. 接收 ?focus= 網址參數，進行精準跳轉與動畫打光
+            // ==========================================
             const params = new URLSearchParams(window.location.search);
             const focusKw = params.get('focus');
             
@@ -179,18 +207,22 @@
                 }
 
                 if (targetCard) {
-                    // 解除該卡片的隱藏狀態，防止跳轉時卡片不可見
-                    targetCard.classList.remove('scroll-reveal-init');
-                    
-                    // 稍微延遲讓 DOM 準備好，然後平滑滾動到螢幕正中央
                     setTimeout(() => {
-                        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 100);
-                    
-                    // 🌟 關鍵：等待滾動差不多到達定位後，再觸發連續彈跳光暈動畫，保證使用者看見！
-                    setTimeout(() => {
-                        targetCard.classList.add('spotlight-focus-card');
-                    }, 600);
+                        // 確保目標不受滑動隱藏動畫影響
+                        targetCard.classList.remove('scroll-reveal-init');
+                        
+                        // 稍微延遲讓 DOM 準備好，然後平滑滾動到螢幕正中央
+                        setTimeout(() => {
+                            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                        
+                        // 🌟 強制瀏覽器重繪，保證跳轉動畫 100% 觸發
+                        setTimeout(() => {
+                            targetCard.classList.remove('spotlight-focus-card');
+                            void targetCard.offsetWidth; 
+                            targetCard.classList.add('spotlight-focus-card');
+                        }, 600);
+                    }, 400); 
                 }
             }
         });
