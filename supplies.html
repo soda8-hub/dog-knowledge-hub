@@ -174,7 +174,7 @@
             
             if (focusKw) {
                 // 從最內層、最小的小卡片開始找，避免一開始就抓到外層的大容器
-                const targetSelectors = ['.item-card', '.dog-card', '.sub-card', '.danger-card', '.age-card', '.item-group', '.tips-box', '.highlight-box', '.food-warning', '.food-danger', '.warning-box', '.care-section', '.sport-card', '.category-block', '.category-section', '.section', '.card', '.section-block'];
+                const targetSelectors = ['.item-card', '.dog-card', '.sub-card', '.danger-card', '.food-warning', '.food-danger', '.warning-box', '.section-block'];
                 let targetCard = null;
 
                 for (let selector of targetSelectors) {
