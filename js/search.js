@@ -1,190 +1,231 @@
-// =========================================================
-// 全站搜尋：穩定建議清單、滑鼠/鍵盤導覽、可讀取的相關關鍵字
-// =========================================================
+window.addEventListener('pageshow', function () {
+    // 🌟 返回首頁時，自動清空搜尋欄內容，保持乾淨
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsBox = document.getElementById('searchSuggestions');
+    if (searchInput) searchInput.value = '';
+    if (suggestionsBox) suggestionsBox.style.display = 'none';
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchBtn');
-    const searchSuggestions = document.getElementById('searchSuggestions');
-    if (!searchInput || !searchBtn || !searchSuggestions) return;
+    const suggestionsBox = document.getElementById('searchSuggestions');
 
-    const knowledgeIndex = [
-        // --- 品種百科 (breeds.html) ---
-        { title: "黃金獵犬", category: "品種百科", keywords: "大型犬 溫順 聰明 愛游泳 耳朵 髖關節 導盲犬", summary: "大型犬｜溫順聰明愛游泳，游泳後務必徹底擦乾耳朵", url: "breeds.html?focus=黃金獵犬" },
-        { title: "拉布拉多", category: "品種百科", keywords: "拉不拉多 大型犬 短毛 活潑 貪吃 POMC 肥胖", summary: "大型犬｜具 POMC 基因缺陷天生貪吃，需嚴格控食避免肥胖", url: "breeds.html?focus=拉布拉多" },
-        { title: "哈士奇", category: "品種百科", keywords: "二哈 雪橇犬 大型犬 像狼 愛嚎叫 怕熱 拆家", summary: "大型犬｜外型像狼、愛嚎叫且怕熱，需極大運動量", url: "breeds.html?focus=哈士奇" },
-        { title: "德國牧羊犬", category: "品種百科", keywords: "狼犬 大型犬 忠誠 警犬 警覺性 胃扭轉", summary: "大型犬｜忠誠警覺性高，留意髖關節與急性胃扭轉", url: "breeds.html?focus=德國牧羊犬" },
-        { title: "台灣土狗", category: "品種百科", keywords: "台灣犬 大型犬 立耳 忠誠 適應力 護主", summary: "大型犬｜適應台灣氣候、遺傳疾病極少，需較大運動量", url: "breeds.html?focus=台灣土狗" },
-        { title: "柴犬", category: "品種百科", keywords: "中型犬 日本犬 固執 獨立 換毛 皮膚過敏 青光眼", summary: "中型犬｜獨立固執，需留意換毛期皮膚過敏與青光眼", url: "breeds.html?focus=柴犬" },
-        { title: "法國鬥牛犬", category: "品種百科", keywords: "法鬥 中型犬 短吻 怕熱 中暑 皮膚皺褶", summary: "中型犬｜短吻犬呼吸道較弱、極怕熱，夏天需嚴防中暑", url: "breeds.html?focus=法國鬥牛犬" },
-        { title: "柯基犬", category: "品種百科", keywords: "短腿 大屁股 中型犬 牧羊犬 脊椎 椎間盤 肥胖", summary: "中型犬｜活潑聰明，身形長需控制體重以保護脊椎", url: "breeds.html?focus=柯基犬" },
-        { title: "邊境牧羊犬", category: "品種百科", keywords: "邊牧 中型犬 最聰明 飛盤 精力旺盛 運動", summary: "中型犬｜犬界智商第一、精力極旺盛，需大量動腦與運動", url: "breeds.html?focus=邊境牧羊犬" },
-        { title: "博美犬", category: "品種百科", keywords: "小型犬 長毛 氣管塌陷 胸背帶 牙結石", summary: "小型犬｜氣管較脆弱建議使用胸背帶，日常留意牙結石", url: "breeds.html?focus=博美" },
-        { title: "吉娃娃", category: "品種百科", keywords: "小型犬 長壽 代謝快 怕冷 保暖", summary: "小型犬｜壽命可達 12-20 年，代謝快且冬天需穿衣保暖", url: "breeds.html?focus=吉娃娃" },
-        { title: "貴賓犬", category: "品種百科", keywords: "紅貴賓 玩具貴賓 小型犬 捲毛 不掉毛 視網膜", summary: "小型犬｜聰明易訓練、不易掉毛，留意視網膜退化", url: "breeds.html?focus=貴賓犬" },
-        { title: "比熊犬", category: "品種百科", keywords: "棉花糖 小型犬 捲毛 親人 過敏 刷牙 淚痕", summary: "小型犬｜毛捲親人適合過敏者，腸胃敏感且務必天天刷牙", url: "breeds.html?focus=比熊犬" },
+    let currentFocus = -1;
+    let isComposing = false; // 追蹤注音輸入狀態，防止閃爍
 
-        // --- 醫療與飲食禁忌 (medical.html) ---
-        { title: "核心疫苗接種", category: "醫療飲食", keywords: "預防針 狂犬病 犬瘟熱 幼犬 補強 傳染病", summary: "預防保健｜幼犬核心疫苗與每年定期補強一次基礎疫苗", url: "medical.html?focus=疫苗接種" },
-        { title: "內外寄生蟲預防", category: "醫療飲食", keywords: "心絲蟲 跳蚤 壁蝨 驅蟲 預防藥", summary: "預防保健｜全年皆需定期進行體內、外寄生蟲預防", url: "medical.html?focus=寄生蟲預防" },
-        { title: "血液與生化健康檢查", category: "醫療飲食", keywords: "血檢 尿檢 貧血 肝腎 診斷 健檢", summary: "實驗室檢查｜透過全血球計數、生化與尿檢評估內臟健康", url: "medical.html?focus=血液學檢查" },
-        { title: "劇毒禁忌：巧克力與咖啡因", category: "醫療飲食", keywords: "中毒 不能吃 可可鹼 咖啡 茶 神經 心臟", summary: "致命誤食警告｜含有可可鹼與咖啡因，嚴重影響中樞神經與心臟", url: "medical.html?focus=巧克力" },
-        { title: "劇毒禁忌：葡萄與葡萄乾", category: "醫療飲食", keywords: "中毒 不能吃 水果 急性腎衰竭 嘔吐", summary: "致命誤食警告｜極少量即可導致狗狗急性腎衰竭，絕對禁食", url: "medical.html?focus=葡萄與葡萄乾" },
-        { title: "劇毒禁忌：木糖醇與蔥類植物", category: "醫療飲食", keywords: "中毒 不能吃 洋蔥 大蒜 韭菜 花生醬 口香糖 溶血性貧血 肝損傷", summary: "致命誤食警告｜洋蔥破壞紅血球致貧血；木糖醇導致肝衰竭", url: "medical.html?focus=木糖醇" },
-        { title: "高風險食物：煮熟的骨頭", category: "醫療飲食", keywords: "雞骨頭 豬骨 刺穿 腸胃 消化道", summary: "高風險警告｜熟骨頭咬碎後極鋒利，易刺傷消化道", url: "medical.html?focus=熟骨頭" },
-        { title: "日常照護：寵物晶片、社會化與保險", category: "醫療飲食", keywords: "登記 走失 醫療費 訓練 保障", summary: "日常照護｜植入寵物晶片保障身分安全，搭配寵物保險減輕負擔", url: "medical.html?focus=寵物晶片" },
+    if (searchInput) {
+        searchInput.parentElement.style.position = 'relative';
+    }
 
-        // --- 狗狗行為解讀 (behavior.html) ---
-        { title: "吠叫語言解讀（興奮／警戒／焦慮）", category: "狗狗行為", keywords: "一直叫 亂叫 聲音 哭 溝通 頻率", summary: "聲音解讀｜透過吠叫頻率與節奏，聽懂愛犬的情緒需求", url: "behavior.html?focus=吠叫語言" },
-        { title: "尾巴肢體訊號", category: "狗狗行為", keywords: "搖尾巴 夾尾巴 情緒 害怕 開心", summary: "肢體解讀｜從尾巴擺動方向與高低讀懂狗狗的真實心情", url: "behavior.html?focus=尾巴肢體" },
-        { title: "耳朵與身體訊號", category: "狗狗行為", keywords: "飛機耳 趴下 露肚子 打哈欠 安定訊號", summary: "訊號解讀｜觀察耳朵位置與身體動作，判斷緊張或放鬆", url: "behavior.html?focus=耳朵訊號" },
-
-        // --- 年紀狀況 (age.html) ---
-        { title: "幼犬期照護（哺乳／斷奶／成長期）", category: "年紀狀況", keywords: "0-1歲 小狗 換牙 社會化 幼犬飼料", summary: "0-1歲幼犬｜包含免疫系統建立、換牙期與社會化訓練關鍵", url: "age.html?focus=幼犬期" },
-        { title: "高齡老犬照護與老化界定", category: "年紀狀況", keywords: "老狗 7歲 退化 關節 白內障 失智 健檢", summary: "高齡犬照護｜飲食調整、無障礙生活環境與半年定期健檢", url: "age.html?focus=高齡犬照護重點" },
-
-        // --- 飼料、用品、照顧、運動 ---
-        { title: "飼料挑選與鮮食營養指南", category: "飼料食物", keywords: "乾糧 罐頭 主食 換食 營養 挑嘴 狗糧", summary: "飲食指南｜各年齡層飼料挑選原則與營養攝取重點", url: "food.html" },
-        { title: "新手必備寵物用品清單", category: "寵物用品", keywords: "牽繩 胸背帶 項圈 睡床 尿布墊 玩具 水碗 準備", summary: "用品採購｜第一次養狗必備的生活、外出與訓練用品", url: "supplies.html" },
-        { title: "日常美容與清潔照顧方法", category: "照顧方法", keywords: "洗澡 剪指甲 刷牙 清耳朵 梳毛 護理 清潔", summary: "居家護理｜洗澡頻率、清耳朵、刷牙與毛髮日常整理教學", url: "care.html" },
-        { title: "狗狗每日運動與放電指南", category: "運動指南", keywords: "散步 跑步 飛盤 放電 嗅聞 時間 體力", summary: "運動計畫｜依體型規劃每日散步時間與室內外放電遊戲", url: "exercise.html" }
+    // ==========================================
+    // 🌟 靜態豐富版資料庫 (純前端維護，免動後端)
+    // 包含：分類 (category)、標題 (label)、說明 (desc)、隱藏關鍵字 (keywords)、精準跳轉 (url)
+    // ==========================================
+    const searchDatabase = [
+        { category: "品種", label: "品種總覽", desc: "常見犬種特點與養護資訊", keywords: "犬種 大型犬 中型犬 小型犬", url: "breeds.html" },
+        { category: "品種", label: "黃金獵犬", desc: "大型犬，溫順、聰明、愛游泳", keywords: "金毛 游泳 獵犬", url: "breeds.html?focus=黃金獵犬" },
+        { category: "品種", label: "拉布拉多", desc: "大型犬，具 POMC 基因缺陷天生貪吃", keywords: "拉不拉多 導盲犬 貪吃 肥胖", url: "breeds.html?focus=拉布拉多" },
+        { category: "品種", label: "哈士奇", desc: "大型犬，精力充沛需大量運動，愛嚎叫", keywords: "二哈 雪橇犬 拆家", url: "breeds.html?focus=哈士奇" },
+        { category: "品種", label: "德國牧羊犬", desc: "大型犬，忠誠警覺性高，注意胃扭轉", keywords: "狼犬 警犬", url: "breeds.html?focus=德國牧羊犬" },
+        { category: "品種", label: "台灣土狗", desc: "大型犬，適應力強，遺傳疾病極少", keywords: "台灣犬 土狗 米克斯", url: "breeds.html?focus=台灣土狗" },
+        { category: "品種", label: "柴犬", desc: "中型犬，易患過敏、青光眼及膝蓋骨脫臼", keywords: "阿柴 固執 換毛", url: "breeds.html?focus=柴犬" },
+        { category: "品種", label: "法國鬥牛犬", desc: "中型犬，呼吸系統脆弱，夏天需防中暑", keywords: "法鬥 呼吸 短吻", url: "breeds.html?focus=法國鬥牛犬" },
+        { category: "品種", label: "柯基犬", desc: "中型犬，身軀長易患椎間盤疾病", keywords: "柯基 短腿 脊椎", url: "breeds.html?focus=柯基犬" },
+        { category: "品種", label: "邊境牧羊犬", desc: "中型犬，世界最聰明，精力旺盛", keywords: "邊牧 飛盤", url: "breeds.html?focus=邊境牧羊犬" },
+        { category: "品種", label: "吉娃娃", desc: "小型犬，代謝快，耐寒力差需保暖", keywords: "怕冷 抖", url: "breeds.html?focus=吉娃娃" },
+        { category: "品種", label: "博美", desc: "小型犬，氣管脆弱，老犬易有牙結石", keywords: "氣管", url: "breeds.html?focus=博美" },
+        { category: "品種", label: "貴賓犬", desc: "小型犬，聰明易訓練，注意視網膜萎縮", keywords: "紅貴賓 玩具貴賓 捲毛", url: "breeds.html?focus=貴賓犬" },
+        { category: "品種", label: "比熊犬", desc: "小型犬，毛捲親人，務必天天刷牙", keywords: "比熊", url: "breeds.html?focus=比熊犬" },
+        
+        { category: "醫療", label: "疫苗與預防保健", desc: "核心疫苗、狂犬病、心絲蟲與跳蚤預防", keywords: "醫療 看醫生 醫院 打針 驅蟲", url: "medical.html?focus=預防保健" },
+        { category: "禁忌", label: "巧克力與葡萄", desc: "劇毒食物，引發腎衰竭或神經心臟問題", keywords: "中毒 不能吃 葡萄乾 致命", url: "medical.html?focus=高風險食物" },
+        { category: "禁忌", label: "蔥類與木糖醇", desc: "破壞紅血球造成貧血，或引發肝臟損傷", keywords: "洋蔥 大蒜 韭菜 花生醬 口香糖", url: "medical.html?focus=高風險食物" },
+        { category: "禁忌", label: "熟骨頭", desc: "易碎裂造成窒息或腸胃道刺傷", keywords: "雞骨 骨頭 刺破", url: "medical.html?focus=高風險食物" },
+        
+        { category: "飲食", label: "飼料與食物", desc: "乾糧、罐頭與鮮食挑選指南", keywords: "飼料 食物 挑嘴", url: "food.html" },
+        { category: "行為", label: "吠叫語言", desc: "興奮、需求、警戒或分離焦慮的叫聲解讀", keywords: "狗狗 行為 肢體 動作 一直叫 亂叫 哭 叫聲", url: "behavior.html?focus=吠叫語言" },
+        { category: "行為", label: "尾巴與耳朵", desc: "搖尾巴的幅度、飛機耳代表的情緒意義", keywords: "搖尾巴 害怕 生氣 飛機耳", url: "behavior.html?focus=尾巴肢體語言" },
+        { category: "日常", label: "年紀狀況", desc: "不同年齡階段的健康與照顧指南", keywords: "幼犬 老犬 壽命 年齡", url: "age.html" },
+        { category: "日常", label: "幼犬照顧", desc: "幼犬期的社會化與基本訓練", keywords: "幼犬 小狗 斷奶 換牙", url: "age.html?focus=幼犬期" },
+        { category: "日常", label: "寵物用品清單", desc: "牽繩、胸背帶、狗床、水碗等必備清單", keywords: "買什麼 準備 牽繩 胸背帶 玩具", url: "supplies.html" },
+        { category: "日常", label: "照顧方法", desc: "洗澡、剪指甲、清耳朵等日常美容", keywords: "洗澡 刷牙 清潔 梳毛", url: "care.html" },
+        { category: "日常", label: "運動指南", desc: "每天散步時間、消耗體力的放電教學", keywords: "散步 跑步 飛盤 放電 嗅聞", url: "exercise.html" }
     ];
 
-
-    const MAX_RESULTS = 8;
-    let isComposing = false;
-    let debounceTimer = null;
-    let activeIndex = -1;
-    let visibleResults = [];
-
-    function escapeHTML(str) {
-        return String(str).replace(/[&<>'"]/g, tag => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-        }[tag]));
+    // 歷史紀錄處理 (LocalStorage)
+    function saveHistory(title, url) {
+        let history = JSON.parse(localStorage.getItem('dogSearchHistory') || '[]');
+        history = history.filter(item => item.title !== title);
+        history.unshift({ title, url });
+        if (history.length > 5) history = history.slice(0, 5); // 最多存 5 筆
+        localStorage.setItem('dogSearchHistory', JSON.stringify(history));
     }
 
-    function highlightMatch(text, query) {
-        const cleanQuery = query.trim();
-        const safeText = escapeHTML(text);
-        if (!cleanQuery) return safeText;
-        const safeQuery = escapeHTML(cleanQuery).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        return safeText.replace(new RegExp(`(${safeQuery})`, 'gi'), '<mark>$1</mark>');
+    function getHistory() {
+        return JSON.parse(localStorage.getItem('dogSearchHistory') || '[]');
     }
 
-    function getMatchedResults(query) {
-        const cleanQuery = query.trim().toLowerCase();
-        if (!cleanQuery) return [];
-        return knowledgeIndex.filter(item => [item.title, item.category, item.keywords, item.summary]
-            .some(value => value.toLowerCase().includes(cleanQuery)));
-    }
+    if (searchBtn && searchInput && suggestionsBox) {
 
-    function renderDefaultHotSearches() {
-        const hotKeywords = ['柴犬', '葡萄', '疫苗', '拉布拉多', '幼犬', '吠叫'];
-        searchSuggestions.innerHTML = `<div class="search-panel-inner">
-            <div class="search-panel-label">🔥 熱門快速搜尋</div>
-            <div class="hot-searches">${hotKeywords.map(kw => `<button type="button" class="hot-kw-chip" data-kw="${kw}">#${kw}</button>`).join('')}</div>
-        </div>`;
-        searchSuggestions.style.display = 'block';
-        searchSuggestions.setAttribute('aria-hidden', 'false');
-        searchSuggestions.querySelectorAll('.hot-kw-chip').forEach(chip => chip.addEventListener('click', () => {
-            searchInput.value = chip.dataset.kw;
-            renderSuggestions(getMatchedResults(searchInput.value), searchInput.value);
-            searchInput.focus();
-        }));
-    }
+        // 監聽注音輸入，防止輸入一半時選單狂閃
+        searchInput.addEventListener('compositionstart', () => { isComposing = true; });
+        searchInput.addEventListener('compositionend', () => { isComposing = false; handleInput(); });
+        searchInput.addEventListener('input', () => { if (!isComposing) handleInput(); });
+        
+        searchInput.addEventListener('focus', () => { handleInput(); });
 
-    function renderSuggestions(results, query) {
-        visibleResults = results.slice(0, MAX_RESULTS);
-        activeIndex = -1;
-        searchSuggestions.innerHTML = '';
-        searchSuggestions.setAttribute('role', 'listbox');
-        if (!results.length) {
-            searchSuggestions.innerHTML = `<div class="search-empty">🐶 找不到與「<strong>${escapeHTML(query)}</strong>」相符的內容。<br><small>建議試試：柴犬、葡萄、疫苗、骨頭、老犬</small></div>`;
-        } else {
-            visibleResults.forEach((item, index) => {
-                const option = document.createElement('a');
-                option.href = item.url;
-                option.className = 'search-option';
-                option.id = `search-option-${index}`;
-                option.setAttribute('role', 'option');
-                option.dataset.index = index;
-                option.innerHTML = `<div class="search-option-top"><strong>🔍 ${highlightMatch(item.title, query)}</strong><span class="search-category">${escapeHTML(item.category)}</span></div>
-                    <div class="search-summary">${highlightMatch(item.summary, query)}</div>
-                    <div class="search-keywords"><span>相關：</span>${item.keywords.split(' ').slice(0, 5).map(k => `<span class="keyword-chip">${highlightMatch(k, query)}</span>`).join('')}</div>`;
-                option.addEventListener('mouseenter', () => setActiveIndex(index));
-                option.addEventListener('click', () => clearSearchState());
-                searchSuggestions.appendChild(option);
+        function handleInput() {
+            const query = searchInput.value.trim().toLowerCase();
+            suggestionsBox.innerHTML = '';
+            currentFocus = -1;
+
+            if (query === '') {
+                const history = getHistory();
+                if (history.length > 0) {
+                    const header = document.createElement('div');
+                    header.style.cssText = 'padding: 8px 12px; font-size: 12px; color: #888; background: #f9f9f9; display: flex; justify-content: space-between; border-bottom: 1px solid #eee;';
+                    header.innerHTML = `<span>🕒 最近搜尋</span><span id="clearHistory" style="cursor:pointer; color:#d9534f; font-weight:bold;">清除</span>`;
+                    suggestionsBox.appendChild(header);
+
+                    setTimeout(() => {
+                        document.getElementById('clearHistory').addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            localStorage.removeItem('dogSearchHistory');
+                            suggestionsBox.style.display = 'none';
+                        });
+                    }, 0);
+
+                    // 渲染歷史紀錄
+                    history.forEach((item, index) => {
+                        createSuggestionItem({ category: "歷史", label: item.title, desc: "點擊返回上次查找的知識點", url: item.url }, index + 1);
+                    });
+                    suggestionsBox.style.display = 'block';
+                } else {
+                    suggestionsBox.style.display = 'none';
+                }
+                return;
+            }
+
+            // 多維度模糊比對：同時找 分類、標題、說明、隱藏關鍵字
+            const matched = searchDatabase.filter(item => 
+                item.label.toLowerCase().includes(query) || 
+                item.desc.toLowerCase().includes(query) ||
+                item.category.toLowerCase().includes(query) ||
+                item.keywords.toLowerCase().includes(query)
+            );
+
+            if (matched.length > 0) {
+                // 限制最多顯示 8 筆結果，防止選單過長
+                matched.slice(0, 8).forEach((item, index) => createSuggestionItem(item, index));
+                suggestionsBox.style.display = 'block';
+            } else {
+                suggestionsBox.style.display = 'none';
+            }
+        }
+
+        // 🌟 建立富文本下拉選單項目
+        function createSuggestionItem(itemData, focusIndex) {
+            const div = document.createElement('div');
+            div.className = 'suggestion-item';
+            
+            // 根據分類給予不同顏色的膠囊標籤 (UX 視覺優化)
+            let tagBg = '#24b657'; // 預設綠色
+            if (itemData.category === '禁忌' || itemData.category === '醫療') tagBg = '#e74c3c';
+            else if (itemData.category === '行為') tagBg = '#f39c12';
+            else if (itemData.category === '歷史') tagBg = '#7f8c8d';
+            else if (itemData.category === '品種') tagBg = '#2980b9';
+
+            div.innerHTML = `
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                    <span style="background:${tagBg}; color:white; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:bold; white-space:nowrap;">${itemData.category}</span>
+                    <strong style="color:#2b4a3b; font-size:15px;">${itemData.label}</strong>
+                </div>
+                <div style="font-size:12px; color:#666; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                    ${itemData.desc}
+                </div>
+            `;
+            
+            div.addEventListener('mouseenter', () => {
+                currentFocus = focusIndex;
+                addActive(suggestionsBox.querySelectorAll('.suggestion-item'));
             });
-        }
-        searchSuggestions.style.display = 'block';
-        searchSuggestions.setAttribute('aria-hidden', 'false');
-    }
+            
+            div.addEventListener('mousedown', (e) => {
+                e.preventDefault(); // 防止 input 失去焦點導致視窗提早關閉
+                saveHistory(itemData.label, itemData.url);
+                searchInput.value = ''; // 點擊時提早清空
+                window.location.href = itemData.url;
+            });
 
-    function setActiveIndex(index) {
-        const options = [...searchSuggestions.querySelectorAll('.search-option')];
-        if (!options.length) return;
-        activeIndex = (index + options.length) % options.length;
-        options.forEach((option, i) => {
-            const active = i === activeIndex;
-            option.classList.toggle('is-active', active);
-            option.setAttribute('aria-selected', active ? 'true' : 'false');
+            suggestionsBox.appendChild(div);
+        }
+
+        // ==========================================
+        // 3. 鍵盤事件 (完美上下選擇與 Enter 跳轉)
+        // ==========================================
+        searchInput.addEventListener('keydown', function (e) {
+            if (isComposing) return;
+            let items = suggestionsBox.querySelectorAll('.suggestion-item');
+            if (!items || items.length === 0) return;
+
+            // 如果有歷史紀錄的 Header，第一筆選項的 index 會從 1 開始，這裡統一處理 DOM 抓取
+            const startIndex = 0; 
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                currentFocus++;
+                addActive(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                currentFocus--;
+                addActive(items);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (currentFocus > -1 && suggestionsBox.style.display === 'block') {
+                    if (items[currentFocus]) items[currentFocus].dispatchEvent(new Event('mousedown'));
+                } else if (items.length > 0) {
+                    items[startIndex].dispatchEvent(new Event('mousedown')); // 沒反白時，預設跳轉第一筆
+                }
+            } else if (e.key === 'Escape') {
+                suggestionsBox.style.display = 'none';
+            }
         });
-        searchInput.setAttribute('aria-activedescendant', options[activeIndex].id);
-        options[activeIndex].scrollIntoView({ block: 'nearest' });
-    }
 
-    function clearSearchState() {
-        searchInput.value = '';
-        searchSuggestions.innerHTML = '';
-        searchSuggestions.style.display = 'none';
-        searchSuggestions.setAttribute('aria-hidden', 'true');
-        searchInput.removeAttribute('aria-activedescendant');
-        activeIndex = -1;
-    }
-
-    function triggerSearchRender(value) {
-        const query = value.trim();
-        if (!query) renderDefaultHotSearches();
-        else renderSuggestions(getMatchedResults(query), query);
-    }
-
-    function executeSearch() {
-        const query = searchInput.value.trim();
-        if (!query) return renderDefaultHotSearches();
-        const result = visibleResults[activeIndex] || getMatchedResults(query)[0];
-        if (result) {
-            clearSearchState();
-            window.location.assign(result.url);
-        } else renderSuggestions([], query);
-    }
-
-    searchInput.setAttribute('role', 'combobox');
-    searchInput.setAttribute('aria-autocomplete', 'list');
-    searchInput.setAttribute('aria-controls', 'searchSuggestions');
-    searchInput.addEventListener('compositionstart', () => { isComposing = true; });
-    searchInput.addEventListener('compositionend', event => { isComposing = false; triggerSearchRender(event.target.value); });
-    searchInput.addEventListener('focus', () => triggerSearchRender(searchInput.value));
-    searchInput.addEventListener('input', event => {
-        if (isComposing) return;
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => triggerSearchRender(event.target.value), 180);
-    });
-    searchInput.addEventListener('keydown', event => {
-        if (isComposing) return;
-        const options = searchSuggestions.querySelectorAll('.search-option');
-        if (event.key === 'ArrowDown' && options.length) { event.preventDefault(); setActiveIndex(activeIndex + 1); }
-        else if (event.key === 'ArrowUp' && options.length) { event.preventDefault(); setActiveIndex(activeIndex - 1); }
-        else if (event.key === 'Escape') { event.preventDefault(); clearSearchState(); }
-        else if (event.key === 'Enter') { event.preventDefault(); executeSearch(); }
-    });
-    searchBtn.addEventListener('click', executeSearch);
-    document.addEventListener('click', event => {
-        if (!event.target.closest('.searchBar')) {
-            searchSuggestions.style.display = 'none';
-            searchSuggestions.setAttribute('aria-hidden', 'true');
+        function addActive(items) {
+            if (!items || items.length === 0) return;
+            for (let i = 0; i < items.length; i++) {
+                items[i].classList.remove('autocomplete-active');
+            }
+            if (currentFocus >= items.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = items.length - 1;
+            
+            items[currentFocus].classList.add('autocomplete-active');
+            items[currentFocus].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-    });
-    // 從結果頁返回首頁時，不恢復上一個搜尋字串，避免殘留在輸入框。
-    window.addEventListener('pageshow', () => {
-        clearSearchState();
-    });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.searchBar')) suggestionsBox.style.display = 'none';
+        });
+
+        searchBtn.addEventListener('click', function () {
+            const query = searchInput.value.trim().toLowerCase();
+            if (query === "") return alert("請輸入搜尋內容");
+            
+            // 點擊搜尋按鈕時，直接尋找最符合的第一筆資料
+            const match = searchDatabase.find(item => 
+                item.label.toLowerCase().includes(query) || 
+                item.desc.toLowerCase().includes(query) ||
+                item.keywords.toLowerCase().includes(query)
+            );
+
+            if (match) {
+                saveHistory(match.label, match.url);
+                searchInput.value = '';
+                window.location.href = match.url;
+            } else {
+                alert("找不到相關網頁，請嘗試其他關鍵字（例如：品種、醫療、巧克力）");
+            }
+        });
+    }
 });
