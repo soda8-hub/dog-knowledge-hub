@@ -224,7 +224,7 @@
             // ==========================================
             // 2. 滑動動態浮現 (讓所有卡片與區塊活起來)
             // ==========================================
-            const cards = document.querySelectorAll('.item-card, .dog-card, .sub-card, .danger-card, .age-card, .sport-card, .food-danger, .food-warning, .section-block');
+            const cards = document.querySelectorAll('.item-card, .dog-card, .sub-card, .danger-card, .age-card, .sport-card, .food-danger, .food-warning, .section-block, .tips, .tips-box');
             
             if ('IntersectionObserver' in window) {
                 const observer = new IntersectionObserver((entries) => {
@@ -260,17 +260,17 @@
             if (focusKw) {
                 let targetCard = null;
 
-                // 第一優先：比對「單一小區塊/卡片」的標題 (.dog-name, .item-name, .item-title, h3, strong)
-                const smallCards = document.querySelectorAll('.dog-card, .item-card, .sub-card, .danger-card, .age-card, .item-group, .tips-box, .highlight-box, .item');
+                // 🌟 擴充目標清單，確保包含各種排版 (包含小知識區塊)
+                const smallCards = document.querySelectorAll('.dog-card, .item-card, .sub-card, .danger-card, .age-card, .item-group, .tips-box, .tips, .highlight-box, .item');
                 for (const card of smallCards) {
-                    const titleEl = card.querySelector('.dog-name, .item-name, .item-title, h3, strong');
-                    if (titleEl && titleEl.textContent.includes(focusKw)) {
+                    const titleEl = card.querySelector('.dog-name, .item-name, .item-title, h3, strong, b');
+                    // 擴大比對範圍，如果標題沒有，比對整個卡片內容
+                    if ((titleEl && titleEl.textContent.includes(focusKw)) || card.textContent.includes(focusKw)) {
                         targetCard = card;
                         break;
                     }
                 }
 
-                // 第二優先：比對「多個小區塊組成的中區塊」標題 (.food-danger, .food-warning)
                 if (!targetCard) {
                     const mediumBlocks = document.querySelectorAll('.food-danger, .food-warning');
                     for (const block of mediumBlocks) {
@@ -282,7 +282,6 @@
                     }
                 }
 
-                // 第三優先：比對「整個導覽列大區塊」的大標題 (section h2)
                 if (!targetCard) {
                     const largeSections = document.querySelectorAll('section, .category-section, .category-block, .care-section, .sport-card, .section-block');
                     for (const sec of largeSections) {
@@ -294,9 +293,8 @@
                     }
                 }
 
-                // 第四優先（保底）：從小卡片到大區塊比對內文關鍵字
                 if (!targetCard) {
-                    const allCandidates = document.querySelectorAll('.dog-card, .item-card, .sub-card, .danger-card, .age-card, .item-group, .tips-box, .highlight-box, .food-danger, .food-warning, .care-section, .sport-card, .category-block, .category-section, section');
+                    const allCandidates = document.querySelectorAll('.dog-card, .item-card, .sub-card, .danger-card, .age-card, .item-group, .tips-box, .tips, .highlight-box, .food-danger, .food-warning, .care-section, .sport-card, .category-block, .category-section, section');
                     for (const el of allCandidates) {
                         if (el.textContent.includes(focusKw)) {
                             targetCard = el;
@@ -310,19 +308,19 @@
                         targetCard.classList.remove('scroll-reveal-init');
                         
                         setTimeout(() => {
-                            // 若目標是整個大區塊 (高度較高)，對齊頂部並預留導覽列空間；若是小卡片則置中顯示
                             const scrollPosition = targetCard.offsetHeight > window.innerHeight * 0.65 ? 'start' : 'center';
                             targetCard.scrollIntoView({ behavior: 'smooth', block: scrollPosition });
                         }, 100);
                         
                         setTimeout(() => {
                             targetCard.classList.remove('spotlight-focus-card');
-                            void targetCard.offsetWidth; 
+                            void targetCard.offsetWidth; // 強制重繪
                             targetCard.classList.add('spotlight-focus-card');
                         }, 600);
                     }, 400); 
                 }
             }
+        });
     </script>
     
 </body>
