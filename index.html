@@ -20,6 +20,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- 載入 Font Awesome 5 圖示庫 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <link rel="stylesheet" href="css/home.css">
 </head>
@@ -260,8 +263,11 @@
                 <h2 class="modal-title">🐾 歡迎來到狗狗友善知識網</h2>
                 <p class="modal-subtitle">請輸入 Email 與密碼進行登入或註冊</p>
                 <input type="email" id="authEmail" class="modal-input" placeholder="請輸入 Email (如: test@gmail.com)" autocomplete="off" data-lpignore="true" required>
-                <!-- 使用防偵測圓點遮罩，徹底消除 Chrome 密碼外洩警告彈窗 -->
-                <input type="text" id="authPassword" class="modal-input" placeholder="請設定 8 碼以上密碼" autocomplete="off" data-lpignore="true" style="-webkit-text-security: disc; text-security: disc;" required>
+                <!-- 更新後的密碼輸入框與 Font Awesome 眼睛圖示 -->
+                <div style="position: relative; margin-bottom: 15px;">
+                    <input type="text" id="authPassword" class="modal-input" placeholder="請設定 8 碼以上密碼" autocomplete="off" data-lpignore="true" style="-webkit-text-security: disc; text-security: disc; margin-bottom: 0; padding-right: 40px;" required>
+                    <i id="togglePassword" class="fas fa-eye-slash" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888; font-size: 16px;" title="顯示密碼"></i>
+                </div>
                 <div style="text-align: right; margin-top: -5px; margin-bottom: 15px;">
                     <span id="forgotPasswordBtn" style="color: #999999; font-size: 13px; cursor: pointer; text-decoration: underline;">忘記密碼？</span>
                 </div>
@@ -273,6 +279,10 @@
                 <p class="modal-subtitle">請輸入剛才彈出的 6 位數展示驗證碼</p>
                 <div class="otp-container">
                     <input type="text" id="otpCode" class="modal-input otp-input" placeholder="輸入 6 碼驗證碼" maxlength="6" autocomplete="one-time-code">
+                </div>
+                <!-- 🌟 新增：倒數計時顯示區塊 -->
+                <div id="otpTimerDisplay" style="text-align: center; color: #d9534f; font-size: 14px; font-weight: bold; margin-bottom: 15px;">
+                    剩餘時間：60 秒
                 </div>
                 <button id="verifyLoginBtn" class="modal-btn primary-btn">驗證並登入</button>
                 <button id="backToLoginBtn" class="modal-btn text-btn">上一步</button>
