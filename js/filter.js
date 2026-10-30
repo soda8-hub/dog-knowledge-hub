@@ -2,6 +2,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const filterBtns = document.querySelectorAll(".filter-pill");
     const items = document.querySelectorAll("#list li");
 
+    // 🌟 新增：為每一個篩選出來的狗狗項目加上點擊跳轉事件
+    items.forEach(item => {
+        // 加入 pointer 樣式讓使用者知道可以點擊
+        item.style.cursor = 'pointer';
+        
+        item.addEventListener('click', function() {
+            // 取得該 <li> 的文字內容 (例如 "黃金獵犬")
+            const dogName = this.textContent.trim();
+            // 組合跳轉網址，帶入 focus 參數觸發目標頁面的動畫
+            window.location.href = `breeds.html?focus=${dogName}`;
+        });
+    });
+
     filterBtns.forEach(btn => {
         btn.addEventListener("click", function () {
             //取得這顆按鈕屬於哪一個群組 (size, hair, 或 personality)
