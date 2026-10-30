@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const verifyLoginBtn = document.getElementById('verifyLoginBtn');
     const backToLoginBtn = document.getElementById('backToLoginBtn'); // 🌟 新增補上：返回按鈕
     const otpTimerDisplay = document.getElementById('otpTimerDisplay'); // 🌟 新增：倒數計時顯示
+    const resendCodeBtn = document.getElementById('resendCodeBtn'); // 🌟 新增：抓取重新發送按鈕
     
     const profileNickname = document.getElementById('profileNickname');
     const randomNameBtn = document.getElementById('randomNameBtn');
@@ -278,12 +279,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ==========================================
+// ==========================================
     // 7. 步驟一：送出帳密 (嚴謹 Email 驗證與貼心防呆)
     // ==========================================
     if (sendCodeBtn) {
         sendCodeBtn.addEventListener('click', async () => {
-            // 🌟 將 const 改為 let，允許我們在防呆機制中自動替換修正後的信箱
             let email = authEmail.value.trim().toLowerCase(); 
             const password = authPassword.value;
 
@@ -301,22 +301,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // ==========================================
-            // 🌟 UX 升級版：各大常見信箱錯別字溫和提示與自動校正
+            // UX 升級版：各大常見信箱錯別字溫和提示與自動校正
             // ==========================================
             const emailParts = email.split('@');
             if (emailParts.length === 2) {
                 const domain = emailParts[1];
                 let suggestedDomain = "";
 
-                // 🌟 定義台灣使用者常見的四大信箱易錯拼法 (新增 Outlook 支援)
                 const typoMap = {
-                    "gmail.com": ["gamil.com", "gmal.com", "gemal.com", "gmai.com", "gamil.con"],
+                    "gmail.com": ["gamil.com", "gmal.com", "gemal.com", "gmai.com", "gamil.con", "gmol.com"], // 補上你測試的 gmol.com
                     "yahoo.com.tw": ["yaho.com.tw", "yahoo.com.t", "yahoo.tw", "yaho.tw"],
                     "hotmail.com": ["hotmal.com", "hotmai.com", "hormail.com"],
                     "outlook.com": ["outlok.com", "outloo.com", "outlool.com", "outllok.com", "outkook.com"]
                 };
 
-                // 比對是否有命中錯別字
                 for (const [correct, typos] of Object.entries(typoMap)) {
                     if (typos.includes(domain)) {
                         suggestedDomain = correct;
@@ -325,13 +323,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (suggestedDomain) {
-                    // 採用溫和詢問，並明確告知按鈕行為
                     const confirmFix = confirm(`【信箱拼字檢查】\n您輸入的信箱網域是 @${domain}，請問是否為 @${suggestedDomain} 的筆誤？\n\n• 點擊「確定」：系統將為您自動更正並繼續登入。\n• 點擊「取消」：確認無誤，維持使用您原本輸入的信箱。`);
                     
                     if (confirmFix) {
-                        // 自動更正 input 畫面上的值
                         authEmail.value = emailParts[0] + '@' + suggestedDomain;
-                        // 同步更新 email 變數，不使用 return，讓程式「直接往下執行」連線！
                         email = authEmail.value.trim().toLowerCase(); 
                     }
                 }
@@ -356,26 +351,29 @@ document.addEventListener('DOMContentLoaded', () => {
             sendCodeBtn.textContent = '下一步 (獲取驗證碼)';
             sendCodeBtn.disabled = false;
 
+            // 🌟 關鍵修復：嚴格處理錯誤，只要有錯誤就強制中斷 (return)，絕對不進入下一步！
             if (error) {
                 if (error.message.includes("User already registered")) {
                     alert("此 Email 已被註冊，但您輸入的密碼錯誤！請重新確認。");
                 } else if (error.message.includes("invalid format") || error.message.includes("Unable to validate email address")) {
-                    alert("系統無法辨識此信箱格式，請再次檢查是否有打錯字！");
+                    alert("系統無法辨識此信箱格式，此信箱可能無效或不存在！\n請檢查是否有打錯字，或換一個信箱試試。");
                 } else {
                     alert(`連線發生錯誤：${error.message}`);
                 }
-            } else {
-                currentOtp = Math.floor(100000 + Math.random() * 900000).toString();
-                alert(`[系統展示模式]\n已發送驗證碼至 ${email}\n\n您的動態驗證碼為：${currentOtp}\n(請於 60 秒內輸入)`);
-                
-                step1.style.display = 'none';
-                step2.style.display = 'block';
-                
-                // 啟動 60 秒倒數計時
-                startOtpTimer(60);
-
-                setTimeout(() => otpCode.focus(), 100); 
-            }
+                return; // ⚠️ 強制中斷，不執行下方的成功邏輯
+            } 
+            
+            // 以下是只有在 Supabase 完全沒有報錯的情況下，才會執行的成功邏輯
+            currentOtp = Math.floor(100000 + Math.random() * 900000).toString();
+            alert(`[系統展示模式]\n已發送驗證碼至 ${email}\n\n您的動態驗證碼為：${currentOtp}\n(請於 60 秒內輸入)`);
+            
+            step1.style.display = 'none';
+            step2.style.display = 'block';
+            
+            // 啟動60秒到計時
+            startOtpTimer(60);
+            setTimeout(() => otpCode.focus(), 100); 
+            
         });
     }
 
@@ -387,7 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 8. 步驟二：驗證碼核對與返回按鈕
+    // 8. 步驟二：驗證碼核對、重新發送與返回按鈕
     // ==========================================
     if (verifyLoginBtn) {
         verifyLoginBtn.addEventListener('click', () => {
@@ -404,8 +402,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.reload(); 
                 }
             } else {
-                alert("驗證碼錯誤，請重新確認！");
+                // 🌟 UX 優化：輸錯時清空輸入框，並提示可重新發送
+                alert("驗證碼錯誤，請重新確認！\n(若忘記驗證碼，可點擊下方的「重新發送」)");
+                otpCode.value = '';
+                otpCode.focus();
             }
+        });
+    }
+
+    // 🌟 新增：重新發送驗證碼邏輯
+    if (resendCodeBtn) {
+        resendCodeBtn.addEventListener('click', () => {
+            const email = authEmail.value.trim().toLowerCase();
+            // 產生一組全新的驗證碼
+            currentOtp = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            alert(`[系統展示模式 - 重新發送]\n已發送新驗證碼至 ${email}\n\n您的最新動態驗證碼為：${currentOtp}\n(請於 60 秒內輸入)`);
+            
+            // 清空輸入框並重新啟動 60 秒計時器
+            otpCode.value = '';
+            startOtpTimer(60);
+            otpCode.focus();
         });
     }
 
@@ -413,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
         backToLoginBtn.addEventListener('click', () => {
             step2.style.display = 'none';
             step1.style.display = 'block';
-            clearInterval(countdownInterval); // 🌟 退回上一頁時停止計時
+            clearInterval(countdownInterval); // 退回上一頁時停止計時
         });
     }
 
