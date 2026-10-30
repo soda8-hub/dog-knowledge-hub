@@ -251,7 +251,7 @@
         </div>
     </footer>
 
-    <!-- 登入與個人檔案設定彈窗 (Modal) -->
+<!-- 登入與個人檔案設定彈窗 (Modal) -->
     <div id="authModal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <span class="close-modal" id="closeModal">&times;</span>
@@ -259,8 +259,9 @@
             <div id="step1-login">
                 <h2 class="modal-title">🐾 歡迎來到狗狗友善知識網</h2>
                 <p class="modal-subtitle">請輸入 Email 與密碼進行登入或註冊</p>
-                <input type="email" id="authEmail" class="modal-input" placeholder="請輸入 Email (如: test@gmail.com)" required>
-                <input type="password" id="authPassword" class="modal-input" placeholder="請設定 8 碼以上密碼" required>
+                <input type="email" id="authEmail" class="modal-input" placeholder="請輸入 Email (如: test@gmail.com)" autocomplete="off" data-lpignore="true" required>
+                <!-- 使用防偵測圓點遮罩，徹底消除 Chrome 密碼外洩警告彈窗 -->
+                <input type="text" id="authPassword" class="modal-input" placeholder="請設定 8 碼以上密碼" autocomplete="off" data-lpignore="true" style="-webkit-text-security: disc; text-security: disc;" required>
                 <div style="text-align: right; margin-top: -5px; margin-bottom: 15px;">
                     <span id="forgotPasswordBtn" style="color: #999999; font-size: 13px; cursor: pointer; text-decoration: underline;">忘記密碼？</span>
                 </div>
@@ -271,21 +272,25 @@
                 <h2 class="modal-title">🔐 安全驗證</h2>
                 <p class="modal-subtitle">請輸入剛才彈出的 6 位數展示驗證碼</p>
                 <div class="otp-container">
-                    <input type="text" id="otpCode" class="modal-input otp-input" placeholder="輸入 6 碼驗證碼" maxlength="6">
+                    <input type="text" id="otpCode" class="modal-input otp-input" placeholder="輸入 6 碼驗證碼" maxlength="6" autocomplete="one-time-code">
                 </div>
                 <button id="verifyLoginBtn" class="modal-btn primary-btn">驗證並登入</button>
                 <button id="backToLoginBtn" class="modal-btn text-btn">上一步</button>
             </div>
 
             <div id="step3-profile" style="display: none;">
-                <h2 class="modal-title">🎉 登入成功！領取你的身分證</h2>
-                <p class="modal-subtitle">在討論區，我們使用匿名保護您的隱私</p>
+                <h2 class="modal-title" id="profileModalTitle">🎉 登入成功！領取你的身分證</h2>
+                <p class="modal-subtitle" id="profileModalSubtitle">在討論區，我們使用匿名保護您的隱私（支援隨時點擊右上角修改）</p>
+
+                <div style="background: #f0f7f3; border-left: 4px solid #387c59; padding: 8px 12px; border-radius: 6px; font-size: 13px; color: #2b4a3b; margin-bottom: 16px; text-align: left;">
+                    💡 <strong>支援隨時編輯：</strong>設定完成後，您隨時可點擊網頁右上角的個人按鈕，重新修改暱稱與增減毛孩品種！
+                </div>
 
                 <div class="profile-group">
                     <label>你的專屬暱稱：</label>
                     <div class="nickname-box">
                         <input type="text" id="profileNickname" class="modal-input" value="毛孩好朋友">
-                        <button id="randomNameBtn" class="modal-btn secondary-btn" title="隨機換一個">🎲</button>
+                        <button id="randomNameBtn" class="modal-btn secondary-btn" type="button" title="根據毛孩品種隨機產生暱稱">🎲</button>
                     </div>
                 </div>
 
@@ -303,13 +308,13 @@
 
                 <div id="petSelectorArea" class="pet-selector-area">
                     <div id="petList"></div>
-                    <button id="addPetBtn" class="modal-btn dashed-btn">➕ 新增其他品種</button>
+                    <button id="addPetBtn" class="modal-btn dashed-btn" type="button">➕ 新增其他品種</button>
                 </div>
 
-                <button id="finishProfileBtn" class="modal-btn primary-btn" style="margin-top: 20px;">完成設定，開始探索！</button>
-                <button id="logoutBtn" class="modal-btn dashed-btn" style="border-color: #d9534f; color: #d9534f; margin-top: 10px;">登出帳號</button>
+                <button id="finishProfileBtn" class="modal-btn primary-btn" type="button" style="margin-top: 20px;">完成設定，開始探索！</button>
+                <button id="logoutBtn" class="modal-btn dashed-btn" type="button" style="border-color: #d9534f; color: #d9534f; margin-top: 10px;">登出帳號</button>
                 <div style="text-align: center; margin-top: 15px;">
-                    <button id="deleteAccountBtn" class="text-btn" style="color: #999; font-size: 13px; border: none; cursor: pointer;">危險操作：註銷並刪除我的帳戶資料</button>
+                    <button id="deleteAccountBtn" class="text-btn" type="button" style="color: #999; font-size: 13px; border: none; cursor: pointer;">危險操作：註銷並刪除我的帳戶資料</button>
                 </div>
             </div>
         </div>
