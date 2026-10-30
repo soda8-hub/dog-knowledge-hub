@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentFocus = -1;
     let isKeyboardNav = false; 
     let isComposing = false; // 用來精準追蹤是否正在「注音組字」中
+    let inputTimeout = null; // 用來設定防抖動，避免注音切換時閃爍
 
     if (searchInput) {
         searchInput.parentElement.style.position = 'relative';
@@ -38,24 +39,24 @@ document.addEventListener('DOMContentLoaded', () => {
         { label: "醫療與飲食", keywords: "醫療 飲食 看醫生 醫院", url: "medical.html" },
         { label: "疫苗與驅蟲", keywords: "疫苗 預防保健 核心疫苗 犬瘟熱 狂犬病 寄生蟲 心絲蟲 跳蚤", url: "medical.html?focus=預防保健" },
         { label: "定期健康檢查", keywords: "健康檢查 血液檢查 超音波 X光 尿液", url: "medical.html?focus=定期健康檢查" },
-        { label: "飲食禁忌 (巧克力/葡萄)", keywords: "高風險食物 巧克力 葡萄 蔥 韭菜 大蒜 木糖醇 骨頭 生肉 咖啡因 酒精 致命 毒", url: "medical.html?focus=高風險" },
+        { label: "飲食禁忌 (巧克力/葡萄)", keywords: "高風險食物 巧克力 葡萄 蔥 韭菜 大蒜 木糖醇 骨頭 生肉 咖啡因 酒精 致命 毒", url: "medical.html?focus=巧克力" },
         { label: "日常照護與保險", keywords: "寵物晶片 保險 絕育 結紮 發燒 嘔吐 醫療警訊", url: "medical.html?focus=日常照護" },
 
         { label: "飼料與食物", keywords: "飼料 食物 挑選 乾糧 罐頭 鮮食", url: "food.html" },
         { label: "乾飼料挑選", keywords: "乾飼料 無穀 幼犬飼料 老犬飼料", url: "food.html?focus=乾飼料" },
         { label: "濕食與罐頭", keywords: "濕食 罐頭 主食罐 副食罐 水分", url: "food.html?focus=濕食" },
-        { label: "人類食物 (可吃/禁忌)", keywords: "鮮食 水煮肉 雞胸肉 牛肉 鮭魚 南瓜 地瓜 蘋果 香蕉 人類食物", url: "food.html?focus=人類" },
+        { label: "人類食物 (可吃/禁忌)", keywords: "鮮食 水煮肉 雞胸肉 牛肉 鮭魚 南瓜 地瓜 蘋果 香蕉 人類食物", url: "food.html?focus=人類食物" },
 
         { label: "行為解讀", label: "狗狗行為", keywords: "狗狗 行為 肢體 動作 心理", url: "behavior.html" },
         { label: "吠叫原因", keywords: "吠叫 興奮吠叫 需求吠叫 警戒吠叫 分離焦慮 亂叫 哭", url: "behavior.html?focus=吠叫語言" },
-        { label: "尾巴語言", keywords: "尾巴 搖尾巴 夾尾巴 開心 害怕 警戒", url: "behavior.html?focus=尾巴肢體語言" },
+        { label: "尾巴語言", keywords: "尾巴 搖尾巴 夾尾巴 開心 害怕 警戒", url: "behavior.html?focus=尾巴肢體" },
         { label: "飛機耳與眼神", keywords: "耳朵 飛機耳 豎耳 眼神", url: "behavior.html?focus=耳朵的訊號" },
         { label: "舔拭與翻肚子", keywords: "身體姿態 翻肚子 臣服 舔人 舔拭", url: "behavior.html?focus=舔拭的意義" },
 
         { label: "年紀與狀況", keywords: "年紀 狀況 年齡 換算 壽命", url: "age.html" },
         { label: "幼犬照顧", keywords: "幼犬 幼犬期 離乳 換牙 社會化 小狗", url: "age.html?focus=幼犬期" },
         { label: "成犬照顧", keywords: "成犬 成犬期 結紮 體態", url: "age.html?focus=成犬期" },
-        { label: "老犬與失智照護", keywords: "熟齡犬 老犬 高齡犬 退化 失智 止滑墊", url: "age.html?focus=熟齡" },
+        { label: "老犬與失智照護", keywords: "熟齡犬 老犬 高齡犬 退化 失智 止滑墊", url: "age.html?focus=高齡犬特別護理" },
 
         { label: "寵物用品", keywords: "寵物 用品 新手準備 買什麼", url: "supplies.html" },
         { label: "散步外出用品", keywords: "牽繩 胸背帶 項圈 外出籠 推車 撿便袋", url: "supplies.html?focus=外出散步" },
@@ -111,18 +112,26 @@ document.addEventListener('DOMContentLoaded', () => {
         
         searchInput.addEventListener('compositionend', () => { 
             isComposing = false; 
-            handleInput(); // 組字完成後才進行搜尋
+            triggerSearchDelay(); 
         });
 
         searchInput.addEventListener('input', () => {
             if (!isComposing) {
-                handleInput();
+                triggerSearchDelay();
             }
         });
 
         searchInput.addEventListener('focus', () => {
-            handleInput();
+            triggerSearchDelay();
         });
+
+        // 加入一點點防抖動 (debounce)，防止打字太快或切換輸入法時選單閃爍
+        function triggerSearchDelay() {
+            clearTimeout(inputTimeout);
+            inputTimeout = setTimeout(() => {
+                handleInput();
+            }, 50); 
+        }
 
         function handleInput() {
             // 如果還在打注音，絕對不要更新選單，防止閃爍與消失
@@ -207,8 +216,14 @@ document.addEventListener('DOMContentLoaded', () => {
             suggestionsBox.appendChild(div);
         }
 
-        // 🌟 修正鍵盤控制，防止 Enter 鍵與注音組字衝突
+        // 🌟 修正鍵盤控制，過濾 Shift/Ctrl/Alt 等功能鍵的干擾
         searchInput.addEventListener('keydown', function (e) {
+            
+            // 如果按下的是 Shift, Ctrl, Alt 等，直接略過，不干擾選單
+            if (e.key === 'Shift' || e.key === 'Control' || e.key === 'Alt' || e.key === 'Meta') {
+                return;
+            }
+
             const items = suggestionsBox.querySelectorAll('.suggestion-item');
             const isMenuOpen = suggestionsBox.style.display === 'block' && items.length > 0;
 
@@ -228,11 +243,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentFocus--;
                 addActive(items);
             } else if (e.key === 'Enter') {
-                // 如果是在注音組字中 (例如按下 Enter 為了確認英文字母或注音)，絕對不要觸發搜尋跳轉
+                // 如果是在注音組字中，絕對不要觸發搜尋跳轉
                 if (isComposing) return;
                 
-                // 防止表單亂送
-                e.preventDefault();
+                e.preventDefault(); // 防止表單亂送
 
                 if (isMenuOpen && currentFocus > -1 && items[currentFocus]) {
                     items[currentFocus].dispatchEvent(new Event('mousedown'));
